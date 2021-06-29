@@ -13,7 +13,9 @@
 	"author": "Tyman",
 	"license": "MIT",
 	"devDependencies": {
+		"@types/common-tags": "^1",
 		"@types/node": "^14.14.31",
+		"@types/pg": "^8",
 		"@types/prettier": "^2",
 		"@typescript-eslint/eslint-plugin": "^4.25.0",
 		"@typescript-eslint/parser": "^4.25.0",
@@ -26,8 +28,13 @@
 		"typescript": "^4.2.2"
 	},
 	"dependencies": {
-		"discord-akairo": "SkyblockDev/discord-akairo#59db80742b2bba62cdcfa5505b4522a7134e8e04",
-		"discord.js": "discordjs/discord.js#f7643f7bbe64003ad8b221006190dd15529651e9"
+		"common-tags": "^1.8.0",
+		"discord-akairo": "^8.1.0",
+		"discord.js": "^12.5.3",
+		"got": "^11.8.2",
+		"pg": "^8.6.0",
+		"pg-hstore": "^2.3.4",
+		"sequelize": "^6.6.4"
 	},
 	"prettier": {
 		"useTabs": true,
@@ -56,6 +63,9 @@
 		],
 		"ignorePatterns": [
 			"dist"
-		]
+		],
+		"rules": {
+			"@typescript-eslint/explicit-module-boundary-types": "off"
+		}
 	}
 }

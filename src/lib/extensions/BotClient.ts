@@ -4,11 +4,19 @@ import {
 	InhibitorHandler,
 	ListenerHandler
 } from 'discord-akairo';
-import { Intents } from 'discord.js';
 import { join } from 'path';
+import { Sequelize } from 'sequelize';
+import { Util } from './Util';
+import * as Models from '../models';
 
 export interface BotConfig {
 	token: string;
+	db: {
+		username: string;
+		password: string;
+		host: string;
+		port: number;
+	}
 }
 
 export class BotClient extends AkairoClient {
@@ -28,17 +36,18 @@ export class BotClient extends AkairoClient {
 	public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
 		directory: join(__dirname, '..', '..', 'inhibitors')
 	});
+	public util: Util = new Util(this);
+	public db: Sequelize;
+
 	public constructor(config: BotConfig) {
 		super(
 			{
-				ownerID: ['id here'],
-				intents: Intents.NON_PRIVILEGED
+				ownerID: ['487443883127472129']
 			},
 			{
 				allowedMentions: {
 					parse: ['users'] // Disables all mentions except for users
-				},
-				intents: Intents.NON_PRIVILEGED
+				}
 			}
 		);
 		this.config = config;
@@ -51,6 +60,22 @@ export class BotClient extends AkairoClient {
 			listenerHandler: this.listenerHandler,
 			process
 		});
+		// Connects to DB
+		this.db = new Sequelize(
+			'yourapps',
+			this.config.db.username,
+			this.config.db.password, {
+				dialect: 'postgres',
+				host: this.config.db.host,
+				port: this.config.db.port,
+				logging: false
+			}
+		)
+		await this.db.authenticate();
+		for (const model of Object.values(Models)) {
+			model.initModel(this.db)
+		}
+		await this.db.sync({ alter: true })
 		// loads all the stuff
 		const loaders = {
 			commands: this.commandHandler,
