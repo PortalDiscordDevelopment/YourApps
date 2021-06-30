@@ -1,4 +1,4 @@
-// import { Flag } from 'discord-akairo';
+import { Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { BotCommand } from '../../../lib/extensions/BotCommand';
 import { Guild } from '../../../lib/models';
@@ -15,21 +15,21 @@ export default class ConfigCommand extends BotCommand {
 			category: 'admin'
 		});
 	}
-	// *args() {
-	// 	const subcommand = yield {
-	// 		type: [
-	// 			['config-prefix-add', 'add'],
-	// 			['config-prefix-remove', 'remove']
-	// 		],
-	// 		prompt: {
-	// 			optional: true,
-	// 			retry: 'Invalid subcommand. What subcommand would you like to use?'
-	// 		}
-	// 	};
-	// 	if (subcommand !== null) {
-	// 		return Flag.continue(subcommand);
-	// 	}
-	// }
+	*args() {
+		const subcommand = yield {
+			type: [
+				['config-prefix-add', 'add'],
+				['config-prefix-remove', 'remove']
+			],
+			prompt: {
+				optional: true,
+				retry: 'Invalid subcommand. What subcommand would you like to use?'
+			}
+		};
+		if (subcommand !== null) {
+			return Flag.continue(subcommand);
+		}
+	}
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild.id);
 		if (!guildEntry) {
