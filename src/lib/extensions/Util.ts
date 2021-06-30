@@ -3,8 +3,15 @@ import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
 import { Util as DiscordUtil } from 'discord.js';
 import got from 'got';
+import { Message } from 'discord.js';
+import { Guild } from '../models';
 
 const exec = promisify(execCallback);
+
+enum RoleOverrideType {
+	ADMIN,
+	REVIEW
+}
 
 export class Util extends ClientUtil {
 	/**
@@ -82,5 +89,32 @@ export class Util extends ClientUtil {
 			tildes +
 			(hasteOut.length ? '\n' + hasteOut : '')
 		);
+	}
+
+	static RoleOverrideType = RoleOverrideType;
+
+	static getGuildRoleOverride(overrideType: RoleOverrideType) {
+		return async (message: Message) => {
+			const guildEntry = await Guild.findByPk(message.guild.id);
+			if (
+				!guildEntry ||
+				(overrideType == RoleOverrideType.ADMIN &&
+					guildEntry.adminroles === null) ||
+				(overrideType == RoleOverrideType.REVIEW &&
+					guildEntry.reviewroles === null)
+			) {
+				return false;
+			}
+			switch (overrideType) {
+				case RoleOverrideType.ADMIN:
+					return message.member.roles.cache.some((r) =>
+						guildEntry.adminroles.includes(r.id)
+					);
+				case RoleOverrideType.REVIEW:
+					return message.member.roles.cache.some((r) =>
+						guildEntry.reviewroles.includes(r.id)
+					);
+			}
+		};
 	}
 }

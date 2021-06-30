@@ -12,7 +12,6 @@ export default class EvalCommand extends BotCommand {
 	public constructor() {
 		super('eval', {
 			aliases: ['eval', 'ev'],
-			category: 'dev',
 			description: {
 				content: 'Use the command to eval code in the bot.',
 				usage: 'eval <code> [--depth #] [--ts]',

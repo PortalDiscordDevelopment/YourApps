@@ -1991,11 +1991,11 @@ typescript@^4.2.2:
 
 "typescript@patch:typescript@^4.2.2#builtin<compat/typescript>":
   version: 4.2.2
-  resolution: "typescript@patch:typescript@npm%3A4.2.2#builtin<compat/typescript>::version=4.2.2&hash=a45b0e"
+  resolution: "typescript@patch:typescript@npm%3A4.2.2#builtin<compat/typescript>::version=4.2.2&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ea1f1b6be22c9e3348f61692719d3169dd4abaad34b2132edff44a8d5a748bde8f3116fa2fae41d61c92b3a7cf1c35d0c7276058b2f35196ff3cde3b7d57c84b
+  checksum: aa60765443932c0aa294cf24295a8bba163dd791735b20e2e43dffe2d21f6bf80de8342c9ab9c4338c59e36f4bcae179195fdfaae1cae4678821994e77199d34
   languageName: node
   linkType: hard
 

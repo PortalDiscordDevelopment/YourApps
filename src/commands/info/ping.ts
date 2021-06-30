@@ -6,7 +6,6 @@ export default class PingCommand extends BotCommand {
 	constructor() {
 		super('ping', {
 			aliases: ['ping'],
-			category: 'info',
 			description: {
 				content: 'Gets the latency of the bot',
 				usage: 'ping',
@@ -20,9 +19,9 @@ export default class PingCommand extends BotCommand {
 		await m.edit(stripIndent`
 		Shard: ${message.guild.shardID}
 		Delay: ${
-			m.editedTimestamp !== 0 ?
-			m.editedTimestamp - message.editedTimestamp :
-			m.createdTimestamp - message.createdTimestamp
+			m.editedTimestamp !== 0
+				? m.editedTimestamp - message.editedTimestamp
+				: m.createdTimestamp - message.createdTimestamp
 		}ms
 		API: ${this.client.ws.ping}ms
 		`);
