@@ -3,7 +3,7 @@ import { Message } from 'discord.js';
 import { BotCommand } from '../../../lib/extensions/BotCommand';
 import { Guild } from '../../../lib/models';
 
-export default class ConfigCommand extends BotCommand {
+export default class ConfigPrefixCommand extends BotCommand {
 	public constructor() {
 		super('config-prefix', {
 			aliases: ['config-prefix'],
