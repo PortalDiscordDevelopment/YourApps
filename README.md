@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![made with javascript](https://img.shields.io/badge/Made%20With-JavaScript-orange?style=for-the-badge&logo=javascript&logocolor=white)](https://www.java.com/)
+[![made with typescript badge](https://img.shields.io/badge/Made%20With-TypeScript-007acc?style=for-the-badge&logo=typescript&logocolor=white)](https://www.typescriptlang.org/)
 
 </div>
 
