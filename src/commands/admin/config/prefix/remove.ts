@@ -4,12 +4,12 @@ import { Guild } from '../../../../lib/models';
 
 export default class ConfigPrefixRemoveCommand extends BotCommand {
 	public constructor() {
-		super('config-prefix-add', {
-			aliases: ['config-prefix-add'],
+		super('config-prefix-remove', {
+			aliases: ['config-prefix-remove'],
 			description: {
-				content: 'Adds a prefix to the server',
-				usage: 'config prefix add <prefix>',
-				examples: ['config prefix add ya!']
+				content: 'Removes a prefix to the server',
+				usage: 'config prefix remove <prefix>',
+				examples: ['config prefix remove ya!']
 			},
 			category: 'admin',
 			args: [
