@@ -1,7 +1,7 @@
 // import { Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
-import { BotCommand } from '../../lib/extensions/BotCommand';
-import { Guild } from '../../lib/models';
+import { BotCommand } from '../../../lib/extensions/BotCommand';
+import { Guild } from '../../../lib/models';
 
 export default class ConfigCommand extends BotCommand {
 	public constructor() {
@@ -11,7 +11,8 @@ export default class ConfigCommand extends BotCommand {
 				content: 'Gets the prefix of the server',
 				usage: 'config prefix',
 				examples: ['config prefix']
-			}
+			},
+			category: 'admin'
 		});
 	}
 	// *args() {
