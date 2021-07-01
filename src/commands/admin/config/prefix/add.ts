@@ -33,6 +33,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			}
 		});
 		guildEntry.prefixes.push(prefix);
+		guildEntry.changed('prefixes', true)
 		await guildEntry.save();
 		await message.util.send(`Prefix \`${prefix}\` was added to this server. Use the \`config prefix\` command to see all the prefixes.`)
 	}

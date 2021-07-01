@@ -37,6 +37,7 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			return
 		}
 		guildEntry.prefixes.splice(guildEntry.prefixes.indexOf(prefix), 1);
+		guildEntry.changed('prefixes', true)
 		if (guildEntry.prefixes.length < 1) {
 			await message.util.send("You cannot have less than one prefix!")
 			return
