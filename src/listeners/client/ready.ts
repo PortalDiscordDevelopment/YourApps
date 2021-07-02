@@ -1,4 +1,4 @@
-import { BotListener } from '../../lib/extensions/BotListener';
+import { BotListener } from '@lib/ext/BotListener';
 
 export default class ReadyListener extends BotListener {
 	public constructor() {

@@ -4,7 +4,7 @@ import { Message } from 'discord.js';
 import { Util } from 'discord.js';
 import { transpile } from 'typescript';
 import { inspect, promisify } from 'util';
-import { BotCommand } from '../../lib/extensions/BotCommand';
+import { BotCommand } from '@lib/ext/BotCommand';
 
 const sh = promisify(exec);
 

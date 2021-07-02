@@ -17,7 +17,13 @@
 		"incremental": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+		"baseUrl": ".",
+		"paths": {
+			"@lib/ext/*": ["src/lib/extensions/*"],
+			"@lib/models/*": ["src/lib/models/*"],
+			"@lib/models": ["src/lib/models"]
+		}
 	},
 	"include": ["src/**/*", "src/*"],
 	"exclude": ["node_modules"]

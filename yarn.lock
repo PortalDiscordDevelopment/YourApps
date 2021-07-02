@@ -68,6 +68,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lib/ext@link:./dist/lib/extensions::locator=akairo-template%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@lib/ext@link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."
+  languageName: node
+  linkType: soft
+
+"@lib/models@link:./dist/lib/models::locator=akairo-template%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@lib/models@link:./dist/lib/models::locator=akairo-template%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "@nodelib/fs.scandir@npm:2.1.4":
   version: 2.1.4
   resolution: "@nodelib/fs.scandir@npm:2.1.4"
@@ -349,6 +361,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "akairo-template@workspace:."
   dependencies:
+    "@lib/ext": "link:./dist/lib/extensions"
+    "@lib/models": "link:./dist/lib/models"
     "@types/common-tags": ^1
     "@types/node": ^14.14.31
     "@types/pg": ^8

@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { BotCommand } from '../../lib/extensions/BotCommand';
+import { BotCommand } from '@lib/ext/BotCommand';
 import { stripIndent } from 'common-tags';
 
 export default class PingCommand extends BotCommand {

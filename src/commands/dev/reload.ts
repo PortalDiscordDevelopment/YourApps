@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { BotCommand } from '../../lib/extensions/BotCommand';
+import { BotCommand } from '@lib/ext/BotCommand';
 
 export default class ReloadCommand extends BotCommand {
 	constructor() {

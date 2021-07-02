@@ -37,6 +37,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."],
+            ["@lib/models", "link:./dist/lib/models::locator=akairo-template%40workspace%3A."],
             ["@types/common-tags", "npm:1.8.0"],
             ["@types/node", "npm:14.14.31"],
             ["@types/pg", "npm:8.6.0"],
@@ -130,6 +132,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["strip-json-comments", "npm:3.1.1"]
           ],
           "linkType": "HARD",
+        }]
+      ]],
+      ["@lib/ext", [
+        ["link:./dist/lib/extensions::locator=akairo-template%40workspace%3A.", {
+          "packageLocation": "./dist/lib/extensions/",
+          "packageDependencies": [
+            ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."]
+          ],
+          "linkType": "SOFT",
+          "discardFromLookup": true
+        }]
+      ]],
+      ["@lib/models", [
+        ["link:./dist/lib/models::locator=akairo-template%40workspace%3A.", {
+          "packageLocation": "./dist/lib/models/",
+          "packageDependencies": [
+            ["@lib/models", "link:./dist/lib/models::locator=akairo-template%40workspace%3A."]
+          ],
+          "linkType": "SOFT",
+          "discardFromLookup": true
         }]
       ]],
       ["@nodelib/fs.scandir", [
@@ -517,6 +539,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["akairo-template", "workspace:."],
+            ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."],
+            ["@lib/models", "link:./dist/lib/models::locator=akairo-template%40workspace%3A."],
             ["@types/common-tags", "npm:1.8.0"],
             ["@types/node", "npm:14.14.31"],
             ["@types/pg", "npm:8.6.0"],

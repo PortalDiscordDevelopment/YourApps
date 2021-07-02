@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-import { BotCommand } from '../../../../lib/extensions/BotCommand';
-import { Guild } from '../../../../lib/models';
+import { BotCommand } from '@lib/ext/BotCommand';
+import { Guild } from '@lib/models';
 
 export default class ConfigPrefixRemoveCommand extends BotCommand {
 	public constructor() {
@@ -33,16 +33,18 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			}
 		});
 		if (!guildEntry.prefixes.includes(prefix)) {
-			await message.util.send("That prefix has not been added!")
-			return
+			await message.util.send('That prefix has not been added!');
+			return;
 		}
 		guildEntry.prefixes.splice(guildEntry.prefixes.indexOf(prefix), 1);
-		guildEntry.changed('prefixes', true)
+		guildEntry.changed('prefixes', true);
 		if (guildEntry.prefixes.length < 1) {
-			await message.util.send("You cannot have less than one prefix!")
-			return
+			await message.util.send('You cannot have less than one prefix!');
+			return;
 		}
 		await guildEntry.save();
-		await message.util.send(`Prefix \`${prefix}\` was removed from this server. Use the \`config prefix\` command to see all the prefixes.`)
+		await message.util.send(
+			`Prefix \`${prefix}\` was removed from this server. Use the \`config prefix\` command to see all the prefixes.`
+		);
 	}
 }

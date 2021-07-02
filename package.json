@@ -8,7 +8,7 @@
 		"build": "yarn rimraf dist/ && yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
-		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
+		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
 	},
 	"author": "Tyman",
 	"license": "MIT",
@@ -28,6 +28,8 @@
 		"typescript": "^4.2.2"
 	},
 	"dependencies": {
+		"@lib/ext": "link:./dist/lib/extensions",
+		"@lib/models": "link:./dist/lib/models",
 		"common-tags": "^1.8.0",
 		"discord-akairo": "^8.1.0",
 		"discord.js": "^12.5.3",

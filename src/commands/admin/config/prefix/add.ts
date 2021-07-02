@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-import { BotCommand } from '../../../../lib/extensions/BotCommand';
-import { Guild } from '../../../../lib/models';
+import { BotCommand } from '@lib/ext/BotCommand';
+import { Guild } from '@lib/models';
 
 export default class ConfigPrefixAddCommand extends BotCommand {
 	public constructor() {
@@ -33,8 +33,10 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			}
 		});
 		guildEntry.prefixes.push(prefix);
-		guildEntry.changed('prefixes', true)
+		guildEntry.changed('prefixes', true);
 		await guildEntry.save();
-		await message.util.send(`Prefix \`${prefix}\` was added to this server. Use the \`config prefix\` command to see all the prefixes.`)
+		await message.util.send(
+			`Prefix \`${prefix}\` was added to this server. Use the \`config prefix\` command to see all the prefixes.`
+		);
 	}
 }
