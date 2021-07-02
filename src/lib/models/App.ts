@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 
 interface ModelAttributes {
@@ -45,7 +45,7 @@ export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 	closed: boolean | null;
 	cooldown: number | null;
 	minjointime: number | null;
-	static initModel(sequelize) {
+	static initModel(sequelize: Sequelize) {
 		App.init(
 			{
 				id: {

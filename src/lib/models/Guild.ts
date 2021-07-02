@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 
 interface ModelAttributes {
@@ -33,7 +33,7 @@ export class Guild extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 	adminroles: Snowflake[] | null;
 	reviewroles: Snowflake[] | null;
 	blacklistroles: Snowflake[] | null;
-	static initModel(sequelize, defaultPrefix: string) {
+	static initModel(sequelize: Sequelize, defaultPrefix: string) {
 		Guild.init(
 			{
 				id: {

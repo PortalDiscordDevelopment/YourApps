@@ -1,7 +1,24 @@
-import { Model, DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
+import { BaseModel } from './BaseModel';
 
-export class Submission extends Model {
-	static initModel(sequelize) {
+interface ModelAttributes {
+	id: number;
+	author: string;  
+	guild: string;
+	position: number;
+	answers: Record<string, unknown>;
+}
+
+interface ModelCreationAttributes {
+	id?: number;
+	author: string;  
+	guild: string;
+	position: number;
+	answers: Record<string, unknown>;
+}
+
+export class Submission extends BaseModel<ModelAttributes, ModelCreationAttributes> {
+	static initModel(sequelize: Sequelize) {
 		Submission.init(
 			{
 				id: {
@@ -27,6 +44,10 @@ export class Submission extends Model {
 					references: {
 						model: 'Apps'
 					}
+				},
+				answers: {
+					type: DataTypes.ARRAY(DataTypes.JSON),
+					allowNull: false
 				}
 			},
 			{ sequelize }
