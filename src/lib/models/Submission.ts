@@ -3,7 +3,7 @@ import { BaseModel } from './BaseModel';
 
 interface ModelAttributes {
 	id: number;
-	author: string;  
+	author: string;
 	guild: string;
 	position: number;
 	answers: Record<string, unknown>;
@@ -11,15 +11,18 @@ interface ModelAttributes {
 
 interface ModelCreationAttributes {
 	id?: number;
-	author: string;  
+	author: string;
 	guild: string;
 	position: number;
 	answers: Record<string, unknown>;
 }
 
-export class Submission extends BaseModel<ModelAttributes, ModelCreationAttributes> {
+export class Submission extends BaseModel<
+	ModelAttributes,
+	ModelCreationAttributes
+> {
 	declare id: number;
-	declare author: string;  
+	declare author: string;
 	declare guild: string;
 	declare position: number;
 	declare answers: Record<string, unknown>;
