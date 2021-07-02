@@ -33,18 +33,18 @@ interface ModelCreationAttributes {
 }
 
 export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
-	id: number;
-	name: string;
-	description: string | null;
-	guild: Snowflake;
-	questions: Record<string, unknown>[];
-	rewardroles: Snowflake[] | null;
-	removeroles: Snowflake[] | null;
-	requiredroles: Snowflake[] | null;
-	customcommand: string | null;
-	closed: boolean | null;
-	cooldown: number | null;
-	minjointime: number | null;
+	declare id: number;
+	declare name: string;
+	declare description: string | null;
+	declare guild: Snowflake;
+	declare questions: Record<string, unknown>[];
+	declare rewardroles: Snowflake[] | null;
+	declare removeroles: Snowflake[] | null;
+	declare requiredroles: Snowflake[] | null;
+	declare customcommand: string | null;
+	declare closed: boolean | null;
+	declare cooldown: number | null;
+	declare minjointime: number | null;
 	static initModel(sequelize: Sequelize) {
 		App.init(
 			{

@@ -95,7 +95,7 @@ export class Util extends ClientUtil {
 
 	static getGuildRoleOverride(overrideType: RoleOverrideType) {
 		return async (message: Message) => {
-			const guildEntry = await Guild.findByPk(message.guild.id);
+			const guildEntry = await Guild.findByPk(message.guild!.id);
 			if (
 				!guildEntry ||
 				(overrideType == RoleOverrideType.ADMIN &&
@@ -107,12 +107,12 @@ export class Util extends ClientUtil {
 			}
 			switch (overrideType) {
 				case RoleOverrideType.ADMIN:
-					return message.member.roles.cache.some((r) =>
-						guildEntry.adminroles.includes(r.id)
+					return message.member!.roles.cache.some((r) =>
+						guildEntry.adminroles ? guildEntry.adminroles.includes(r.id) : false
 					);
 				case RoleOverrideType.REVIEW:
-					return message.member.roles.cache.some((r) =>
-						guildEntry.reviewroles.includes(r.id)
+					return message.member!.roles.cache.some((r) =>
+						guildEntry.reviewroles ? guildEntry.reviewroles.includes(r.id) : false
 					);
 			}
 		};

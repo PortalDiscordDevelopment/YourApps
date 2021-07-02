@@ -20,22 +20,23 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 						start: 'Please supply a prefix.'
 					}
 				}
-			]
+			],
+			channel: 'guild'
 		});
 	}
 	async exec(message: Message, { prefix }: { prefix: string }) {
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
-				id: message.guild.id
+				id: message.guild!.id
 			},
 			defaults: {
-				id: message.guild.id
+				id: message.guild!.id
 			}
 		});
 		guildEntry.prefixes.push(prefix);
 		guildEntry.changed('prefixes', true);
 		await guildEntry.save();
-		await message.util.send(
+		await message.util!.send(
 			`Prefix \`${prefix}\` was added to this server. Use the \`config prefix\` command to see all the prefixes.`
 		);
 	}

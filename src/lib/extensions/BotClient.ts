@@ -1,5 +1,6 @@
 import {
 	AkairoClient,
+	AkairoHandler,
 	CommandHandler,
 	InhibitorHandler,
 	ListenerHandler
@@ -23,11 +24,11 @@ export interface BotConfig {
 
 export class BotClient extends AkairoClient {
 	public config: BotConfig;
-	public commandHandler: CommandHandler;
-	public listenerHandler: ListenerHandler;
-	public inhibitorHandler: InhibitorHandler;
+	public commandHandler!: CommandHandler;
+	public listenerHandler!: ListenerHandler;
+	public inhibitorHandler!: InhibitorHandler;
 	public util: Util = new Util(this);
-	public db: Sequelize;
+	public db!: Sequelize;
 
 	public constructor(config: BotConfig) {
 		super(
@@ -45,6 +46,7 @@ export class BotClient extends AkairoClient {
 	private async _init(): Promise<void> {
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
+				if (!message.guild) return this.config.defaultPrefix;
 				const guildEntry = await Models.Guild.findByPk(message.guild.id);
 				if (!guildEntry) return this.config.defaultPrefix;
 				return guildEntry.prefixes;
@@ -87,7 +89,7 @@ export class BotClient extends AkairoClient {
 		}
 		await this.db.sync({ alter: true });
 		// loads all the stuff
-		const loaders = {
+		const loaders: Record<string, AkairoHandler> = {
 			commands: this.commandHandler,
 			listeners: this.listenerHandler,
 			inhibitors: this.inhibitorHandler

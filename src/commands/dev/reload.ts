@@ -29,11 +29,11 @@ export default class ReloadCommand extends BotCommand {
 			this.client.commandHandler.reloadAll();
 			this.client.listenerHandler.reloadAll();
 			this.client.inhibitorHandler.reloadAll();
-			return message.util.send(
+			return message.util!.send(
 				`🔁 Successfully reloaded! (${new Date().getTime() - s.getTime()}ms)`
 			);
 		} catch (e) {
-			return message.util.send(
+			return message.util!.send(
 				`An error occurred while reloading:\n${await this.client.util.haste(
 					e.stack
 				)}`

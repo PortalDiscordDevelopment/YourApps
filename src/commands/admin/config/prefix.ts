@@ -1,4 +1,4 @@
-import { Flag } from 'discord-akairo';
+import { ArgumentOptions, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
@@ -15,7 +15,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 			category: 'admin'
 		});
 	}
-	*args() {
+	*args(): Generator<ArgumentOptions, Flag|undefined, string> {
 		const subcommand = yield {
 			type: [
 				['config-prefix-add', 'add'],
@@ -31,7 +31,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 		}
 	}
 	async exec(message: Message) {
-		const guildEntry = await Guild.findByPk(message.guild.id);
+		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
 			await message.channel.send(
 				`The prefix(es) for this server are \`${this.client.config.defaultPrefix}\` (or mention).`

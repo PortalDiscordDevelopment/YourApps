@@ -1,4 +1,4 @@
-import { Flag } from 'discord-akairo';
+import { ArgumentOptions, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
@@ -13,10 +13,11 @@ export default class ConfigCommand extends BotCommand {
 				examples: ['config']
 			},
 			parent: true,
-			userPermissions: ['MANAGE_GUILD']
+			userPermissions: ['MANAGE_GUILD'],
+			channel: 'guild'
 		});
 	}
-	*args() {
+	*args(): Generator<ArgumentOptions, Flag|undefined, string> {
 		const subcommand = yield {
 			type: [['config-prefix', 'prefix', 'pre']],
 			prompt: {
@@ -29,14 +30,14 @@ export default class ConfigCommand extends BotCommand {
 		}
 	}
 	async exec(message: Message) {
-		const guildEntry = await Guild.findByPk(message.guild.id);
+		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
-			await message.util.send(
+			await message.util!.send(
 				'This guild does not appear to have any config options changed.'
 			);
 			return;
 		}
-		await message.util.send(
+		await message.util!.send(
 			this.client.util
 				.embed()
 				.setTitle('Guild config')

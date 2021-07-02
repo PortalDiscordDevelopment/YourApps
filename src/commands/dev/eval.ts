@@ -72,8 +72,8 @@ export default class EvalCommand extends BotCommand {
 				guild = message.guild,
 				channel = message.channel,
 				config = this.client.config,
-				members = message.guild.members,
-				roles = message.guild.roles;
+				members = message.guild?.members,
+				roles = message.guild?.roles;
 
 			output = eval(code.js);
 			output = await output;
@@ -87,7 +87,7 @@ export default class EvalCommand extends BotCommand {
 
 			output = output.replace(
 				new RegExp(
-					this.client.token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+					this.client.token!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
 					'g'
 				),
 				`[Token omitted]`
@@ -103,7 +103,7 @@ export default class EvalCommand extends BotCommand {
 				)
 				.setTimestamp();
 			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts);
+				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
 						'📥 Input (typescript)',
@@ -133,7 +133,7 @@ export default class EvalCommand extends BotCommand {
 				)
 				.setTimestamp();
 			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts);
+				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
 						'📥 Input (typescript)',
@@ -154,6 +154,6 @@ export default class EvalCommand extends BotCommand {
 				await this.client.util.codeblock(e?.stack, 1024, 'js')
 			);
 		}
-		await message.util.send(embed);
+		await message.util!.send(embed);
 	}
 }

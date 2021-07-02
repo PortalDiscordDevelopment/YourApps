@@ -18,6 +18,11 @@ interface ModelCreationAttributes {
 }
 
 export class Submission extends BaseModel<ModelAttributes, ModelCreationAttributes> {
+	declare id: number;
+	declare author: string;  
+	declare guild: string;
+	declare position: number;
+	declare answers: Record<string, unknown>;
 	static initModel(sequelize: Sequelize) {
 		Submission.init(
 			{
