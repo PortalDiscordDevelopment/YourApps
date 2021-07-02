@@ -15,7 +15,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 			category: 'admin'
 		});
 	}
-	*args(): Generator<ArgumentOptions, Flag|undefined, string> {
+	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
 		const subcommand = yield {
 			type: [
 				['config-prefix-add', 'add'],

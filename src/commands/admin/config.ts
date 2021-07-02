@@ -17,7 +17,7 @@ export default class ConfigCommand extends BotCommand {
 			channel: 'guild'
 		});
 	}
-	*args(): Generator<ArgumentOptions, Flag|undefined, string> {
+	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
 		const subcommand = yield {
 			type: [['config-prefix', 'prefix', 'pre']],
 			prompt: {

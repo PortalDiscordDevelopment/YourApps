@@ -112,7 +112,9 @@ export class Util extends ClientUtil {
 					);
 				case RoleOverrideType.REVIEW:
 					return message.member!.roles.cache.some((r) =>
-						guildEntry.reviewroles ? guildEntry.reviewroles.includes(r.id) : false
+						guildEntry.reviewroles
+							? guildEntry.reviewroles.includes(r.id)
+							: false
 					);
 			}
 		};
