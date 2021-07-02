@@ -18,7 +18,8 @@ export default class OpenCommand extends BotCommand {
 					type: 'application',
 					prompt: {
 						start: 'What application would you like to open?',
-						retry: 'Invalid application. What application would you like to open?'
+						retry:
+							'Invalid application. What application would you like to open?'
 					}
 				}
 			]
@@ -26,11 +27,11 @@ export default class OpenCommand extends BotCommand {
 	}
 	async exec(message: Message, { application }: { application: App }) {
 		if (!application.closed) {
-			await message.util!.send("That application is not closed!")
-			return
+			await message.util!.send('That application is not closed!');
+			return;
 		}
 		application.closed = false;
 		application.save();
-		await message.util!.send(`Sucessfully closed ${application.name}.`)
+		await message.util!.send(`Sucessfully closed ${application.name}.`);
 	}
 }

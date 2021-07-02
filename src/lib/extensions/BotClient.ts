@@ -57,32 +57,35 @@ export class BotClient extends AkairoClient {
 			allowMention: true,
 			automateCategories: true
 		});
-		this.commandHandler.resolver.addType('application', async (message: Message, phrase: string) => {
-			if (!phrase) return null
-			let foundApps: Models.App[];
-			if (!isNaN(Number(phrase))) {
-				foundApps = await Models.App.findAll({
-					where: {
-						[Op.or]: [
-							{
-								id: Number(phrase)
-							},
-							{
-								name: phrase
-							}
-						]
-					}
-				})
-			} else {
-				foundApps = await Models.App.findAll({
-					where: {
-						name: phrase
-					}
-				})
+		this.commandHandler.resolver.addType(
+			'application',
+			async (message: Message, phrase: string) => {
+				if (!phrase) return null;
+				let foundApps: Models.App[];
+				if (!isNaN(Number(phrase))) {
+					foundApps = await Models.App.findAll({
+						where: {
+							[Op.or]: [
+								{
+									id: Number(phrase)
+								},
+								{
+									name: phrase
+								}
+							]
+						}
+					});
+				} else {
+					foundApps = await Models.App.findAll({
+						where: {
+							name: phrase
+						}
+					});
+				}
+				if (foundApps.length < 1) return null;
+				return foundApps[0];
 			}
-			if (foundApps.length < 1) return null;
-			return foundApps[0];
-		})
+		);
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: join(__dirname, '..', '..', 'listeners'),
 			automateCategories: true
