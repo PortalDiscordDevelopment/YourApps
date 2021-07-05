@@ -61,7 +61,7 @@ export class BotClient extends AkairoClient {
 			'application',
 			async (message: Message, phrase: string) => {
 				if (!phrase) return null;
-				let foundApps: Models.App|null;
+				let foundApps: Models.App | null;
 				if (!isNaN(Number(phrase))) {
 					foundApps = await Models.App.findOne({
 						where: {
