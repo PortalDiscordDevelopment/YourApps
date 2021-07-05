@@ -61,9 +61,9 @@ export class BotClient extends AkairoClient {
 			'application',
 			async (message: Message, phrase: string) => {
 				if (!phrase) return null;
-				let foundApps: Models.App[];
+				let foundApps: Models.App|null;
 				if (!isNaN(Number(phrase))) {
-					foundApps = await Models.App.findAll({
+					foundApps = await Models.App.findOne({
 						where: {
 							[Op.or]: [
 								{
@@ -76,14 +76,13 @@ export class BotClient extends AkairoClient {
 						}
 					});
 				} else {
-					foundApps = await Models.App.findAll({
+					foundApps = await Models.App.findOne({
 						where: {
 							name: phrase
 						}
 					});
 				}
-				if (foundApps.length < 1) return null;
-				return foundApps[0];
+				return foundApps;
 			}
 		);
 		this.listenerHandler = new ListenerHandler(this, {
