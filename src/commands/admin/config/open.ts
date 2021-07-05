@@ -32,6 +32,6 @@ export default class OpenCommand extends BotCommand {
 		}
 		application.closed = false;
 		application.save();
-		await message.util!.send(`Sucessfully closed ${application.name}.`);
+		await message.util!.send(`Sucessfully opened ${application.name}.`);
 	}
 }
