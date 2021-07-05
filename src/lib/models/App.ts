@@ -27,7 +27,7 @@ interface ModelCreationAttributes {
 	removeroles?: Snowflake[];
 	requiredroles?: Snowflake[];
 	customcommand?: string;
-	closed?: boolean;
+	closed: boolean;
 	cooldown?: number;
 	minjointime?: number;
 }
@@ -42,7 +42,7 @@ export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 	declare removeroles: Snowflake[] | null;
 	declare requiredroles: Snowflake[] | null;
 	declare customcommand: string | null;
-	declare closed: boolean | null;
+	declare closed: boolean;
 	declare cooldown: number | null;
 	declare minjointime: number | null;
 	static initModel(sequelize: Sequelize) {
@@ -91,7 +91,8 @@ export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 				},
 				closed: {
 					type: DataTypes.BOOLEAN,
-					allowNull: true
+					allowNull: false,
+					defaultValue: false
 				},
 				cooldown: {
 					type: DataTypes.INTEGER,
