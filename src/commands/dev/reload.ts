@@ -10,13 +10,6 @@ export default class ReloadCommand extends BotCommand {
 				usage: 'reload',
 				examples: ['reload']
 			},
-			args: [
-				{
-					id: 'fast',
-					match: 'flag',
-					flag: '--fast'
-				}
-			],
 			ownerOnly: true,
 			typing: true
 		});
