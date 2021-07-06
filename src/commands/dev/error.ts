@@ -17,6 +17,7 @@ export default class ReloadCommand extends BotCommand {
 
 	public async exec(message: Message) {
 		// @ts-expect-error This purposefully throws an errror for testing
-		a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z.now.i.know.my.abcs.next.time.wont.you.sing.with.me
+		a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z.now.i.know.my.abcs.next
+			.time.wont.you.sing.with.me;
 	}
 }
