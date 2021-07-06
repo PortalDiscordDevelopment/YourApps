@@ -61,7 +61,17 @@ export class BotClient extends AkairoClient {
 			handleEdits: true,
 			directory: join(__dirname, '..', '..', 'commands'),
 			allowMention: true,
-			automateCategories: true
+			automateCategories: true,
+			argumentDefaults: {
+				prompt: {
+					retries: 3,
+					modifyStart: (_: Message, t: string) => `${t}\nType \`cancel\` to cancel this command.`,
+					modifyRetry: (_: Message, t: string) => `${t}\nType \`cancel\` to cancel this command.`,
+					cancel: 'The command has been cancelled.',
+					timeout: 'You took too long, the command has been cancelled.',
+					ended: 'You took too many tries, the command has been cancelled.'
+				}
+			}
 		});
 		this.commandHandler.resolver.addType(
 			'application',
