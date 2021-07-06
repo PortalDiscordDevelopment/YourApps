@@ -10,6 +10,8 @@ import { Op, Sequelize } from 'sequelize';
 import { Util } from './Util';
 import * as Models from '../models';
 import { Message } from 'discord.js';
+import { Snowflake } from 'discord.js';
+import { TextChannel } from 'discord.js';
 
 export interface BotConfig {
 	token: string;
@@ -20,6 +22,9 @@ export interface BotConfig {
 		port: number;
 	};
 	defaultPrefix: string;
+	channels: {
+		error: Snowflake;
+	};
 }
 
 export class BotClient extends AkairoClient {
@@ -29,6 +34,7 @@ export class BotClient extends AkairoClient {
 	public inhibitorHandler!: InhibitorHandler;
 	public util: Util = new Util(this);
 	public db!: Sequelize;
+	public errorChannel!: TextChannel;
 
 	public constructor(config: BotConfig) {
 		super(

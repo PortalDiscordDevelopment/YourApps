@@ -6,3 +6,7 @@ export const db = {
 	port: 5432
 };
 export const defaultPrefix = '-';
+export const channels = {
+	error: 'error channel id'
+	// May add log channel later
+};
