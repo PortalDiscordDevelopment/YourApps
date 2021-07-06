@@ -22,7 +22,9 @@ export default class OpenCommand extends BotCommand {
 							'Invalid application. What application would you like to open?'
 					}
 				}
-			]
+			],
+			channel: 'guild',
+			permissionCheck: 'admin'
 		});
 	}
 	async exec(message: Message, { application }: { application: App }) {

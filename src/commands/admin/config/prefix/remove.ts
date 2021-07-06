@@ -21,7 +21,8 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 					}
 				}
 			],
-			channel: 'guild'
+			channel: 'guild',
+			permissionCheck: 'admin'
 		});
 	}
 	async exec(message: Message, { prefix }: { prefix: string }) {

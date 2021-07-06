@@ -12,7 +12,9 @@ export default class ConfigPrefixCommand extends BotCommand {
 				usage: 'config prefix',
 				examples: ['config prefix']
 			},
-			category: 'admin'
+			channel: 'guild',
+			category: 'admin',
+			permissionCheck: 'admin'
 		});
 	}
 	*args(): Generator<ArgumentOptions, Flag | undefined, string> {

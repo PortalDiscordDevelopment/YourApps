@@ -22,7 +22,9 @@ export default class CloseCommand extends BotCommand {
 							'Invalid application. What application would you like to close?'
 					}
 				}
-			]
+			],
+			channel: 'guild',
+			permissionCheck: 'admin'
 		});
 	}
 	async exec(message: Message, { application }: { application: App }) {

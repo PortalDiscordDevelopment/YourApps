@@ -13,8 +13,8 @@ export default class ConfigCommand extends BotCommand {
 				examples: ['config']
 			},
 			parent: true,
-			userPermissions: ['MANAGE_GUILD'],
-			channel: 'guild'
+			channel: 'guild',
+			permissionCheck: 'admin'
 		});
 	}
 	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
