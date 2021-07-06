@@ -19,7 +19,10 @@ export default class ConfigCommand extends BotCommand {
 	}
 	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
 		const subcommand = yield {
-			type: [['config-prefix', 'prefix', 'pre']],
+			type: [
+				['config-prefix', 'prefix', 'pre'],
+				['config-admin', 'admin']
+			],
 			prompt: {
 				optional: true,
 				retry: 'Invalid subcommand. What subcommand would you like to use?'
