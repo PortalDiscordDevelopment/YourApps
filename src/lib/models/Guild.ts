@@ -29,10 +29,10 @@ export class Guild extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 	declare prefixes: string[];
 	declare logchannel: Snowflake | null;
 	declare archivechannel: Snowflake | null;
-	declare logpings: Snowflake[] | null;
-	declare adminroles: Snowflake[] | null;
-	declare reviewroles: Snowflake[] | null;
-	declare blacklistroles: Snowflake[] | null;
+	declare logpings: Snowflake[];
+	declare adminroles: Snowflake[];
+	declare reviewroles: Snowflake[];
+	declare blacklistroles: Snowflake[];
 	static initModel(sequelize: Sequelize, defaultPrefix: string) {
 		Guild.init(
 			{
@@ -52,7 +52,8 @@ export class Guild extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 				},
 				logpings: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				archivechannel: {
 					type: DataTypes.STRING,
@@ -60,15 +61,18 @@ export class Guild extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 				},
 				adminroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				reviewroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				blacklistroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				}
 			},
 			{ sequelize }

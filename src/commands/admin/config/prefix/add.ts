@@ -34,6 +34,10 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 				id: message.guild!.id
 			}
 		});
+		if (guildEntry.prefixes.includes(prefix)) {
+			await message.util!.send("That prefix has already been added!");
+			return;
+		}
 		guildEntry.prefixes.push(prefix);
 		guildEntry.changed('prefixes', true);
 		await guildEntry.save();

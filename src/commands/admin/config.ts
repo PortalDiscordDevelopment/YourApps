@@ -52,28 +52,28 @@ export default class ConfigCommand extends BotCommand {
 				)
 				.addField(
 					'Review roles',
-					guildEntry.reviewroles !== null
+					guildEntry.reviewroles.length > 0
 						? guildEntry.reviewroles.map((r) => `<@&${r}>`).join(', ')
 						: 'None set',
 					true
 				)
 				.addField(
 					'Admin roles',
-					guildEntry.adminroles !== null
+					guildEntry.adminroles.length > 0
 						? guildEntry.adminroles.map((r) => `<@&${r}>`).join(', ')
 						: 'None set',
 					true
 				)
 				.addField(
 					'Blacklist roles',
-					guildEntry.blacklistroles !== null
+					guildEntry.blacklistroles.length > 0
 						? guildEntry.blacklistroles.map((r) => `<@&${r}>`).join(', ')
 						: 'None set',
 					true
 				)
 				.addField(
 					'Log ping roles',
-					guildEntry.logpings !== null
+					guildEntry.logpings.length > 0
 						? guildEntry.logpings.map((r) => `<@&${r}>`).join(', ')
 						: 'None set',
 					true

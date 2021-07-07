@@ -1,4 +1,4 @@
-// import { ArgumentOptions, Flag } from 'discord-akairo';
+import { ArgumentOptions, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
@@ -17,26 +17,25 @@ export default class ConfigAdminCommand extends BotCommand {
 			permissionCheck: 'admin'
 		});
 	}
-	// *args(): Generator<ArgumentOptions, Flag | undefined, string> {
-	// 	const subcommand = yield {
-	// 		type: [
-	// 			['config-admin-add', 'add'],
-	// 			['config-admin-remove', 'remove']
-	// 		],
-	// 		prompt: {
-	// 			optional: true,
-	// 			retry: 'Invalid subcommand. What subcommand would you like to use?'
-	// 		}
-	// 	};
-	// 	if (subcommand !== null) {
-	// 		return Flag.continue(subcommand);
-	// 	}
-	// }
+	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
+		const subcommand = yield {
+			type: [
+				['config-admin-add', 'add'],
+				['config-admin-remove', 'remove']
+			],
+			prompt: {
+				optional: true,
+				retry: 'Invalid subcommand. What subcommand would you like to use?'
+			}
+		};
+		if (subcommand !== null) {
+			return Flag.continue(subcommand);
+		}
+	}
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (
 			!guildEntry ||
-			!guildEntry.adminroles ||
 			guildEntry.adminroles.length < 1
 		) {
 			await message.channel.send('This server has no admin roles.');

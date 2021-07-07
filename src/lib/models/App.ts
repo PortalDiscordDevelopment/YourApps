@@ -38,9 +38,9 @@ export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 	declare description: string | null;
 	declare guild: Snowflake;
 	declare questions: Record<string, unknown>[];
-	declare rewardroles: Snowflake[] | null;
-	declare removeroles: Snowflake[] | null;
-	declare requiredroles: Snowflake[] | null;
+	declare rewardroles: Snowflake[];
+	declare removeroles: Snowflake[];
+	declare requiredroles: Snowflake[];
 	declare customcommand: string | null;
 	declare closed: boolean;
 	declare cooldown: number | null;
@@ -75,15 +75,18 @@ export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
 				},
 				rewardroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				removeroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				requiredroles: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: true
+					allowNull: false,
+					defaultValue: []
 				},
 				customcommand: {
 					type: DataTypes.STRING(16),

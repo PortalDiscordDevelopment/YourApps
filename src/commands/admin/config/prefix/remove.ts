@@ -7,7 +7,7 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 		super('config-prefix-remove', {
 			aliases: ['config-prefix-remove'],
 			description: {
-				content: 'Removes a prefix to the server',
+				content: 'Removes a prefix from the server',
 				usage: 'config prefix remove <prefix>',
 				examples: ['config prefix remove ya!']
 			},
