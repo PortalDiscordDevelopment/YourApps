@@ -3,7 +3,7 @@ import { BotClient } from './BotClient';
 
 interface BotCommandOptions extends CommandOptions {
 	description: {
-		content: string;
+		content: () => string;
 		usage: string;
 		examples: string[];
 	};

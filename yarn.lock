@@ -32,6 +32,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.12.0":
+  version: 7.14.6
+  resolution: "@babel/runtime@npm:7.14.6"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: dd931f6ef1c8dab295c4a00c592db6352bf12a5c443f8222304d5c1d3e88d795fa949afcb6f053eec2e69e9827a17ff274524c1cd43813f56b61e3a540274d2f
+  languageName: node
+  linkType: hard
+
 "@discordjs/collection@npm:^0.1.6":
   version: 0.1.6
   resolution: "@discordjs/collection@npm:0.1.6"
@@ -71,6 +80,12 @@ __metadata:
 "@lib/ext@link:./dist/lib/extensions::locator=akairo-template%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@lib/ext@link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."
+  languageName: node
+  linkType: soft
+
+"@lib/i18n@link:./dist/languages::locator=akairo-template%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@lib/i18n@link:./dist/languages::locator=akairo-template%40workspace%3A."
   languageName: node
   linkType: soft
 
@@ -362,6 +377,7 @@ __metadata:
   resolution: "akairo-template@workspace:."
   dependencies:
     "@lib/ext": "link:./dist/lib/extensions"
+    "@lib/i18n": "link:./dist/languages"
     "@lib/models": "link:./dist/lib/models"
     "@types/common-tags": ^1
     "@types/node": ^14.14.31
@@ -376,6 +392,7 @@ __metadata:
     eslint: ^7.20.0
     eslint-config-prettier: ^8.3.0
     got: ^11.8.2
+    i18next: ^20.3.2
     pg: ^8.6.0
     pg-hstore: ^2.3.4
     prettier: ^2.3.0
@@ -1105,6 +1122,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next@npm:^20.3.2":
+  version: 20.3.2
+  resolution: "i18next@npm:20.3.2"
+  dependencies:
+    "@babel/runtime": ^7.12.0
+  checksum: 487087a7e48095d5a6107d81242bccf8536b33d68f0fe264ca9ab64259a2656fc54f6aaf63a12156966e53595647a3eab83ff01e9460ce9349b4c1eb735c9479
+  languageName: node
+  linkType: hard
+
 "ignore@npm:^4.0.6":
   version: 4.0.6
   resolution: "ignore@npm:4.0.6"
@@ -1654,6 +1680,13 @@ __metadata:
     string_decoder: ^1.1.1
     util-deprecate: ^1.0.1
   checksum: f178b1daa80d9e58ebba71dbb08486430aa6f0dea3a22a1b7401f3f6983077d0bc0edea43099db06b8d006c9ad48d6383e8fb72c05d5b187670aeaf1b9b44f00
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.13.4":
+  version: 0.13.8
+  resolution: "regenerator-runtime@npm:0.13.8"
+  checksum: 20178f5753f181d59691e5c3b4c59a2769987f75c7ccf325777673b5478acca61a553b10e895585086c222f72f5ee428090acf50320264de4b79f630f7388653
   languageName: node
   linkType: hard
 

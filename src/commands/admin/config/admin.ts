@@ -8,7 +8,7 @@ export default class ConfigAdminCommand extends BotCommand {
 		super('config-admin', {
 			aliases: ['config-admin'],
 			description: {
-				content: 'Gets the admin roles of the server',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN'),
 				usage: 'config admin',
 				examples: ['config admin']
 			},
@@ -22,11 +22,7 @@ export default class ConfigAdminCommand extends BotCommand {
 			type: [
 				['config-admin-add', 'add'],
 				['config-admin-remove', 'remove']
-			],
-			prompt: {
-				optional: true,
-				retry: 'Invalid subcommand. What subcommand would you like to use?'
-			}
+			]
 		};
 		if (subcommand !== null) {
 			return Flag.continue(subcommand);
@@ -34,17 +30,14 @@ export default class ConfigAdminCommand extends BotCommand {
 	}
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
-		if (
-			!guildEntry ||
-			guildEntry.adminroles.length < 1
-		) {
-			await message.channel.send('This server has no admin roles.');
+		if (!guildEntry || guildEntry.adminroles.length < 1) {
+			await message.util!.send(this.client.i18n.t('CONFIG.NO_ADMIN_ROLES'));
 			return;
 		}
-		await message.channel.send(
-			`The admin role(s) for this server are ${guildEntry.adminroles
-				.map((p) => `<@&${p}>`)
-				.join(', ')}.`
+		await message.util!.send(
+			this.client.i18n.t('CONFIG.SERVER_ADMIN_ROLES', {
+				roles: guildEntry.adminroles.map((p) => `<@&${p}>`).join(', ')
+			})
 		);
 	}
 }

@@ -8,7 +8,7 @@ export default class ConfigCommand extends BotCommand {
 		super('config', {
 			aliases: ['config'],
 			description: {
-				content: 'Get the config of the server',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG'),
 				usage: 'config',
 				examples: ['config']
 			},
@@ -22,11 +22,7 @@ export default class ConfigCommand extends BotCommand {
 			type: [
 				['config-prefix', 'prefix', 'pre'],
 				['config-admin', 'admin']
-			],
-			prompt: {
-				optional: true,
-				retry: 'Invalid subcommand. What subcommand would you like to use?'
-			}
+			]
 		};
 		if (subcommand !== null) {
 			return Flag.continue(subcommand);
@@ -35,61 +31,60 @@ export default class ConfigCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
-			await message.util!.send(
-				'This guild does not appear to have any config options changed.'
-			);
+			await message.util!.send(this.client.i18n.t('CONFIG.NO_CONFIG'));
 			return;
 		}
 		await message.util!.send(
 			this.client.util
 				.embed()
-				.setTitle('Guild config')
+				.setTitle(this.client.i18n.t('CONFIG.GUILD_CONFIG'))
 				.addField(
-					'Prefixes',
-					guildEntry.prefixes.map((p) => `\`${p}\``).join(', ') +
-						' (or mention)',
+					this.client.i18n.t('CONFIG.PREFIXES'),
+					this.client.i18n.t('CONFIG.OR_MENTION', {
+						prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
+					}),
 					true
 				)
 				.addField(
-					'Review roles',
+					this.client.i18n.t('CONFIG.REVIEW_ROLES'),
 					guildEntry.reviewroles.length > 0
 						? guildEntry.reviewroles.map((r) => `<@&${r}>`).join(', ')
-						: 'None set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.addField(
-					'Admin roles',
+					this.client.i18n.t('CONFIG.ADMIN_ROLES'),
 					guildEntry.adminroles.length > 0
 						? guildEntry.adminroles.map((r) => `<@&${r}>`).join(', ')
-						: 'None set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.addField(
-					'Blacklist roles',
+					this.client.i18n.t('CONFIG.BLACKLIST_ROLES'),
 					guildEntry.blacklistroles.length > 0
 						? guildEntry.blacklistroles.map((r) => `<@&${r}>`).join(', ')
-						: 'None set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.addField(
-					'Log ping roles',
+					this.client.i18n.t('CONFIG.LOG_PING_ROLES'),
 					guildEntry.logpings.length > 0
 						? guildEntry.logpings.map((r) => `<@&${r}>`).join(', ')
-						: 'None set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.addField(
-					'Log channel',
+					this.client.i18n.t('CONFIG.LOG_CHANNEL'),
 					guildEntry.logchannel !== null
 						? `<#${guildEntry.logchannel}>`
-						: 'Not set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.addField(
-					'Archive channel',
+					this.client.i18n.t('CONFIG.ARCHIVE_CHANNEL'),
 					guildEntry.archivechannel !== null
 						? `<#${guildEntry.archivechannel}>`
-						: 'Not set',
+						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
 				.setTimestamp()

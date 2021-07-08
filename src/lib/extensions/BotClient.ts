@@ -12,6 +12,7 @@ import * as Models from '../models';
 import { Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
+import { default as i18n } from 'i18next';
 
 export interface BotConfig {
 	token: string;
@@ -35,6 +36,7 @@ export class BotClient extends AkairoClient {
 	public util: Util = new Util(this);
 	public db!: Sequelize;
 	public errorChannel!: TextChannel;
+	public i18n!: typeof i18n;
 
 	public constructor(config: BotConfig) {
 		super(
@@ -50,6 +52,14 @@ export class BotClient extends AkairoClient {
 		this.config = config;
 	}
 	private async _init(): Promise<void> {
+		this.i18n = i18n;
+		await i18n.init({
+			lng: 'en-US',
+			fallbackLng: 'en-US',
+			ns: 'YourApps',
+			fallbackNS: 'YourApps'
+		});
+		await this.util.loadLanguages();
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
 				if (!message.guild) return this.config.defaultPrefix;
@@ -61,19 +71,7 @@ export class BotClient extends AkairoClient {
 			handleEdits: true,
 			directory: join(__dirname, '..', '..', 'commands'),
 			allowMention: true,
-			automateCategories: true,
-			argumentDefaults: {
-				prompt: {
-					retries: 3,
-					modifyStart: (_: Message, t: string) =>
-						`${t}\nType \`cancel\` to cancel this command.`,
-					modifyRetry: (_: Message, t: string) =>
-						`${t}\nType \`cancel\` to cancel this command.`,
-					cancel: 'The command has been cancelled.',
-					timeout: 'You took too long, the command has been cancelled.',
-					ended: 'You took too many tries, the command has been cancelled.'
-				}
-			}
+			automateCategories: true
 		});
 		this.commandHandler.resolver.addType(
 			'application',

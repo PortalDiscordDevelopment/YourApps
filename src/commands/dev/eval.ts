@@ -13,7 +13,7 @@ export default class EvalCommand extends BotCommand {
 		super('eval', {
 			aliases: ['eval', 'ev'],
 			description: {
-				content: 'Use the command to eval code in the bot.',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.EVAL'),
 				usage: 'eval <code> [--depth #] [--ts]',
 				examples: ['eval message.guild.name', 'eval this.client.ownerID']
 			},
@@ -32,10 +32,7 @@ export default class EvalCommand extends BotCommand {
 				},
 				{
 					id: 'code',
-					match: 'rest',
-					prompt: {
-						start: 'What would you like to eval?'
-					}
+					match: 'rest'
 				}
 			],
 			ownerOnly: true
@@ -45,11 +42,17 @@ export default class EvalCommand extends BotCommand {
 	public async exec(
 		message: Message,
 		args: {
-			code: string;
+			code?: string;
 			depth: number;
 			typescript: boolean;
 		}
 	) {
+		if (!args.code) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'code' })
+			);
+			return;
+		}
 		const code: { js?: string | null; ts?: string | null; lang?: 'js' | 'ts' } =
 			{};
 		const embed = this.client.util.embed();
@@ -90,13 +93,13 @@ export default class EvalCommand extends BotCommand {
 					this.client.token!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
 					'g'
 				),
-				`[Token omitted]`
+				this.client.i18n.t('DEVELOPER.TOKEN_OMMITTED')
 			);
 
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 
 			embed
-				.setTitle(`Evaled code successfully`)
+				.setTitle(this.client.i18n.t('DEVELOPER.EVALED_CODE'))
 				.setFooter(
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
@@ -106,27 +109,27 @@ export default class EvalCommand extends BotCommand {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
-						'📥 Input (typescript)',
+						this.client.i18n.t('DEVELOPER.INPUT_TYPESCRIPT'),
 						await this.client.util.codeblock(inputTS, 1024, 'ts')
 					)
 					.addField(
-						'📥 Input (transpiled javascript)',
+						this.client.i18n.t('DEVELOPER.INPUT_JAVASCRIPT'),
 						await this.client.util.codeblock(inputJS, 1024, 'js')
 					);
 			} else {
 				embed.addField(
-					'📥 Input',
+					this.client.i18n.t('DEVELOPER.INPUT'),
 					await this.client.util.codeblock(inputJS, 1024, 'js')
 				);
 			}
 			embed.addField(
-				'📤 Output',
+				this.client.i18n.t('DEVELOPER.OUTPUT'),
 				await this.client.util.codeblock(output, 1024, 'js')
 			);
 		} catch (e) {
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 			embed
-				.setTitle(`Code was not able to be evaled.`)
+				.setTitle(this.client.i18n.t('DEVELEOPER.EVAL_ERROR'))
 				.setFooter(
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
@@ -136,21 +139,21 @@ export default class EvalCommand extends BotCommand {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
-						'📥 Input (typescript)',
+						this.client.i18n.t('DEVELOPER.INPUT_TYPESCRIPT'),
 						await this.client.util.codeblock(inputTS, 1024, 'ts')
 					)
 					.addField(
-						'📥 Input (transpiled javascript)',
+						this.client.i18n.t('DEVELOPER.INPUT_JAVASCRIPT'),
 						await this.client.util.codeblock(inputJS, 1024, 'js')
 					);
 			} else {
 				embed.addField(
-					'📥 Input',
+					this.client.i18n.t('DEVELOPER.INPUT'),
 					await this.client.util.codeblock(inputJS, 1024, 'js')
 				);
 			}
 			embed.addField(
-				'📤 Output',
+				this.client.i18n.t('DEVELOPER.OUTPUT'),
 				await this.client.util.codeblock(e?.stack, 1024, 'js')
 			);
 		}

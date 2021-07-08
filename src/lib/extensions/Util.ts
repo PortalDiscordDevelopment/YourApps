@@ -5,6 +5,7 @@ import { Util as DiscordUtil } from 'discord.js';
 import got from 'got';
 import { Message } from 'discord.js';
 import { Guild } from '../models';
+import { BotClient } from './BotClient';
 
 const exec = promisify(execCallback);
 
@@ -14,6 +15,8 @@ enum RoleOverrideType {
 }
 
 export class Util extends ClientUtil {
+	declare client: BotClient;
+
 	/**
 	 * The hastebin urls used to haste text
 	 */
@@ -52,7 +55,7 @@ export class Util extends ClientUtil {
 				continue;
 			}
 		}
-		return 'Unable to post';
+		return this.client.i18n.t('UNABLE_TO_POST');
 	}
 
 	/**
@@ -71,7 +74,9 @@ export class Util extends ClientUtil {
 		const formattingLength =
 			2 * tildes.length + language.length + 2 * '\n'.length;
 		if (code.length + formattingLength > length)
-			hasteOut = 'Too large to display. Hastebin: ' + (await this.haste(code));
+			hasteOut = this.client.i18n.t('USED_HASTEBIN', {
+				link: await this.haste(code)
+			});
 
 		const code2 =
 			code.length > length
@@ -118,5 +123,16 @@ export class Util extends ClientUtil {
 					);
 			}
 		};
+	}
+
+	public async loadLanguages() {
+		delete require.cache[require.resolve('@lib/i18n/en-US.json')];
+		this.client.i18n.addResourceBundle(
+			'en-US',
+			'YourApps',
+			await import('@lib/i18n/en-US.json'),
+			true,
+			true
+		);
 	}
 }

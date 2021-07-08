@@ -8,7 +8,8 @@ export default class ConfigPrefixCommand extends BotCommand {
 		super('config-prefix', {
 			aliases: ['config-prefix'],
 			description: {
-				content: 'Gets the prefix of the server',
+				content: () =>
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX'),
 				usage: 'config prefix',
 				examples: ['config prefix']
 			},
@@ -22,11 +23,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 			type: [
 				['config-prefix-add', 'add'],
 				['config-prefix-remove', 'remove']
-			],
-			prompt: {
-				optional: true,
-				retry: 'Invalid subcommand. What subcommand would you like to use?'
-			}
+			]
 		};
 		if (subcommand !== null) {
 			return Flag.continue(subcommand);
@@ -35,15 +32,17 @@ export default class ConfigPrefixCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
-			await message.channel.send(
-				`The prefix(es) for this server are \`${this.client.config.defaultPrefix}\` (or mention).`
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.SERVER_PREFIXES', {
+					prefixes: this.client.config.defaultPrefix
+				})
 			);
 			return;
 		}
-		await message.channel.send(
-			`The prefix(es) for this server are ${guildEntry.prefixes
-				.map((p) => `\`${p}\``)
-				.join(', ')} (or mention).`
+		await message.util!.send(
+			this.client.i18n.t('CONFIG.SERVER_PREFIXES', {
+				prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
+			})
 		);
 	}
 }

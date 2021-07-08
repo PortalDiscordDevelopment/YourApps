@@ -7,7 +7,8 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		super('config-prefix-add', {
 			aliases: ['config-prefix-add'],
 			description: {
-				content: 'Adds a prefix to the server',
+				content: () =>
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD'),
 				usage: 'config prefix add <prefix>',
 				examples: ['config prefix add ya!']
 			},
@@ -15,17 +16,20 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			args: [
 				{
 					id: 'prefix',
-					match: 'rest',
-					prompt: {
-						start: 'Please supply a prefix.'
-					}
+					match: 'rest'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { prefix }: { prefix: string }) {
+	async exec(message: Message, { prefix }: { prefix?: string }) {
+		if (!prefix) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'prefix' })
+			);
+			return;
+		}
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -35,14 +39,16 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			}
 		});
 		if (guildEntry.prefixes.includes(prefix)) {
-			await message.util!.send("That prefix has already been added!");
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.PREFIX_ALREADY_ADDED')
+			);
 			return;
 		}
 		guildEntry.prefixes.push(prefix);
 		guildEntry.changed('prefixes', true);
 		await guildEntry.save();
 		await message.util!.send(
-			`Prefix \`${prefix}\` was added to this server. Use the \`config prefix\` command to see all the prefixes.`
+			this.client.i18n.t('CONFIG.PREFIX_ADDED', { prefix })
 		);
 	}
 }

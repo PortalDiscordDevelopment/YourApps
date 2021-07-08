@@ -20,9 +20,11 @@
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
+		"resolveJsonModule": true,
 		"baseUrl": ".",
 		"paths": {
 			"@lib/ext/*": ["src/lib/extensions/*"],
+			"@lib/i18n/*": ["src/languages/*"],
 			"@lib/models/*": ["src/lib/models/*"],
 			"@lib/models": ["src/lib/models"]
 		}

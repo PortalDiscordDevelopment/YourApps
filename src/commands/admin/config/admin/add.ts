@@ -8,7 +8,8 @@ export default class ConfigAdminAddCommand extends BotCommand {
 		super('config-admin-add', {
 			aliases: ['config-admin-add'],
 			description: {
-				content: 'Adds an admin role to the server',
+				content: () =>
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_ADD'),
 				usage: 'config admin add <role>',
 				examples: ['config admin add Administrator']
 			},
@@ -16,18 +17,20 @@ export default class ConfigAdminAddCommand extends BotCommand {
 			args: [
 				{
 					id: 'role',
-					type: 'role',
-					prompt: {
-						start: 'Please supply a role.',
-						retry: 'Invalid role. Please supply a role.'
-					}
+					type: 'role'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { role }: { role: Role }) {
+	async exec(message: Message, { role }: { role?: Role }) {
+		if (!role) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+			);
+			return;
+		}
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -37,14 +40,16 @@ export default class ConfigAdminAddCommand extends BotCommand {
 			}
 		});
 		if (guildEntry.adminroles.includes(role.id)) {
-			await message.util!.send("That admin role has already been added!");
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.ADMIN_ROLE_ALREADY_ADDED')
+			);
 			return;
 		}
 		guildEntry.adminroles.push(role.id);
 		guildEntry.changed('adminroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			`Admin role <@&${role.id}> was added to this server. Use the \`config admin\` command to see all the admin roles.`
+			this.client.i18n.t('CONFIG.ADMIN_ROLE_ADDED', { roleID: role.id })
 		);
 	}
 }

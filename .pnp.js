@@ -38,6 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."],
+            ["@lib/i18n", "link:./dist/languages::locator=akairo-template%40workspace%3A."],
             ["@lib/models", "link:./dist/lib/models::locator=akairo-template%40workspace%3A."],
             ["@types/common-tags", "npm:1.8.0"],
             ["@types/node", "npm:14.14.31"],
@@ -52,6 +53,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:7.20.0"],
             ["eslint-config-prettier", "virtual:ea5954584e842a090f60deaff102051e79740d3ad64084e7376b4ab2cca7d32e86de7a9fd45a920efff3188ef117c16f8e0ad97826f8fcc7b4013ce1a6a49d95#npm:8.3.0"],
             ["got", "npm:11.8.2"],
+            ["i18next", "npm:20.3.2"],
             ["pg", "virtual:ea5954584e842a090f60deaff102051e79740d3ad64084e7376b4ab2cca7d32e86de7a9fd45a920efff3188ef117c16f8e0ad97826f8fcc7b4013ce1a6a49d95#npm:8.6.0"],
             ["pg-hstore", "npm:2.3.4"],
             ["prettier", "npm:2.3.0"],
@@ -90,6 +92,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/helper-validator-identifier", "npm:7.12.11"],
             ["chalk", "npm:2.4.2"],
             ["js-tokens", "npm:4.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@babel/runtime", [
+        ["npm:7.14.6", {
+          "packageLocation": "./.yarn/cache/@babel-runtime-npm-7.14.6-3272013297-dd931f6ef1.zip/node_modules/@babel/runtime/",
+          "packageDependencies": [
+            ["@babel/runtime", "npm:7.14.6"],
+            ["regenerator-runtime", "npm:0.13.8"]
           ],
           "linkType": "HARD",
         }]
@@ -139,6 +151,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./dist/lib/extensions/",
           "packageDependencies": [
             ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."]
+          ],
+          "linkType": "SOFT",
+          "discardFromLookup": true
+        }]
+      ]],
+      ["@lib/i18n", [
+        ["link:./dist/languages::locator=akairo-template%40workspace%3A.", {
+          "packageLocation": "./dist/languages/",
+          "packageDependencies": [
+            ["@lib/i18n", "link:./dist/languages::locator=akairo-template%40workspace%3A."]
           ],
           "linkType": "SOFT",
           "discardFromLookup": true
@@ -540,6 +562,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["akairo-template", "workspace:."],
             ["@lib/ext", "link:./dist/lib/extensions::locator=akairo-template%40workspace%3A."],
+            ["@lib/i18n", "link:./dist/languages::locator=akairo-template%40workspace%3A."],
             ["@lib/models", "link:./dist/lib/models::locator=akairo-template%40workspace%3A."],
             ["@types/common-tags", "npm:1.8.0"],
             ["@types/node", "npm:14.14.31"],
@@ -554,6 +577,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:7.20.0"],
             ["eslint-config-prettier", "virtual:ea5954584e842a090f60deaff102051e79740d3ad64084e7376b4ab2cca7d32e86de7a9fd45a920efff3188ef117c16f8e0ad97826f8fcc7b4013ce1a6a49d95#npm:8.3.0"],
             ["got", "npm:11.8.2"],
+            ["i18next", "npm:20.3.2"],
             ["pg", "virtual:ea5954584e842a090f60deaff102051e79740d3ad64084e7376b4ab2cca7d32e86de7a9fd45a920efff3188ef117c16f8e0ad97826f8fcc7b4013ce1a6a49d95#npm:8.6.0"],
             ["pg-hstore", "npm:2.3.4"],
             ["prettier", "npm:2.3.0"],
@@ -1400,6 +1424,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["i18next", [
+        ["npm:20.3.2", {
+          "packageLocation": "./.yarn/cache/i18next-npm-20.3.2-95361e3385-487087a7e4.zip/node_modules/i18next/",
+          "packageDependencies": [
+            ["i18next", "npm:20.3.2"],
+            ["@babel/runtime", "npm:7.14.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["ignore", [
         ["npm:4.0.6", {
           "packageLocation": "./.yarn/cache/ignore-npm-4.0.6-66c0d6543e-8f7b7f7c26.zip/node_modules/ignore/",
@@ -2079,6 +2113,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["inherits", "npm:2.0.4"],
             ["string_decoder", "npm:1.3.0"],
             ["util-deprecate", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["regenerator-runtime", [
+        ["npm:0.13.8", {
+          "packageLocation": "./.yarn/cache/regenerator-runtime-npm-0.13.8-0450f887d6-20178f5753.zip/node_modules/regenerator-runtime/",
+          "packageDependencies": [
+            ["regenerator-runtime", "npm:0.13.8"]
           ],
           "linkType": "HARD",
         }]

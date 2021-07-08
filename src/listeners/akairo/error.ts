@@ -1,4 +1,3 @@
-import { stripIndents } from 'common-tags';
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { BotListener } from '@lib/ext/BotListener';
@@ -19,15 +18,17 @@ export default class CommandErrorListener extends BotListener {
 	): Promise<void> {
 		if (!command) {
 			const errorEmbed = new MessageEmbed()
-				.setTitle(`Inihibitor error`)
+				.setTitle(this.client.i18n.t('ERROR_LOGGING.INHIBITOR.TITLE'))
 				.setDescription(
-					stripIndents`
-					**User:** ${message.author} (${message.author.tag})
-					**Channel:** ${message.channel} (${message.channel?.id})
-					**Message:** [link](${message.url})`
+					this.client.i18n.t('ERROR_LOGGING.INHIBITOR.BODY', {
+						userID: message.author.id,
+						userTag: message.author.tag,
+						channelID: message.channel.id,
+						messageUrl: message.url
+					})
 				)
 				.addField(
-					'Error',
+					this.client.i18n.t('GENERIC.ERROR'),
 					await this.client.util.codeblock(
 						`${error?.stack ?? error}`,
 						1024,
@@ -39,16 +40,20 @@ export default class CommandErrorListener extends BotListener {
 		} else {
 			const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 			const errorEmbed = new MessageEmbed()
-				.setTitle(`Command error #\`${errorNo}\``)
+				.setTitle(
+					this.client.i18n.t('ERROR_LOGGING.COMMAND.TITLE', { errorNo })
+				)
 				.setDescription(
-					stripIndents`
-					**User:** ${message.author} (${message.author.tag})
-					**Command:** ${command}
-					**Channel:** ${message.channel} (${message.channel.id})
-					**Message:** [link](${message.url})`
+					this.client.i18n.t('ERROR_LOGGING.COMMAND.BODY', {
+						userID: message.author.id,
+						userTag: message.author.tag,
+						command: command.id,
+						channelID: message.channel.id,
+						messageUrl: message.url
+					})
 				)
 				.addField(
-					'Error',
+					this.client.i18n.t('GENERIC.ERROR'),
 					await this.client.util.codeblock(
 						`${error?.stack ?? error}`,
 						1024,
@@ -60,9 +65,12 @@ export default class CommandErrorListener extends BotListener {
 			await this.client.errorChannel.send(errorEmbed);
 			if (command) {
 				const errorUserEmbed: MessageEmbed = new MessageEmbed()
-					.setTitle('A Command Error Occurred')
+					.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED'))
 					.setDescription(
-						`Oh no! While running the command \`${command.id}\`, an error occurred. Please give the developers code \`${errorNo}\`.`
+						this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', {
+							command: message.util!.parsed!.alias,
+							errorNo
+						})
 					)
 					.setTimestamp();
 				await message.util!.send(errorUserEmbed);

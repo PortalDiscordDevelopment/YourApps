@@ -1,0 +1,83 @@
+{
+	"GENERIC": {
+		"ERROR": "Error"
+	},
+	"ERROR_LOGGING": {
+		"INHIBITOR": {
+			"TITLE": "Inhibitor error",
+			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{- messageUrl}})"
+		},
+		"COMMAND": {
+			"TITLE": "Command error #{{errorNo}}",
+			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Command:** {{command}}\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{- messageUrl}})",
+			"ERROR_OCCURRED": "A command error occurred",
+			"ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`."
+		}
+	},
+	"CONFIG": {
+		"NO_CONFIG": "This guild does not appear to have any config options changed.",
+		"NONE_SET": "None set",
+		"GUILD_CONFIG": "Guild config",
+		"PREFIXES": "Prefixes",
+		"OR_MENTION": "{{- prefixes}} (or mention)",
+		"REVIEW_ROLES": "Review roles",
+		"ADMIN_ROLES": "Admin roles",
+		"BLACKLIST_ROLES": "Blacklist roles",
+		"LOG_PING_ROLES": "Log ping roles",
+		"LOG_CHANNEL": "Log channel",
+		"ARCHIVE_CHANNEL": "Archive channel",
+		"NO_ADMIN_ROLES": "This server has no admin roles.",
+		"SERVER_ADMIN_ROLES": "The admin role(s) for this server are {{- roles}}.",
+		"ADMIN_ROLE_ADDED": "Admin role <@&{{roleID}}> was added to this server. Use the `config admin` command to see all the admin roles.",
+		"ADMIN_ROLE_ALREADY_ADDED": "That admin role has already been added!",
+		"ADMIN_ROLE_REMOVED": "Admin role <@&{{roleID}}> was removed from this server. Use the `config admin` command to see all the admin roles.",
+		"ADMIN_ROLE_NOT_ADDED": "That admin role has not been added!",
+		"TOO_LITTLE_PREFIXES": "You cannot have less than one prefix!",
+		"PREFIX_ADDED": "Prefix `{{- prefix}}` was added to this server. Use the `config prefix` command to see all the prefixes.",
+		"PREFIX_ALREADY_ADDED": "That prefix role has already been added!",
+		"PREFIX_REMOVED": "Prefix `{{- prefix}}` was removed from this server. Use the `config prefix` command to see all the prefixes.",
+		"PREFIX_NOT_ADDED": "That prefix has not been added!",
+		"APPLICATION_NOT_OPEN": "That application is not open!",
+		"APPLICATION_CLOSED": "Sucessfully closed {{aplication}}.",
+		"APPLICATION_NOT_CLOSED": "That application is not closed!",
+		"APPLICATION_OPENED": "Sucessfully opened {{application}}",
+		"SERVER_PREFIXES": "The prefix(es) for this server are {{- prefixes}}{{CONFIG.OR_MENTION}}"
+	},
+	"USED_HASTEBIN": "Too large to display. Hastebin: {{- link}}",
+	"UNABLE_TO_POST": "Unable to post",
+	"DEVELOPER": {
+		"TOKEN_OMMITTED": "[Token omitted]",
+		"EVALED_CODE": "Evaled code successfully",
+		"INPUT_TYPESCRIPT": "📥 Input (typescript)",
+		"INPUT_JAVASCRIPT": "📥 Input (transpiled javascript)",
+		"INPUT": "📥 Input",
+		"OUTPUT": "📤 Output",
+		"RELOADED": "🔁 Successfully reloaded! ({{milliseconds}}ms)",
+		"ERROR_RELOADING": "An error occurred while reloading:\n{{- link}}"
+	},
+	"DEVELEOPER": {
+		"EVAL_ERROR": "Code was not able to be evaled."
+	},
+	"ARGS": {
+		"INVALID": "That is not a valid {{type}}!",
+		"PLEASE_GIVE": "Please supply a {{type}}."
+	},
+	"COMMANDS": {
+		"DESCRIPTIONS": {
+			"CONFIG_ADMIN_ADD": "Adds an admin role to the server",
+			"CONFIG_ADMIN_REMOVE": "Removes an admin role from the server",
+			"CONFIG_PREFIX_ADD": "Adds a prefix to the server",
+			"CONFIG_PREFIX_REMOVE": "Removes a prefix from the server",
+			"CONFIG_ADMIN": "Gets the admin roles of the server",
+			"CONFIG_CLOSE": "Closes an application",
+			"CONFIG_OPEN": "Opens an application",
+			"CONFIG_PREFIX": "Gets the prefix of the server",
+			"CONFIG": "Get the config of the server",
+			"EVAL": "Evals code in the bot.",
+			"RELOAD": "Reloads the bot",
+			"PING": "Gets the latency of the bot"
+		},
+		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
+		"PING_CALCULATING": "Calculating..."
+	}
+}

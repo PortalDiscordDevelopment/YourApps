@@ -7,7 +7,7 @@ export default class OpenCommand extends BotCommand {
 		super('open', {
 			aliases: ['open'],
 			description: {
-				content: 'Opens an application',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_OPEN'),
 				usage: 'open <application>',
 				examples: ['open moderator']
 			},
@@ -15,25 +15,32 @@ export default class OpenCommand extends BotCommand {
 			args: [
 				{
 					id: 'application',
-					type: 'application',
-					prompt: {
-						start: 'What application would you like to open?',
-						retry:
-							'Invalid application. What application would you like to open?'
-					}
+					type: 'application'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { application }: { application: App }) {
+	async exec(message: Message, { application }: { application?: App }) {
+		if (!application) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+			);
+			return;
+		}
 		if (!application.closed) {
-			await message.util!.send('That application is not closed!');
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.APPLICATION_NOT_CLOSED')
+			);
 			return;
 		}
 		application.closed = false;
 		application.save();
-		await message.util!.send(`Sucessfully opened ${application.name}.`);
+		await message.util!.send(
+			this.client.i18n.t('CONFIG.APPLICATION_OPENED', {
+				application: application.name
+			})
+		);
 	}
 }

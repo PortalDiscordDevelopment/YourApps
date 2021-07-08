@@ -7,7 +7,7 @@ export default class CloseCommand extends BotCommand {
 		super('close', {
 			aliases: ['close'],
 			description: {
-				content: 'Closes an application',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE'),
 				usage: 'close <application>',
 				examples: ['close moderator']
 			},
@@ -15,25 +15,32 @@ export default class CloseCommand extends BotCommand {
 			args: [
 				{
 					id: 'application',
-					type: 'application',
-					prompt: {
-						start: 'What application would you like to close?',
-						retry:
-							'Invalid application. What application would you like to close?'
-					}
+					type: 'application'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { application }: { application: App }) {
+	async exec(message: Message, { application }: { application?: App }) {
+		if (!application) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+			);
+			return;
+		}
 		if (application.closed) {
-			await message.util!.send('That application is not open!');
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.APPLICATION_NOT_OPEN')
+			);
 			return;
 		}
 		application.closed = true;
 		application.save();
-		await message.util!.send(`Sucessfully closed ${application.name}.`);
+		await message.util!.send(
+			this.client.i18n.t('CONFIG.APPLICATION_CLOSED', {
+				application: application.name
+			})
+		);
 	}
 }

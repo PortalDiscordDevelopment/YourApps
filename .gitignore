@@ -134,6 +134,7 @@ temp/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/useful-snippets.code-snippets
 *.code-workspace
 
 ### VisualStudioCode Patch ###

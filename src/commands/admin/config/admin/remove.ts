@@ -8,7 +8,8 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 		super('config-admin-remove', {
 			aliases: ['config-admin-remove'],
 			description: {
-				content: 'Removes an admin role from the server',
+				content: () =>
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE'),
 				usage: 'config admin remove <role>',
 				examples: ['config admin remove Moderator']
 			},
@@ -16,18 +17,20 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			args: [
 				{
 					id: 'role',
-					type: 'role',
-					prompt: {
-						start: 'Please supply a role.',
-						retry: 'Invalid role. Please supply a role.'
-					}
+					type: 'role'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { role }: { role: Role }) {
+	async exec(message: Message, { role }: { role?: Role }) {
+		if (!role) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+			);
+			return;
+		}
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -37,14 +40,16 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			}
 		});
 		if (!guildEntry.adminroles.includes(role.id)) {
-			await message.util!.send('That admin role has not been added!');
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.ADMIN_ROLE_NOT_ADDED')
+			);
 			return;
 		}
 		guildEntry.adminroles.splice(guildEntry.adminroles.indexOf(role.id), 1);
 		guildEntry.changed('adminroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			`Admin role <@&${role.id}> was removed from this server. Use the \`config admin\` command to see all the admin roles.`
+			this.client.i18n.t('CONFIG.ADMIN_ROLE_REMOVED', { roleID: role.id })
 		);
 	}
 }

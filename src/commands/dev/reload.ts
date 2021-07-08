@@ -6,7 +6,7 @@ export default class ReloadCommand extends BotCommand {
 		super('reload', {
 			aliases: ['reload'],
 			description: {
-				content: 'Reloads the bot',
+				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.RELOAD'),
 				usage: 'reload',
 				examples: ['reload']
 			},
@@ -22,14 +22,17 @@ export default class ReloadCommand extends BotCommand {
 			this.client.commandHandler.reloadAll();
 			this.client.listenerHandler.reloadAll();
 			this.client.inhibitorHandler.reloadAll();
+			await this.client.util.loadLanguages();
 			return message.util!.send(
-				`🔁 Successfully reloaded! (${new Date().getTime() - s.getTime()}ms)`
+				this.client.i18n.t('DEVELOPER.RELOADED', {
+					milliseconds: new Date().getTime() - s.getTime()
+				})
 			);
 		} catch (e) {
 			return message.util!.send(
-				`An error occurred while reloading:\n${await this.client.util.haste(
-					e.stack
-				)}`
+				this.client.i18n.t('DEVELOPER.ERROR_RELOADING', {
+					link: await this.client.util.haste(e.stack)
+				})
 			);
 		}
 	}

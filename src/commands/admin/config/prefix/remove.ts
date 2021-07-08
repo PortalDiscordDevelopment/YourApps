@@ -7,7 +7,8 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 		super('config-prefix-remove', {
 			aliases: ['config-prefix-remove'],
 			description: {
-				content: 'Removes a prefix from the server',
+				content: () =>
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE'),
 				usage: 'config prefix remove <prefix>',
 				examples: ['config prefix remove ya!']
 			},
@@ -15,17 +16,20 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			args: [
 				{
 					id: 'prefix',
-					match: 'rest',
-					prompt: {
-						start: 'Please supply a prefix.'
-					}
+					match: 'rest'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { prefix }: { prefix: string }) {
+	async exec(message: Message, { prefix }: { prefix?: string }) {
+		if (!prefix) {
+			await message.util!.send(
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'prefix' })
+			);
+			return;
+		}
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -35,18 +39,20 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			}
 		});
 		if (!guildEntry.prefixes.includes(prefix)) {
-			await message.util!.send('That prefix has not been added!');
+			await message.util!.send(this.client.i18n.t('CONFIG.PREFIX_NOT_ADDED'));
 			return;
 		}
 		guildEntry.prefixes.splice(guildEntry.prefixes.indexOf(prefix), 1);
 		guildEntry.changed('prefixes', true);
 		if (guildEntry.prefixes.length < 1) {
-			await message.util!.send('You cannot have less than one prefix!');
+			await message.util!.send(
+				this.client.i18n.t('CONFIG.TOO_LITTLE_PREFIXES')
+			);
 			return;
 		}
 		await guildEntry.save();
 		await message.util!.send(
-			`Prefix \`${prefix}\` was removed from this server. Use the \`config prefix\` command to see all the prefixes.`
+			this.client.i18n.t('CONFIG.PREFIX_REMOVED', { prefix })
 		);
 	}
 }
