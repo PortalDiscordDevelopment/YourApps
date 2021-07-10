@@ -34,7 +34,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		if (!guildEntry || guildEntry.logpings.length < 1) {
 			await message.util!.send(this.client.i18n.t('CONFIG.NO_LOGPING_ROLES'));
 			return;
-		}	
+		}
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.SERVER_LOGPING_ROLES', {
 				roles: guildEntry.logpings.map((p) => `<@&${p}>`).join(', ')
