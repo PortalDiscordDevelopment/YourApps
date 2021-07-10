@@ -3,15 +3,15 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
 import { Role } from 'discord.js';
 
-export default class ConfigAdminRemoveCommand extends BotCommand {
+export default class ConfigLogpingRemoveCommand extends BotCommand {
 	public constructor() {
-		super('config-admin-remove', {
-			aliases: ['config-admin-remove'],
+		super('config-logping-remove', {
+			aliases: ['config-logping-remove'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE'),
-				usage: 'config admin remove <role>',
-				examples: ['config admin remove Moderator']
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_REMOVE'),
+				usage: 'config logping remove <role>',
+				examples: ['config logping remove Moderator']
 			},
 			category: 'admin',
 			args: [
@@ -39,17 +39,17 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 				id: message.guild!.id
 			}
 		});
-		if (!guildEntry.adminroles.includes(role.id)) {
+		if (!guildEntry.logpings.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.ADMIN_ROLE_NOT_ADDED')
+				this.client.i18n.t('CONFIG.LOGPING_ROLE_NOT_ADDED')
 			);
 			return;
 		}
-		guildEntry.adminroles.splice(guildEntry.adminroles.indexOf(role.id), 1);
-		guildEntry.changed('adminroles', true);
+		guildEntry.logpings.splice(guildEntry.logpings.indexOf(role.id), 1);
+		guildEntry.changed('logpings', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.ADMIN_ROLE_REMOVED', { roleID: role.id })
+			this.client.i18n.t('CONFIG.LOGPING_ROLE_REMOVED', { roleID: role.id })
 		);
 	}
 }

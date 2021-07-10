@@ -4,12 +4,12 @@ import { App } from '@lib/models';
 
 export default class CloseCommand extends BotCommand {
 	public constructor() {
-		super('close', {
-			aliases: ['close'],
+		super('config-close', {
+			aliases: ['config-close'],
 			description: {
 				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE'),
-				usage: 'close <application>',
-				examples: ['close moderator']
+				usage: 'config close <application>',
+				examples: ['config close moderator']
 			},
 			category: 'admin',
 			args: [

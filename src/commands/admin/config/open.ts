@@ -4,12 +4,12 @@ import { App } from '@lib/models';
 
 export default class OpenCommand extends BotCommand {
 	public constructor() {
-		super('open', {
-			aliases: ['open'],
+		super('config-open', {
+			aliases: ['config-open'],
 			description: {
 				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_OPEN'),
-				usage: 'open <application>',
-				examples: ['open moderator']
+				usage: 'config open <application>',
+				examples: ['config open moderator']
 			},
 			category: 'admin',
 			args: [

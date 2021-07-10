@@ -21,7 +21,14 @@ export default class ConfigCommand extends BotCommand {
 		const subcommand = yield {
 			type: [
 				['config-prefix', 'prefix', 'pre'],
-				['config-admin', 'admin']
+				['config-admin', 'admin'],
+				['config-blacklist', 'blacklist'],
+				['config-logping', 'logping'],
+				['config-review', 'review'],
+				['config-open', 'open'],
+				['config-close', 'close'],
+				['config-log', 'log'],
+				['config-archive', 'archive']
 			]
 		};
 		if (subcommand !== null) {
