@@ -61,7 +61,7 @@ export class Util extends ClientUtil {
 	/**
 	 * Surrounds text in a code block with the specified language and puts it in a hastebin if its too long.
 	 *
-	 * * Embed Description Limit = 2048 characters
+	 * * Embed Description Limit = 4096 characters
 	 * * Embed Field Limit = 1024 characters
 	 */
 	public async codeblock(
