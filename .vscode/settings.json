@@ -14,5 +14,6 @@
 			"template": "this.client.i18n.t('{key}')"
 		}
 	],
-	"i18n-ally.extract.autoDetect": true
+	"i18n-ally.extract.autoDetect": true,
+	"i18n-ally.annotationMaxLength": 70
 }
