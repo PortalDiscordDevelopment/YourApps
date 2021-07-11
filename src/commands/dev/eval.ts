@@ -129,7 +129,7 @@ export default class EvalCommand extends BotCommand {
 		} catch (e) {
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 			embed
-				.setTitle(this.client.i18n.t('DEVELEOPER.EVAL_ERROR'))
+				.setTitle(this.client.i18n.t('DEVELOPER.EVAL_ERROR'))
 				.setFooter(
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })

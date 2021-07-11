@@ -67,20 +67,20 @@
 		"SERVER_ARCHIVE_CHANNEL": "The archive channel for this server is <#{{channelID}}>.",
 		"NO_ARCHIVE_CHANNEL": "This server has no archive channel set."
 	},
-	"USED_HASTEBIN": "Too large to display. Hastebin: {{- link}}",
-	"UNABLE_TO_POST": "Unable to post",
+	"HASTEBIN": {
+		"TOO_LARGE": "Too large to display. Hastebin: {{- link}}",
+		"UNABLE_TO_POST": "Unable to post"
+	},
 	"DEVELOPER": {
 		"TOKEN_OMMITTED": "[Token omitted]",
 		"EVALED_CODE": "Evaled code successfully",
+		"EVAL_ERROR": "Code was not able to be evaled.",
 		"INPUT_TYPESCRIPT": "📥 Input (typescript)",
 		"INPUT_JAVASCRIPT": "📥 Input (transpiled javascript)",
 		"INPUT": "📥 Input",
 		"OUTPUT": "📤 Output",
 		"RELOADED": "🔁 Successfully reloaded! ({{milliseconds}}ms)",
 		"ERROR_RELOADING": "An error occurred while reloading:\n{{- link}}"
-	},
-	"DEVELEOPER": {
-		"EVAL_ERROR": "Code was not able to be evaled."
 	},
 	"ARGS": {
 		"INVALID": "That is not a valid {{type}}!",

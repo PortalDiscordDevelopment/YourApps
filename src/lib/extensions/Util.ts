@@ -55,7 +55,7 @@ export class Util extends ClientUtil {
 				continue;
 			}
 		}
-		return this.client.i18n.t('UNABLE_TO_POST');
+		return this.client.i18n.t('HASTEBIN.UNABLE_TO_POST');
 	}
 
 	/**
@@ -74,7 +74,7 @@ export class Util extends ClientUtil {
 		const formattingLength =
 			2 * tildes.length + language.length + 2 * '\n'.length;
 		if (code.length + formattingLength > length)
-			hasteOut = this.client.i18n.t('USED_HASTEBIN', {
+			hasteOut = this.client.i18n.t('HASTEBIN.TOO_LARGE', {
 				link: await this.haste(code)
 			});
 
