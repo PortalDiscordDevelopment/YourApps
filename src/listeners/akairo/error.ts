@@ -34,7 +34,7 @@ export default class CommandErrorListener extends BotListener {
 						1024,
 						'js'
 					)
-				)
+				);
 			await this.client.errorChannel.send(errorEmbed);
 		} else {
 			const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
@@ -59,7 +59,7 @@ export default class CommandErrorListener extends BotListener {
 						1024,
 						'js'
 					)
-				)
+				);
 
 			await this.client.errorChannel.send(errorEmbed);
 			if (command) {
@@ -71,7 +71,7 @@ export default class CommandErrorListener extends BotListener {
 							command: message.util!.parsed!.alias,
 							errorNo
 						})
-					)
+					);
 				await message.util!.send(errorUserEmbed);
 			}
 		}

@@ -20,14 +20,21 @@ export default class PositionCommand extends BotCommand {
 			]
 		});
 	}
-	async exec(message: Message, { application }: { application: App|null }) {
+	async exec(message: Message, { application }: { application: App | null }) {
 		if (!application) {
-			await message.util!.send(this.client.i18n.t('ARGS.INVALID', {type:'application'}));
+			await message.util!.send(
+				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+			);
 			return;
 		}
 		await message.util!.send(
-			this.client.util.embed()
-				.setTitle(this.client.i18n.t('CONFIG.APPLICATION_DETAILS', {application: application.name}))
+			this.client.util
+				.embed()
+				.setTitle(
+					this.client.i18n.t('CONFIG.APPLICATION_DETAILS', {
+						application: application.name
+					})
+				)
 				.addField(
 					this.client.i18n.t('CONFIG.APPLICATION_NAME'),
 					application.name,
@@ -71,7 +78,9 @@ export default class PositionCommand extends BotCommand {
 				)
 				.addField(
 					this.client.i18n.t('CONFIG.APPLICATION_CLOSED_TITLE'),
-					application.closed ? this.client.i18n.t('GENERIC.YES') : this.client.i18n.t('GENERIC.NO'),
+					application.closed
+						? this.client.i18n.t('GENERIC.YES')
+						: this.client.i18n.t('GENERIC.NO'),
 					true
 				)
 				// Ill make this work later
@@ -90,6 +99,6 @@ export default class PositionCommand extends BotCommand {
 					application.id,
 					true
 				)
-		)
+		);
 	}
 }

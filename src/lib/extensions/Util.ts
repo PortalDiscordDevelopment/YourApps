@@ -101,6 +101,6 @@ export class Util extends ClientUtil {
 	}
 
 	public embed(data?: Record<string, unknown>) {
-		return super.embed(data).setTimestamp()
+		return super.embed(data).setTimestamp();
 	}
 }

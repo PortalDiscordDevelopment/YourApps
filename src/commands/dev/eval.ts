@@ -103,7 +103,7 @@ export default class EvalCommand extends BotCommand {
 				.setFooter(
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
-				)
+				);
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
@@ -132,7 +132,7 @@ export default class EvalCommand extends BotCommand {
 				.setFooter(
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
-				)
+				);
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
