@@ -94,7 +94,6 @@ export default class ConfigCommand extends BotCommand {
 						: this.client.i18n.t('CONFIG.NONE_SET'),
 					true
 				)
-				.setTimestamp()
 		);
 	}
 }

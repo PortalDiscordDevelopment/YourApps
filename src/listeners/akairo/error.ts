@@ -1,5 +1,4 @@
 import { Command } from 'discord-akairo';
-import { MessageEmbed } from 'discord.js';
 import { BotListener } from '@lib/ext/BotListener';
 import { Message } from 'discord.js';
 
@@ -17,7 +16,8 @@ export default class CommandErrorListener extends BotListener {
 		command: Command | undefined
 	): Promise<void> {
 		if (!command) {
-			const errorEmbed = new MessageEmbed()
+			const errorEmbed = this.client.util
+				.embed()
 				.setTitle(this.client.i18n.t('ERROR_LOGGING.INHIBITOR.TITLE'))
 				.setDescription(
 					this.client.i18n.t('ERROR_LOGGING.INHIBITOR.BODY', {
@@ -35,11 +35,11 @@ export default class CommandErrorListener extends BotListener {
 						'js'
 					)
 				)
-				.setTimestamp();
 			await this.client.errorChannel.send(errorEmbed);
 		} else {
 			const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
-			const errorEmbed = new MessageEmbed()
+			const errorEmbed = this.client.util
+				.embed()
 				.setTitle(
 					this.client.i18n.t('ERROR_LOGGING.COMMAND.TITLE', { errorNo })
 				)
@@ -60,11 +60,11 @@ export default class CommandErrorListener extends BotListener {
 						'js'
 					)
 				)
-				.setTimestamp();
 
 			await this.client.errorChannel.send(errorEmbed);
 			if (command) {
-				const errorUserEmbed: MessageEmbed = new MessageEmbed()
+				const errorUserEmbed = this.client.util
+					.embed()
 					.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED'))
 					.setDescription(
 						this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', {
@@ -72,7 +72,6 @@ export default class CommandErrorListener extends BotListener {
 							errorNo
 						})
 					)
-					.setTimestamp();
 				await message.util!.send(errorUserEmbed);
 			}
 		}

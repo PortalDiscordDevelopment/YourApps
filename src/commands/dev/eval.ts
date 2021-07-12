@@ -104,7 +104,6 @@ export default class EvalCommand extends BotCommand {
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
 				)
-				.setTimestamp();
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
@@ -134,7 +133,6 @@ export default class EvalCommand extends BotCommand {
 					message.author.tag,
 					message.author.displayAvatarURL({ dynamic: true })
 				)
-				.setTimestamp();
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
