@@ -55,6 +55,10 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.BLACKLIST_ROLE_REMOVED', { roleID: role.id })
 		);
-		await this.client.util.logEvent(message.guild!.id, LogEvent.BLACKLIST_ROLE_REMOVE, {roleID: role.id})
+		await this.client.util.logEvent(
+			message.guild!.id,
+			LogEvent.BLACKLIST_ROLE_REMOVE,
+			{ roleID: role.id }
+		);
 	}
 }

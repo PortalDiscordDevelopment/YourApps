@@ -54,6 +54,10 @@ export default class ConfigArchiveCommand extends BotCommand {
 				channelID: channel.id
 			})
 		);
-		await this.client.util.logEvent(message.guild!.id, LogEvent.ARCHIVE_CHANNEL, {channelID: channel.id})
+		await this.client.util.logEvent(
+			message.guild!.id,
+			LogEvent.ARCHIVE_CHANNEL,
+			{ channelID: channel.id }
+		);
 	}
 }

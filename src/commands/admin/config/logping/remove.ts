@@ -52,6 +52,10 @@ export default class ConfigLogpingRemoveCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.LOGPING_ROLE_REMOVED', { roleID: role.id })
 		);
-		await this.client.util.logEvent(message.guild!.id, LogEvent.LOGPING_ROLE_REMOVE, {roleID: role.id})
+		await this.client.util.logEvent(
+			message.guild!.id,
+			LogEvent.LOGPING_ROLE_REMOVE,
+			{ roleID: role.id }
+		);
 	}
 }

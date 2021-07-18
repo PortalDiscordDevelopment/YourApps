@@ -43,6 +43,8 @@ export default class CloseCommand extends BotCommand {
 				application: application.name
 			})
 		);
-		await this.client.util.logEvent(message.guild!.id, LogEvent.CLOSE, {application: application.name})
+		await this.client.util.logEvent(message.guild!.id, LogEvent.CLOSE, {
+			application: application.name
+		});
 	}
 }
