@@ -109,6 +109,9 @@ export class Util extends ClientUtil {
 		);
 	}
 
+	/**
+	 * Loads (or reloads) the language files that the bot uses
+	 */
 	public async loadLanguages() {
 		delete require.cache[require.resolve('@lib/i18n/en-US.json')];
 		this.client.i18n.addResourceBundle(
@@ -120,10 +123,21 @@ export class Util extends ClientUtil {
 		);
 	}
 
+	/**
+	 * Utility method to create an embed with a default style and without importing MessageEmbed
+	 * @param data Optional data to create the embed with
+	 * @returns The created embed
+	 */
 	public embed(data?: Record<string, unknown>) {
 		return super.embed(data).setTimestamp();
 	}
 
+	/**
+	 * Logs an event to a guild's log channel
+	 * @param guildID The id of the guild to log in
+	 * @param event The event to log
+	 * @param variables The variables to pass to the log message
+	 */
 	public async logEvent(
 		guildID: Snowflake,
 		event: LogEvent,
