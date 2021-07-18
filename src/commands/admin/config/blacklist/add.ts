@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
 import { Role } from 'discord.js';
+import { LogEvent } from '@lib/ext/Util';
 
 export default class ConfigBlacklistAddCommand extends BotCommand {
 	public constructor() {
@@ -51,5 +52,6 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.BLACKLIST_ROLE_ADDED', { roleID: role.id })
 		);
+		await this.client.util.logEvent(message.guild!.id, LogEvent.BLACKLIST_ROLE_ADD, {roleID: role.id})
 	}
 }

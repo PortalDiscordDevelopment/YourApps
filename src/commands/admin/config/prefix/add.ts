@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
+import { LogEvent } from '@lib/ext/Util';
 
 export default class ConfigPrefixAddCommand extends BotCommand {
 	public constructor() {
@@ -50,5 +51,6 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.PREFIX_ADDED', { prefix })
 		);
+		await this.client.util.logEvent(message.guild!.id, LogEvent.PREFIX_ADD, {prefix})
 	}
 }

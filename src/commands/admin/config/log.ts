@@ -1,4 +1,5 @@
 import { BotCommand } from '@lib/ext/BotCommand';
+import { LogEvent } from '@lib/ext/Util';
 import { Guild } from '@lib/models/Guild';
 import { Message, Channel } from 'discord.js';
 
@@ -50,5 +51,6 @@ export default class ConfigLogCommand extends BotCommand {
 				channelID: channel.id
 			})
 		);
+		await this.client.util.logEvent(message.guild!.id, LogEvent.LOG_CHANNEL, {channelID: channel.id})
 	}
 }

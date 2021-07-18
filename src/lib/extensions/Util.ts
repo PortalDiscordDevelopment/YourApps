@@ -4,8 +4,28 @@ import { exec as execCallback } from 'child_process';
 import { Util as DiscordUtil } from 'discord.js';
 import got from 'got';
 import { BotClient } from './BotClient';
+import { Snowflake } from 'discord.js';
+import { Guild } from '@lib/models';
+import { TextChannel } from 'discord.js';
 
 const exec = promisify(execCallback);
+
+export enum LogEvent {
+	PREFIX_ADD = "LOGGING.PREFIX_ADDED",
+	PREFIX_REMOVE = "LOGGING.PREFIX_REMOVED",
+	ADMIN_ROLE_ADD = "LOGGING.ADMIN_ROLE_ADD",
+	ADMIN_ROLE_REMOVE = "LOGGING.ADMIN_ROLE_REMOVED",
+	BLACKLIST_ROLE_ADD = "LOGGING.BLACKLIST_ROLE_ADD",
+	BLACKLIST_ROLE_REMOVE = "LOGGING.BLACKLIST_ROLE_REMOVED",
+	REVIEW_ROLE_ADD = "LOGGING.REVIEW_ROLE_ADD",
+	REVIEW_ROLE_REMOVE = "LOGGING.REVIEW_ROLE_REMOVED",
+	LOGPING_ROLE_ADD = "LOGGING.LOGPING_ROLE_ADD",
+	LOGPING_ROLE_REMOVE = "LOGGING.LOGPING_ROLE_REMOVED",
+	CLOSE = "LOGGING.CLOSE",
+	OPEN = "LOGGING.OPEN",
+	LOG_CHANNEL = "LOGGING.LOG_CHANNEL",
+	ARCHIVE_CHANNEL = "LOGGING.ARCHIVE_CHANNEL"
+}
 
 export class Util extends ClientUtil {
 	declare client: BotClient;
@@ -102,5 +122,23 @@ export class Util extends ClientUtil {
 
 	public embed(data?: Record<string, unknown>) {
 		return super.embed(data).setTimestamp();
+	}
+
+	public async logEvent(guildID: Snowflake, event: LogEvent, variables: Record<string, string>) {
+		const guild = await Guild.findByPk(guildID)
+		if (!guild || !guild.logchannel) return
+		let logChannel: TextChannel;
+		try {
+			const channel = await this.client.channels.fetch(guild.logchannel)
+			if (channel.type === "text") logChannel = channel as TextChannel
+			else return
+		} catch {
+			return
+		}
+		await logChannel.send(this.client.i18n.t(event, variables) as string, {
+			allowedMentions: {
+				parse: []
+			}
+		})
 	}
 }

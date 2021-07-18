@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { App } from '@lib/models';
+import { LogEvent } from '@lib/ext/Util';
 
 export default class OpenCommand extends BotCommand {
 	public constructor() {
@@ -42,5 +43,6 @@ export default class OpenCommand extends BotCommand {
 				application: application.name
 			})
 		);
+		await this.client.util.logEvent(message.guild!.id, LogEvent.OPEN, {application: application.name})
 	}
 }

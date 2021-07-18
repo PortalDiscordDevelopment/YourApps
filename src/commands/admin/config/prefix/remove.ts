@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
+import { LogEvent } from '@lib/ext/Util';
 
 export default class ConfigPrefixRemoveCommand extends BotCommand {
 	public constructor() {
@@ -54,5 +55,6 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.PREFIX_REMOVED', { prefix })
 		);
+		await this.client.util.logEvent(message.guild!.id, LogEvent.PREFIX_REMOVE, {prefix})
 	}
 }
