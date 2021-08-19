@@ -41,59 +41,61 @@ export default class ConfigCommand extends BotCommand {
 			await message.util!.send(this.client.i18n.t('CONFIG.NO_CONFIG'));
 			return;
 		}
-		await message.util!.send(
-			this.client.util
-				.embed()
-				.setTitle(this.client.i18n.t('CONFIG.GUILD_CONFIG'))
-				.addField(
-					this.client.i18n.t('CONFIG.PREFIXES'),
-					this.client.i18n.t('CONFIG.OR_MENTION', {
-						prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
-					}),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.REVIEW_ROLES'),
-					guildEntry.reviewroles.length > 0
-						? guildEntry.reviewroles.map((r) => `<@&${r}>`).join(', ')
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.ADMIN_ROLES'),
-					guildEntry.adminroles.length > 0
-						? guildEntry.adminroles.map((r) => `<@&${r}>`).join(', ')
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.BLACKLIST_ROLES'),
-					guildEntry.blacklistroles.length > 0
-						? guildEntry.blacklistroles.map((r) => `<@&${r}>`).join(', ')
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.LOG_PING_ROLES'),
-					guildEntry.logpings.length > 0
-						? guildEntry.logpings.map((r) => `<@&${r}>`).join(', ')
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.LOG_CHANNEL'),
-					guildEntry.logchannel !== null
-						? `<#${guildEntry.logchannel}>`
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-				.addField(
-					this.client.i18n.t('CONFIG.ARCHIVE_CHANNEL'),
-					guildEntry.archivechannel !== null
-						? `<#${guildEntry.archivechannel}>`
-						: this.client.i18n.t('CONFIG.NONE_SET'),
-					true
-				)
-		);
+		await message.util!.send({
+			embeds: [
+				this.client.util
+					.embed()
+					.setTitle(this.client.i18n.t('CONFIG.GUILD_CONFIG'))
+					.addField(
+						this.client.i18n.t('CONFIG.PREFIXES'),
+						this.client.i18n.t('CONFIG.OR_MENTION', {
+							prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
+						}),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.REVIEW_ROLES'),
+						guildEntry.reviewroles.length > 0
+							? guildEntry.reviewroles.map((r) => `<@&${r}>`).join(', ')
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.ADMIN_ROLES'),
+						guildEntry.adminroles.length > 0
+							? guildEntry.adminroles.map((r) => `<@&${r}>`).join(', ')
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.BLACKLIST_ROLES'),
+						guildEntry.blacklistroles.length > 0
+							? guildEntry.blacklistroles.map((r) => `<@&${r}>`).join(', ')
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.LOG_PING_ROLES'),
+						guildEntry.logpings.length > 0
+							? guildEntry.logpings.map((r) => `<@&${r}>`).join(', ')
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.LOG_CHANNEL'),
+						guildEntry.logchannel !== null
+							? `<#${guildEntry.logchannel}>`
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						this.client.i18n.t('CONFIG.ARCHIVE_CHANNEL'),
+						guildEntry.archivechannel !== null
+							? `<#${guildEntry.archivechannel}>`
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+			]
+		});
 	}
 }

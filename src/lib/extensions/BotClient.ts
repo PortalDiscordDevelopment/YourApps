@@ -9,7 +9,7 @@ import { join } from 'path';
 import { Op, Sequelize } from 'sequelize';
 import { Util } from './Util';
 import * as Models from '../models';
-import { Message } from 'discord.js';
+import { Intents, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
 import { default as i18n } from 'i18next';
@@ -46,7 +46,8 @@ export class BotClient extends AkairoClient {
 			{
 				allowedMentions: {
 					parse: ['users'] // Disables all mentions except for users
-				}
+				},
+				intents: Intents.resolve(32509) // All non priveledged intents
 			}
 		);
 		this.config = config;

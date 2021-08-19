@@ -19,7 +19,7 @@ export default class PingCommand extends BotCommand {
 		);
 		await m.edit({
 			content: this.client.i18n.t('COMMANDS.PING_MESSAGE', {
-				shard: message.guild?.shardID ?? 0,
+				shard: message.guild?.shardId ?? 0,
 				delay:
 					m.editedTimestamp !== 0
 						? m.editedTimestamp! - message.editedTimestamp!

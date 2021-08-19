@@ -155,6 +155,6 @@ export default class EvalCommand extends BotCommand {
 				await this.client.util.codeblock(e?.stack, 1024, 'js')
 			);
 		}
-		await message.util!.send(embed);
+		await message.util!.send({ embeds: [embed] });
 	}
 }

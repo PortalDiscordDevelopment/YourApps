@@ -35,7 +35,9 @@ export default class CommandErrorListener extends BotListener {
 						'js'
 					)
 				);
-			await this.client.errorChannel.send(errorEmbed);
+			await this.client.errorChannel.send({
+				embeds: [errorEmbed]
+			});
 		} else {
 			const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 			const errorEmbed = this.client.util
@@ -61,7 +63,9 @@ export default class CommandErrorListener extends BotListener {
 					)
 				);
 
-			await this.client.errorChannel.send(errorEmbed);
+			await this.client.errorChannel.send({
+				embeds: [errorEmbed]
+			});
 			if (command) {
 				const errorUserEmbed = this.client.util
 					.embed()
@@ -72,7 +76,9 @@ export default class CommandErrorListener extends BotListener {
 							errorNo
 						})
 					);
-				await message.util!.send(errorUserEmbed);
+				await message.util!.send({
+					embeds: [errorUserEmbed]
+				});
 			}
 		}
 	}

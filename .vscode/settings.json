@@ -7,7 +7,7 @@
 	"eslint.nodePath": ".yarn/sdks",
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"i18n-ally.localesPaths": ["src/languages/*.json", "src/languages"],
+	"i18n-ally.localesPaths": ["src/languages/*.json"],
 	"i18n-ally.keystyle": "nested",
 	"i18n-ally.extract.keygenStyle": "ALL_CAPS",
 	"i18n-ally.refactor.templates": [
@@ -16,5 +16,6 @@
 		}
 	],
 	"i18n-ally.extract.autoDetect": true,
-	"i18n-ally.annotationMaxLength": 70
+	"i18n-ally.annotationMaxLength": 70,
+	"prettier.prettierPath": ".yarn/sdks/prettier/index.js"
 }

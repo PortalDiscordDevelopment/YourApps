@@ -145,18 +145,14 @@ export class Util extends ClientUtil {
 	) {
 		const guild = await Guild.findByPk(guildID);
 		if (!guild || !guild.logchannel) return;
-		let logChannel: TextChannel;
-		try {
-			const channel = await this.client.channels.fetch(guild.logchannel);
-			if (channel.type === 'text') logChannel = channel as TextChannel;
-			else return;
-		} catch {
-			return;
+		const channel = await this.client.channels.fetch(guild.logchannel);
+		if (channel instanceof TextChannel) {
+			await channel.send({
+				allowedMentions: {
+					parse: []
+				},
+				content: this.client.i18n.t(event, variables)
+			});
 		}
-		await logChannel.send(this.client.i18n.t(event, variables) as string, {
-			allowedMentions: {
-				parse: []
-			}
-		});
 	}
 }

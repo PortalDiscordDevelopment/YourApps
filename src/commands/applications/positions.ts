@@ -24,19 +24,21 @@ export default class PositionsCommand extends BotCommand {
 			await message.util!.send(this.client.i18n.t('COMMANDS.NO_APPLICATIONS'));
 			return;
 		}
-		await message.util!.send(
-			this.client.util
-				.embed()
-				.setTitle(
-					this.client.i18n.t('COMMANDS.POSITIONS_TITLE', {
-						guild: message.guild!.name
-					})
-				)
-				.setDescription(
-					applications
-						.map((app) => `${app.closed ? '❌' : '✅'} ${app.name}`)
-						.join('\n')
-				)
-		);
+		await message.util!.send({
+			embeds: [
+				this.client.util
+					.embed()
+					.setTitle(
+						this.client.i18n.t('COMMANDS.POSITIONS_TITLE', {
+							guild: message.guild!.name
+						})
+					)
+					.setDescription(
+						applications
+							.map((app) => `${app.closed ? '❌' : '✅'} ${app.name}`)
+							.join('\n')
+					)
+			]
+		});
 	}
 }
