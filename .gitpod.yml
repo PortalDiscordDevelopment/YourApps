@@ -1,0 +1,22 @@
+vscode:
+  extensions:
+    - arcanis.vscode-zipfs
+    - dbaeumer.vscode-eslint
+    - lokalise.i18n-ally
+    - esbenp.prettier-vscode
+github:
+  prebuilds:
+    # enable for all branches in this repo
+    branches: true
+tasks:
+  - before: >
+      [[ ! -z $GNUGPG  ]] &&
+      rm -rf ~/.gnupg &&
+      cd / &&
+      echo $GNUGPG | base64 -d | tar --no-same-owner -xzvf - &&
+      export GPG_TTY=$(tty) &&
+      sudo chmod 666 $(tty) &&
+      cd $GITPOD_REPO_ROOT
+    init: yarn
+image:
+  file: .gitpod.dockerfile
