@@ -1,13 +1,7 @@
 import { ClientUtil } from 'discord-akairo';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import {
-	Collection,
-	Collector,
-	Message,
-	MessageCollector,
-	Util as DiscordUtil
-} from 'discord.js';
+import { Util as DiscordUtil } from 'discord.js';
 import got from 'got';
 import { BotClient } from './BotClient';
 import { Snowflake } from 'discord.js';
