@@ -35,7 +35,7 @@ export default class PositionsCommand extends BotCommand {
 					)
 					.setDescription(
 						applications
-							.map((app) => `${app.closed ? '❌' : '✅'} ${app.name}`)
+							.map(app => `${app.closed ? '❌' : '✅'} ${app.name}`)
 							.join('\n')
 					)
 			]

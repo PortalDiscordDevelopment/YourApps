@@ -41,7 +41,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 		}
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.SERVER_PREFIXES', {
-				prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
+				prefixes: guildEntry.prefixes.map(p => `\`${p}\``).join(', ')
 			})
 		);
 	}

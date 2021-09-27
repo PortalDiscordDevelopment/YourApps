@@ -37,7 +37,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 		}
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.SERVER_BLACKLIST_ROLES', {
-				roles: guildEntry.blacklistroles.map((p) => `<@&${p}>`).join(', ')
+				roles: guildEntry.blacklistroles.map(p => `<@&${p}>`).join(', ')
 			})
 		);
 	}

@@ -54,21 +54,21 @@ export default class PositionCommand extends BotCommand {
 					.addField(
 						this.client.i18n.t('CONFIG.APPLICATION_REWARD_ROLES'),
 						application.rewardroles.length > 0
-							? application.rewardroles.map((r) => `<@&${r}>`).join(', ')
+							? application.rewardroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.APPLICATION_REMOVE_ROLES'),
 						application.removeroles.length > 0
-							? application.removeroles.map((r) => `<@&${r}>`).join(', ')
+							? application.removeroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.APPLICATION_REQUIRED_ROLES'),
 						application.requiredroles.length > 0
-							? application.requiredroles.map((r) => `<@&${r}>`).join(', ')
+							? application.requiredroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)

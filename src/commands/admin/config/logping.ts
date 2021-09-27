@@ -37,7 +37,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		}
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.SERVER_LOGPING_ROLES', {
-				roles: guildEntry.logpings.map((p) => `<@&${p}>`).join(', ')
+				roles: guildEntry.logpings.map(p => `<@&${p}>`).join(', ')
 			})
 		);
 	}

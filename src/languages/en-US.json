@@ -2,7 +2,13 @@
 	"GENERIC": {
 		"ERROR": "Error",
 		"YES": "Yes",
-		"NO": "No"
+		"NO": "No",
+		"CONTINUE": "Continue",
+		"SKIP": "Skip",
+		"CANCEL": "Cancel",
+		"CANCELED": "Canceled",
+		"QUESTIONS": "Questions",
+		"NONE_YET": "None yet!"
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
@@ -77,8 +83,25 @@
 		"APPLICATION_REMOVE_ROLES": "Remove roles",
 		"APPLICATION_REQUIRED_ROLES": "Required roles",
 		"APPLICATION_CUSTOM_COMMAND": "Custom command",
+		"APPLICATION_COOLDOWN": "Cooldown",
 		"APPLICATION_CLOSED_TITLE": "Closed",
-		"APPLICATION_ID": "ID"
+		"APPLICATION_ID": "ID",
+		"APPLICATION_NEW": {
+			"NEW_APPLICATION": "New application: \"{{application}}\"",
+			"NEW_APPLICATION_QUESTIONS": "__Welcome to the interactive setup of {{application}}!__\n\nTo start, just send the questions you want to add __in separate messages__.\nThere are a maximum of **30 questions**\nEach of those questions have a limit of **253 characters** (discord limit)\nEach question will time out __after 10 minutes of no response.__\nPress \"Cancel\" at any time to cancel and \"Continue\" to continue in creating the application.",
+			"DESCRIPTION_BODY": "Would you like to set an application description? If so, send it and then press continue. If you send another message before pressing continue, it will edit the previous one. If you want to cancel, you can press the cancel button.",
+			"REWARD_ROLES_BODY": "Would you like to add any roles to automatically be given to the user upon being approved? If so, send them in any form (ie mention, id, name) then press continue. If you want to cancel, you can press the cancel button.",
+			"REMOVE_ROLES_BODY": "Would you like to add any roles to automatically be removed from the user upon being approved? If so, send them in any form (ie mention, id, name) then press continue. If you want to cancel, you can press the cancel button.",
+			"REQUIRED_ROLES_BODY": "Would you like to add any roles that applicants need to have before applying? If so, send them in any form (ie mention, id, name) then press continue. If you want to cancel, you can press the cancel button.",
+			"NONE_GIVEN_MULTI": "You can't continue, you haven't set any {{type}}",
+			"NONE_GIVEN_SINGLE": "You can't continue, you haven't set a {{type}}",
+			"CUSTOM_COMMAND_BODY": "Would you like to set a custom command for your application? If so, send it (without the prefix) and then press continue. If you send another message before pressing continue, it will edit the previous one. If you want to cancel, you can press the cancel button.",
+			"COOLDOWN_BODY": "Would you like to set a cooldown for your application? If so, send it (in milliseconds, without commas or periods) and then press continue. If you send another message before pressing continue, it will edit the previous one. If you want to cancel, you can press the cancel button.",
+			"MIN_JOIN_TIME_BODY": "Would you like to set a minimum time users have to be in your server to apply? If so, send it (in milliseconds, without commas or periods) and then press continue. If you send another message before pressing continue, it will edit the previous one. If you want to cancel, you can press the cancel button.",
+			"PLEASE_VERIFY": "Please verify that the settings below are correct, then press the continue button. If you want to cancel, you can press the cancel button.",
+			"SUCCESS": "Successfully created application!"
+		},
+		"APPLICATION_MIN_JOIN_TIME": "Minimum join time"
 	},
 	"HASTEBIN": {
 		"TOO_LARGE": "Too large to display. Hastebin: {{- link}}",
@@ -125,7 +148,8 @@
 			"CONFIG_LOGPING": "Gets the log ping roles for the server",
 			"CONFIG_ARCHIVE": "Sets or gets the archive channel for the server",
 			"POSITIONS": "Lists all the positions of the server",
-			"POSITION": "Shows details for a specific application"
+			"POSITION": "Shows details for a specific application",
+			"CONFIG_NEW": "Creates a new application, interactively."
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",

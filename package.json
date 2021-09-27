@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "yarn run lint && yarn run build",
-		"build": "yarn rimraf dist/ && yarn tsc",
+		"build": "yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
 		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
@@ -23,7 +23,6 @@
 		"eslint": "^7.20.0",
 		"eslint-config-prettier": "^8.3.0",
 		"prettier": "^2.3.0",
-		"rimraf": "^3.0.2",
 		"source-map-support": "^0.5.19",
 		"typescript": "^4.2.2"
 	},
@@ -45,7 +44,8 @@
 		"quoteProps": "consistent",
 		"singleQuote": true,
 		"trailingComma": "none",
-		"endOfLine": "lf"
+		"endOfLine": "lf",
+		"arrowParens": "avoid"
 	},
 	"eslintConfig": {
 		"env": {

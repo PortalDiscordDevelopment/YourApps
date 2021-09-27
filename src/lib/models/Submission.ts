@@ -1,25 +1,13 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
-
-interface ModelAttributes {
-	id: number;
-	author: string;
-	guild: string;
-	position: number;
-	answers: Record<string, unknown>;
-}
-
-interface ModelCreationAttributes {
-	id?: number;
-	author: string;
-	guild: string;
-	position: number;
-	answers: Record<string, unknown>;
-}
+import type {
+	SubmissionModelAttributes,
+	SubmissionModelCreationAttributes
+} from './types';
 
 export class Submission extends BaseModel<
-	ModelAttributes,
-	ModelCreationAttributes
+	SubmissionModelAttributes,
+	SubmissionModelCreationAttributes
 > {
 	declare id: number;
 	declare author: string;

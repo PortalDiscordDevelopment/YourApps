@@ -17,7 +17,7 @@ export default class AdminCheckInhibitor extends BotInhibitor {
 			// If they do not have an admin role, but with all the bases covered
 			!guildEntry ||
 			guildEntry.adminroles.length < 1 ||
-			!message.member!.roles.cache.some((r) =>
+			!message.member!.roles.cache.some(r =>
 				guildEntry.adminroles!.includes(r.id)
 			)
 		) {

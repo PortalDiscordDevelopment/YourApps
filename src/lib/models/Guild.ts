@@ -1,30 +1,15 @@
-import { Snowflake } from 'discord.js';
+import type { Snowflake } from 'discord.js';
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
+import type {
+	GuildModelAttributes,
+	GuildModelCreationAttributes
+} from './types';
 
-interface ModelAttributes {
-	id: string;
-	prefixes: string[];
-	logchannel: Snowflake;
-	archivechannel: Snowflake;
-	logpings: Snowflake[];
-	adminroles: Snowflake[];
-	reviewroles: Snowflake[];
-	blacklistroles: Snowflake[];
-}
-
-interface ModelCreationAttributes {
-	id: string;
-	prefixes?: string[];
-	logchannel?: Snowflake;
-	archivechannel?: Snowflake;
-	logpings?: Snowflake[];
-	adminroles?: Snowflake[];
-	reviewroles?: Snowflake[];
-	blacklistroles?: Snowflake[];
-}
-
-export class Guild extends BaseModel<ModelAttributes, ModelCreationAttributes> {
+export class Guild extends BaseModel<
+	GuildModelAttributes,
+	GuildModelCreationAttributes
+> {
 	declare id: string;
 	declare prefixes: string[];
 	declare logchannel: Snowflake | null;

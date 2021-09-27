@@ -1,38 +1,12 @@
-import { Snowflake } from 'discord.js';
+import type { Snowflake } from 'discord.js';
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
+import type { AppModelAttributes, AppModelCreationAttributes } from './types';
 
-interface ModelAttributes {
-	id: number;
-	name: string;
-	description: string;
-	guild: Snowflake;
-	questions: Record<string, unknown>[];
-	rewardroles: Snowflake[];
-	removeroles: Snowflake[];
-	requiredroles: Snowflake[];
-	customcommand: string;
-	closed: boolean;
-	cooldown: number;
-	minjointime: number;
-}
-
-interface ModelCreationAttributes {
-	id?: number;
-	name: string;
-	description?: string;
-	guild: Snowflake;
-	questions: Record<string, unknown>[];
-	rewardroles?: Snowflake[];
-	removeroles?: Snowflake[];
-	requiredroles?: Snowflake[];
-	customcommand?: string;
-	closed: boolean;
-	cooldown?: number;
-	minjointime?: number;
-}
-
-export class App extends BaseModel<ModelAttributes, ModelCreationAttributes> {
+export class App extends BaseModel<
+	AppModelAttributes,
+	AppModelCreationAttributes
+> {
 	declare id: number;
 	declare name: string;
 	declare description: string | null;

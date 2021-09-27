@@ -28,7 +28,8 @@ export default class ConfigCommand extends BotCommand {
 				['config-open', 'open'],
 				['config-close', 'close'],
 				['config-log', 'log'],
-				['config-archive', 'archive']
+				['config-archive', 'archive'],
+				['config-new', 'new']
 			]
 		};
 		if (subcommand !== null) {
@@ -49,35 +50,35 @@ export default class ConfigCommand extends BotCommand {
 					.addField(
 						this.client.i18n.t('CONFIG.PREFIXES'),
 						this.client.i18n.t('CONFIG.OR_MENTION', {
-							prefixes: guildEntry.prefixes.map((p) => `\`${p}\``).join(', ')
+							prefixes: guildEntry.prefixes.map(p => `\`${p}\``).join(', ')
 						}),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.REVIEW_ROLES'),
 						guildEntry.reviewroles.length > 0
-							? guildEntry.reviewroles.map((r) => `<@&${r}>`).join(', ')
+							? guildEntry.reviewroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.ADMIN_ROLES'),
 						guildEntry.adminroles.length > 0
-							? guildEntry.adminroles.map((r) => `<@&${r}>`).join(', ')
+							? guildEntry.adminroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.BLACKLIST_ROLES'),
 						guildEntry.blacklistroles.length > 0
-							? guildEntry.blacklistroles.map((r) => `<@&${r}>`).join(', ')
+							? guildEntry.blacklistroles.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
 					.addField(
 						this.client.i18n.t('CONFIG.LOG_PING_ROLES'),
 						guildEntry.logpings.length > 0
-							? guildEntry.logpings.map((r) => `<@&${r}>`).join(', ')
+							? guildEntry.logpings.map(r => `<@&${r}>`).join(', ')
 							: this.client.i18n.t('CONFIG.NONE_SET'),
 						true
 					)
