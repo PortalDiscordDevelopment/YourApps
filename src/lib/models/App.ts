@@ -1,7 +1,11 @@
 import type { Snowflake } from 'discord.js';
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
-import type { AppModelAttributes, AppModelCreationAttributes } from './types';
+import type {
+	AppModelAttributes,
+	AppModelCreationAttributes,
+	AppQuestion
+} from './types';
 
 export class App extends BaseModel<
 	AppModelAttributes,
@@ -11,7 +15,7 @@ export class App extends BaseModel<
 	declare name: string;
 	declare description: string | null;
 	declare guild: Snowflake;
-	declare questions: Record<string, unknown>[];
+	declare questions: AppQuestion[];
 	declare rewardroles: Snowflake[];
 	declare removeroles: Snowflake[];
 	declare requiredroles: Snowflake[];

@@ -7,6 +7,7 @@ import { BotClient } from './BotClient';
 import { Snowflake } from 'discord.js';
 import { Guild } from '@lib/models';
 import { TextChannel } from 'discord.js';
+import { AppQuestionType } from '@lib/models/types';
 
 const exec = promisify(execCallback);
 
@@ -154,5 +155,46 @@ export class Util extends ClientUtil {
 				content: this.client.i18n.t(event, variables)
 			});
 		}
+	}
+
+	private questionValidationFunctions: Record<
+		AppQuestionType,
+		(answer: string) =>
+			| {
+					valid: true;
+					processed: unknown;
+					user: string;
+			  }
+			| {
+					valid: false;
+					error: string;
+			  }
+	> = {
+		[AppQuestionType.STRING]: (answer: string) => ({
+			valid: true,
+			processed: answer,
+			user: answer
+		})
+	};
+	/**
+	 * Parses an answer based on a question type
+	 * @param answer The answer given
+	 * @param type The application type
+	 * @returns Processed data if valid, or an error message if not
+	 */
+	public validateQuestionType(
+		answer: string,
+		type: AppQuestionType
+	):
+		| {
+				valid: true;
+				processed: unknown;
+				user: string;
+		  }
+		| {
+				valid: false;
+				error: string;
+		  } {
+		return this.questionValidationFunctions[type](answer);
 	}
 }

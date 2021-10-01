@@ -17,5 +17,8 @@
 	],
 	"i18n-ally.extract.autoDetect": true,
 	"i18n-ally.annotationMaxLength": 70,
-	"prettier.prettierPath": ".yarn/sdks/prettier/index.js"
+	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+	"i18n-ally.extract.ignoredByFiles": {
+		"src/commands/applications/apply.ts": ["✖"]
+	}
 }

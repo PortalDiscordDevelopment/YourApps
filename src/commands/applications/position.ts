@@ -84,17 +84,20 @@ export default class PositionCommand extends BotCommand {
 							: this.client.i18n.t('GENERIC.NO'),
 						true
 					)
-					// Ill make this work later
-					// .addField(
-					// 	'Cooldown',
-					// 	aaaaaaaaaa,
-					// 	true
-					// )
-					// .addField(
-					// 	'Minimum join time',
-					// 	aaaaaaaaaa,
-					// 	true
-					// )
+					.addField(
+						'Cooldown',
+						application.cooldown
+							? `${application.cooldown} milliseconds`
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
+					.addField(
+						'Minimum join time',
+						application.minjointime
+							? `${application.minjointime} milliseconds`
+							: this.client.i18n.t('CONFIG.NONE_SET'),
+						true
+					)
 					.addField(
 						this.client.i18n.t('CONFIG.APPLICATION_ID'),
 						application.id.toString(),

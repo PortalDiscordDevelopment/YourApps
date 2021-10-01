@@ -30,9 +30,13 @@ export interface AppModelCreationAttributes {
 	minjointime?: number;
 }
 
-export enum AppQuestionType { // TODO: Add more types (number, link, custom regex maybe)
+export const enum AppQuestionType { // TODO: Add more types (number, link, custom regex maybe)
 	STRING
 }
+
+export const AppQuestionTypeNice = {
+	[AppQuestionType.STRING]: 'Long answer text'
+};
 
 export interface AppQuestion {
 	// TODO: Add placeholder as and option maybe

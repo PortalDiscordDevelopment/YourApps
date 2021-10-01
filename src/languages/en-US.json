@@ -8,7 +8,10 @@
 		"CANCEL": "Cancel",
 		"CANCELED": "Canceled",
 		"QUESTIONS": "Questions",
-		"NONE_YET": "None yet!"
+		"NONE_YET": "None yet!",
+		"TIMED_OUT": "Timed out",
+		"SUBMITTING": "Submitting...",
+		"SUBMITTED": "Sucessfully submitted your application."
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
@@ -149,12 +152,18 @@
 			"CONFIG_ARCHIVE": "Sets or gets the archive channel for the server",
 			"POSITIONS": "Lists all the positions of the server",
 			"POSITION": "Shows details for a specific application",
-			"CONFIG_NEW": "Creates a new application, interactively."
+			"CONFIG_NEW": "Creates a new application, interactively.",
+			"APPLY": "Starts an application for the specified position, in DMs."
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
 		"NO_APPLICATIONS": "This server has no applications!",
-		"POSITIONS_TITLE": "{{guild}}'s positions"
+		"POSITIONS_TITLE": "{{guild}}'s positions",
+		"ARE_YOU_SURE_APPLICATION": "Are you sure you want to apply to {{application}}? If yes, press continue. If no, press cancel. Continuing will DM you (make sure you have them on) with the application questions.",
+		"APPLICATION_FOR": "Application for \"{{application}}\"",
+		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the first empty answer space. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
+		"YOUR_ANSWER": "Your answer here ({{type}})",
+		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted."
 	},
 	"BLOCKED": {
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",
