@@ -5,9 +5,9 @@ import { Util as DiscordUtil } from 'discord.js';
 import got from 'got';
 import { BotClient } from './BotClient';
 import { Snowflake } from 'discord.js';
-import { Guild } from '@lib/models';
+import { App, Guild, Submission } from '@lib/models';
 import { TextChannel } from 'discord.js';
-import { AppQuestionType } from '@lib/models/types';
+import { AnswerType, AppQuestionType } from '@lib/models/types';
 
 const exec = promisify(execCallback);
 
@@ -25,7 +25,9 @@ export enum LogEvent {
 	CLOSE = 'LOGGING.CLOSE',
 	OPEN = 'LOGGING.OPEN',
 	LOG_CHANNEL = 'LOGGING.LOG_CHANNEL',
-	ARCHIVE_CHANNEL = 'LOGGING.ARCHIVE_CHANNEL'
+	ARCHIVE_CHANNEL = 'LOGGING.ARCHIVE_CHANNEL',
+	SUBMISSION_APPROVED = 'LOGGING.SUBMISSION_APPROVED',
+	SUBMISSION_DENIED = 'LOGGING.SUBMISSION_DENIED'
 }
 
 export class Util extends ClientUtil {
@@ -162,7 +164,7 @@ export class Util extends ClientUtil {
 		(answer: string) =>
 			| {
 					valid: true;
-					processed: unknown;
+					processed: AnswerType;
 					user: string;
 			  }
 			| {
@@ -188,7 +190,7 @@ export class Util extends ClientUtil {
 	):
 		| {
 				valid: true;
-				processed: unknown;
+				processed: AnswerType;
 				user: string;
 		  }
 		| {
@@ -196,5 +198,51 @@ export class Util extends ClientUtil {
 				error: string;
 		  } {
 		return this.questionValidationFunctions[type](answer);
+	}
+
+	public async approveSubmission(submission: Submission) {
+		const app = (await App.findByPk(submission.position))!;
+		const guild = await this.client.guilds.fetch(submission.guild);
+		const member = await guild.members.fetch(submission.author);
+		// Attempt to add all reward roles
+		member.roles.add(app.rewardroles).catch(() => undefined);
+		// Attempt to remove all remove roles
+		member.roles.remove(app.removeroles).catch(() => undefined);
+		submission.destroy(); // Delete submission
+		this.logEvent(guild.id, LogEvent.SUBMISSION_APPROVED, {
+			// Log submission
+			user: member.user.tag,
+			application: app.name
+		});
+		// Attempt to DM user
+		await member
+			.send(
+				this.client.i18n.t('GENERIC.APPROVED', {
+					application: app.name,
+					guild: guild.name
+				})
+			)
+			.catch(() => undefined);
+	}
+
+	public async denySubmission(submission: Submission) {
+		const app = (await App.findByPk(submission.position))!;
+		const guild = await this.client.guilds.fetch(submission.guild);
+		const member = await guild.members.fetch(submission.author);
+		submission.destroy(); // Delete submission
+		this.logEvent(guild.id, LogEvent.SUBMISSION_DENIED, {
+			// Log submission
+			user: member.user.tag,
+			application: app.name
+		});
+		// Attempt to DM user
+		await member
+			.send(
+				this.client.i18n.t('GENERIC.DENIED', {
+					application: app.name,
+					guild: guild.name
+				})
+			)
+			.catch(() => undefined);
 	}
 }

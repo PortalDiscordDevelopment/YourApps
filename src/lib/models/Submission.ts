@@ -1,6 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 import type {
+	AnswerType,
 	SubmissionModelAttributes,
 	SubmissionModelCreationAttributes
 } from './types';
@@ -13,7 +14,7 @@ export class Submission extends BaseModel<
 	declare author: string;
 	declare guild: string;
 	declare position: number;
-	declare answers: Record<string, unknown>;
+	declare answers: Record<string, AnswerType>;
 	static initModel(sequelize: Sequelize) {
 		Submission.init(
 			{

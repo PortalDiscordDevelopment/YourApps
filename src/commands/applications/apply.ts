@@ -2,7 +2,11 @@ import { BotClient } from '@lib/ext/BotClient';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { App } from '@lib/models/App';
 import { Submission } from '@lib/models/Submission';
-import { AppQuestionType, AppQuestionTypeNice } from '@lib/models/types';
+import {
+	AnswerType,
+	AppQuestionType,
+	AppQuestionTypeNice
+} from '@lib/models/types';
 import {
 	Message,
 	MessageActionRow,
@@ -89,7 +93,7 @@ export default class ApplyCommand extends BotCommand {
 		}
 		await response.deferUpdate();
 		// * Actually start the DM application
-		const answers: Record<string, unknown> = {};
+		const answers: Record<string, AnswerType> = {};
 		const cancelButtonId = `cancelApplication|1|${message.id}|${
 			message.editedTimestamp ?? message.createdTimestamp
 		}`;

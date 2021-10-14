@@ -38,6 +38,8 @@ export const AppQuestionTypeNice = {
 	[AppQuestionType.STRING]: 'Long answer text'
 };
 
+export type AnswerType = string;
+
 export interface AppQuestion {
 	// TODO: Add placeholder as and option maybe
 	question: string;
@@ -71,7 +73,7 @@ export interface SubmissionModelAttributes {
 	author: string;
 	guild: string;
 	position: number;
-	answers: Record<string, unknown>;
+	answers: Record<string, AnswerType>;
 }
 
 export interface SubmissionModelCreationAttributes {
@@ -79,5 +81,5 @@ export interface SubmissionModelCreationAttributes {
 	author: string;
 	guild: string;
 	position: number;
-	answers: Record<string, unknown>;
+	answers: Record<string, AnswerType>;
 }

@@ -11,7 +11,13 @@
 		"NONE_YET": "None yet!",
 		"TIMED_OUT": "Timed out",
 		"SUBMITTING": "Submitting...",
-		"SUBMITTED": "Sucessfully submitted your application."
+		"SUBMITTED": "Sucessfully submitted your application.",
+		"APPROVE": "Approve",
+		"DENY": "Deny",
+		"APPROVED": "You were approved for application {{application}} in server {{guild}}!",
+		"DENIED": "You were denied for application {{application}} in server {{guild}}.",
+		"SUCCESSFULLY_APPROVED": "Successfully approved application!",
+		"SUCCESSFULLY_DENIED": "Successfully denied application"
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
@@ -163,7 +169,11 @@
 		"APPLICATION_FOR": "Application for \"{{application}}\"",
 		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the first empty answer space. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
 		"YOUR_ANSWER": "Your answer here ({{type}})",
-		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted."
+		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted.",
+		"REVIEW_DESCRIPTION": "Reviews a user for a specified application, allowing you to approve or deny them",
+		"REVIEW_NOT_APPLIED": "That user has not applied for that position!",
+		"REVIEW_TITLE": "{{user}}'s application for {{application}}",
+		"REVIEW_EMBED_DESCRIPTION": "Review the questions and answers below, then press one of the buttons to either approve this person, deny this person, or cancel reviewing. Once approved, the user will be given all reward roles and removed all remove roles."
 	},
 	"BLOCKED": {
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",
@@ -185,6 +195,8 @@
 		"LOGPING_ROLE_ADD": "<@&{{roleID}}> was added to the server log ping roles.",
 		"LOGPING_ROLE_REMOVED": "<@&{{roleID}}> was removed from the server log ping roles.",
 		"CLOSE": "{{application}} was closed.",
-		"OPEN": "{{application}} was opened."
+		"OPEN": "{{application}} was opened.",
+		"SUBMISSION_APPROVED": "{{user}} was approved for postion {{application}}.",
+		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}}."
 	}
 }
