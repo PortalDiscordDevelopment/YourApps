@@ -55,8 +55,13 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.PREFIX_REMOVED', { prefix })
 		);
-		await this.client.util.logEvent(message.guild!.id, message.author, LogEvent.PREFIX_REMOVE, {
-			prefix
-		});
+		await this.client.util.logEvent(
+			message.guild!.id,
+			message.author,
+			LogEvent.PREFIX_REMOVE,
+			{
+				prefix
+			}
+		);
 	}
 }

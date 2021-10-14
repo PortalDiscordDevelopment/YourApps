@@ -157,11 +157,14 @@ export class Util extends ClientUtil {
 					parse: []
 				},
 				embeds: [
-					this.client.util.embed()
-						.setDescription(
-							this.client.i18n.t(event, variables)
-						)
-						.setAuthor(user.tag, user.displayAvatarURL({ dynamic: true }), `https://discord.com/users/${user.id}`) // TODO: Change this to discord://-/users once supported
+					this.client.util
+						.embed()
+						.setDescription(this.client.i18n.t(event, variables))
+						.setAuthor(
+							user.tag,
+							user.displayAvatarURL({ dynamic: true }),
+							`https://discord.com/users/${user.id}`
+						) // TODO: Change this to discord://-/users once supported
 				]
 			});
 		}

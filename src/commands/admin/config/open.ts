@@ -43,8 +43,13 @@ export default class OpenCommand extends BotCommand {
 				application: application.name
 			})
 		);
-		await this.client.util.logEvent(message.guild!.id, message.author, LogEvent.OPEN, {
-			application: application.name
-		});
+		await this.client.util.logEvent(
+			message.guild!.id,
+			message.author,
+			LogEvent.OPEN,
+			{
+				application: application.name
+			}
+		);
 	}
 }

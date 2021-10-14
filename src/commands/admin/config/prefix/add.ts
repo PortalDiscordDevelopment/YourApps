@@ -51,8 +51,13 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		await message.util!.send(
 			this.client.i18n.t('CONFIG.PREFIX_ADDED', { prefix })
 		);
-		await this.client.util.logEvent(message.guild!.id, message.author, LogEvent.PREFIX_ADD, {
-			prefix
-		});
+		await this.client.util.logEvent(
+			message.guild!.id,
+			message.author,
+			LogEvent.PREFIX_ADD,
+			{
+				prefix
+			}
+		);
 	}
 }

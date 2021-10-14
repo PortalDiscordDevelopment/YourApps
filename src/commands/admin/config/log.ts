@@ -51,8 +51,13 @@ export default class ConfigLogCommand extends BotCommand {
 				channelID: channel.id
 			})
 		);
-		await this.client.util.logEvent(message.guild!.id, message.author, LogEvent.LOG_CHANNEL, {
-			channelID: channel.id
-		});
+		await this.client.util.logEvent(
+			message.guild!.id,
+			message.author,
+			LogEvent.LOG_CHANNEL,
+			{
+				channelID: channel.id
+			}
+		);
 	}
 }
