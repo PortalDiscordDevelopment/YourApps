@@ -54,6 +54,7 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
+			message.author,
 			LogEvent.REVIEW_ROLE_ADD,
 			{ roleID: role.id }
 		);

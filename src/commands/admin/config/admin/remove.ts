@@ -54,6 +54,7 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
+			message.author,
 			LogEvent.ADMIN_ROLE_REMOVE,
 			{ roleID: role.id }
 		);

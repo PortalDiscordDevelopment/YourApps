@@ -244,6 +244,7 @@ export default class ApplyCommand extends BotCommand {
 		await submissionEntry.save();
 		await client.util.logEvent(
 			message.guildId!,
+			message.author,
 			LogEvent.APPLICATION_SUBMITTED,
 			{
 				user: message.author.tag,

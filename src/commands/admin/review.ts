@@ -124,13 +124,13 @@ export default class ReviewCommand extends BotCommand {
 		await response.deferReply();
 		switch (response.customId) {
 			case approveButtonId:
-				await this.client.util.approveSubmission(submission);
+				await this.client.util.approveSubmission(message.author, submission);
 				await response.editReply(
 					this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED')
 				);
 				break;
 			case denyButtonId:
-				await this.client.util.denySubmission(submission);
+				await this.client.util.denySubmission(message.author, submission);
 				await response.editReply(
 					this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED')
 				);

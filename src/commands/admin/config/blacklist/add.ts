@@ -54,6 +54,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
+			message.author,
 			LogEvent.BLACKLIST_ROLE_ADD,
 			{ roleID: role.id }
 		);

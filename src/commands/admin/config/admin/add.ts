@@ -54,6 +54,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
+			message.author,
 			LogEvent.ADMIN_ROLE_ADD,
 			{ roleID: role.id }
 		);

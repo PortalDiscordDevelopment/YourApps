@@ -1,7 +1,7 @@
 import { ClientUtil } from 'discord-akairo';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import { Util as DiscordUtil } from 'discord.js';
+import { User, Util as DiscordUtil } from 'discord.js';
 import got from 'got';
 import { BotClient } from './BotClient';
 import { Snowflake } from 'discord.js';
@@ -144,6 +144,7 @@ export class Util extends ClientUtil {
 	 */
 	public async logEvent(
 		guildID: Snowflake,
+		user: User,
 		event: LogEvent,
 		variables: Record<string, string>
 	) {
@@ -155,7 +156,13 @@ export class Util extends ClientUtil {
 				allowedMentions: {
 					parse: []
 				},
-				content: this.client.i18n.t(event, variables)
+				embeds: [
+					this.client.util.embed()
+						.setDescription(
+							this.client.i18n.t(event, variables)
+						)
+						.setAuthor(user.tag, user.displayAvatarURL({ dynamic: true }), `https://discord.com/users/${user.id}`) // TODO: Change this to discord://-/users once supported
+				]
 			});
 		}
 	}
@@ -201,7 +208,7 @@ export class Util extends ClientUtil {
 		return this.questionValidationFunctions[type](answer);
 	}
 
-	public async approveSubmission(submission: Submission) {
+	public async approveSubmission(user: User, submission: Submission) {
 		const app = (await App.findByPk(submission.position))!;
 		const guild = await this.client.guilds.fetch(submission.guild);
 		const member = await guild.members.fetch(submission.author);
@@ -210,7 +217,7 @@ export class Util extends ClientUtil {
 		// Attempt to remove all remove roles
 		member.roles.remove(app.removeroles).catch(() => undefined);
 		submission.destroy(); // Delete submission
-		this.logEvent(guild.id, LogEvent.SUBMISSION_APPROVED, {
+		this.logEvent(guild.id, user, LogEvent.SUBMISSION_APPROVED, {
 			// Log submission
 			user: member.user.tag,
 			application: app.name
@@ -226,12 +233,12 @@ export class Util extends ClientUtil {
 			.catch(() => undefined);
 	}
 
-	public async denySubmission(submission: Submission) {
+	public async denySubmission(user: User, submission: Submission) {
 		const app = (await App.findByPk(submission.position))!;
 		const guild = await this.client.guilds.fetch(submission.guild);
 		const member = await guild.members.fetch(submission.author);
 		submission.destroy(); // Delete submission
-		this.logEvent(guild.id, LogEvent.SUBMISSION_DENIED, {
+		this.logEvent(guild.id, user, LogEvent.SUBMISSION_DENIED, {
 			// Log submission
 			user: member.user.tag,
 			application: app.name

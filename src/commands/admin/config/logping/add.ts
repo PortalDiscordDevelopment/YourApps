@@ -54,6 +54,7 @@ export default class ConfigLogpingAddCommand extends BotCommand {
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
+			message.author,
 			LogEvent.LOGPING_ROLE_ADD,
 			{ roleID: role.id }
 		);
