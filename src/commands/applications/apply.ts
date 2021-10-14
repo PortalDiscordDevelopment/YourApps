@@ -1,5 +1,6 @@
 import { BotClient } from '@lib/ext/BotClient';
 import { BotCommand } from '@lib/ext/BotCommand';
+import { LogEvent } from '@lib/ext/Util';
 import { App } from '@lib/models/App';
 import { Submission } from '@lib/models/Submission';
 import {
@@ -241,6 +242,10 @@ export default class ApplyCommand extends BotCommand {
 			answers
 		});
 		await submissionEntry.save();
+		await client.util.logEvent(message.guildId!, LogEvent.APPLICATION_SUBMITTED, {
+			user: message.author.tag,
+			application: app.name
+		})
 		await submissionResponse.editReply({
 			content: client.i18n.t('GENERIC.SUBMITTED')
 		});

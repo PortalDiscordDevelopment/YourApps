@@ -197,6 +197,7 @@
 		"CLOSE": "{{application}} was closed.",
 		"OPEN": "{{application}} was opened.",
 		"SUBMISSION_APPROVED": "{{user}} was approved for postion {{application}}.",
-		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}}."
+		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}}.",
+		"APPLICATION_SUBMITTED": "{{user}} made a new application for position {{application}}."
 	}
 }
