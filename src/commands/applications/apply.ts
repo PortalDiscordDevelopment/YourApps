@@ -242,10 +242,14 @@ export default class ApplyCommand extends BotCommand {
 			answers
 		});
 		await submissionEntry.save();
-		await client.util.logEvent(message.guildId!, LogEvent.APPLICATION_SUBMITTED, {
-			user: message.author.tag,
-			application: app.name
-		})
+		await client.util.logEvent(
+			message.guildId!,
+			LogEvent.APPLICATION_SUBMITTED,
+			{
+				user: message.author.tag,
+				application: app.name
+			}
+		);
 		await submissionResponse.editReply({
 			content: client.i18n.t('GENERIC.SUBMITTED')
 		});
