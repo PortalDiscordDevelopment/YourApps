@@ -7,17 +7,22 @@ interface BotCommandOptions extends CommandOptions {
 		usage: string;
 		examples: string[];
 	};
-	parent?: boolean;
+	children?: string[];
 	permissionCheck?: 'admin' | 'reviewer';
 }
 
 export class BotCommand extends Command {
 	declare client: BotClient;
-	public parent: boolean;
+	declare description: {
+		content: () => string;
+		usage: string;
+		examples: string[];
+	};
+	public children: string[];
 	public permissionCheck?: 'admin' | 'reviewer';
 	public constructor(id: string, options: BotCommandOptions) {
 		super(id, options);
-		this.parent = options.parent ?? false;
+		this.children = options.children ?? [];
 		this.permissionCheck = options.permissionCheck;
 	}
 }

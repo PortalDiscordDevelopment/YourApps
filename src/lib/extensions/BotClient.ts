@@ -102,6 +102,15 @@ export class BotClient extends AkairoClient {
 				return foundApps;
 			}
 		);
+		this.commandHandler.resolver.addType(
+			'commandAliasImproved',
+			(message, phrase) => {
+				return this.commandHandler.resolver.type('commandAlias')(
+					message,
+					phrase.replace(/ /g, '-')
+				);
+			}
+		);
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: join(__dirname, '..', '..', 'listeners'),
 			automateCategories: true

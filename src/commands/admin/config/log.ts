@@ -20,6 +20,7 @@ export default class ConfigLogCommand extends BotCommand {
 				}
 			],
 			channel: 'guild',
+			children: ['config-logping-add', 'config-logping-remove'],
 			permissionCheck: 'admin'
 		});
 	}

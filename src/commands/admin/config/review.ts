@@ -15,6 +15,7 @@ export default class ConfigReviewCommand extends BotCommand {
 			},
 			channel: 'guild',
 			category: 'admin',
+			children: ['config-review-add', 'config-review-remove'],
 			permissionCheck: 'admin'
 		});
 	}

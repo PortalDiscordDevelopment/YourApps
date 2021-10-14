@@ -14,6 +14,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 				examples: ['config blacklist']
 			},
 			channel: 'guild',
+			children: ['config-blacklist-add', 'config-blacklist-remove'],
 			category: 'admin',
 			permissionCheck: 'admin'
 		});

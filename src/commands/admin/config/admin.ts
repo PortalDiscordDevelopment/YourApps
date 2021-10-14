@@ -13,6 +13,7 @@ export default class ConfigAdminCommand extends BotCommand {
 				examples: ['config admin']
 			},
 			channel: 'guild',
+			children: ['config-admin-add', 'config-admin-remove'],
 			category: 'admin',
 			permissionCheck: 'admin'
 		});

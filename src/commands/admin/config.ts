@@ -12,7 +12,18 @@ export default class ConfigCommand extends BotCommand {
 				usage: 'config',
 				examples: ['config']
 			},
-			parent: true,
+			children: [
+				'config-prefix',
+				'config-admin',
+				'config-blacklist',
+				'config-logping',
+				'config-review',
+				'config-open',
+				'config-close',
+				'config-log',
+				'config-archive',
+				'config-new'
+			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});

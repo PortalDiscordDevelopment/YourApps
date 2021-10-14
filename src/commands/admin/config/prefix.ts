@@ -15,6 +15,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 			},
 			channel: 'guild',
 			category: 'admin',
+			children: ['config-prefix-add', 'config-prefix-remove'],
 			permissionCheck: 'admin'
 		});
 	}
