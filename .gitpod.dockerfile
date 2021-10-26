@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full:latest
+FROM gitpod/workspace-postgres:latest
 
 RUN bash -c ". .nvm/nvm.sh && nvm install 16 && nvm use 16 && nvm alias default 16"
 
