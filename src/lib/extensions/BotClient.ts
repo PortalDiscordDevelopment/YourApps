@@ -27,6 +27,7 @@ export interface BotConfig {
 		error: Snowflake;
 	};
 	ownerIDs: string[];
+	migrationToken: string;
 }
 
 export class BotClient extends AkairoClient {

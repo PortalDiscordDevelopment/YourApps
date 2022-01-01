@@ -18,7 +18,8 @@
 		"DENIED": "You were denied for application {{application}} in server {{guild}}.",
 		"SUCCESSFULLY_APPROVED": "Successfully approved application!",
 		"SUCCESSFULLY_DENIED": "Successfully denied application",
-		"PARENT": "(command group)"
+		"PARENT": "(command group)",
+		"HTTP_RESPONSE": "Http response"
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {

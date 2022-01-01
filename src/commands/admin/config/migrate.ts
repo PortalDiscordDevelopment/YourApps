@@ -3,6 +3,7 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { App, Guild, Submission } from '@lib/models';
 import got, { HTTPError } from 'got';
 import { AppQuestionType } from '@lib/models/types';
+import { stripIndent } from 'common-tags';
 
 export interface GuildData {
 	id: Snowflake;
@@ -67,6 +68,12 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 	}
 	async exec(message: Message) {
+		const authHeaders = {
+			headers: {
+				Authorization: `Bearer ${this.client.config.migrationToken}`
+			}
+		};
+
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -79,7 +86,10 @@ export default class ConfigLogpingCommand extends BotCommand {
 		let guildData: GuildData;
 		try {
 			guildData = await got
-				.get(`https://api.yourapps.cyou/guilds/${message.guild!.id}`)
+				.get(
+					`https://api.yourapps.cyou/guilds/${message.guild!.id}`,
+					authHeaders
+				)
 				.json();
 		} catch (e) {
 			if (e instanceof HTTPError && e.response.statusCode == 404) {
@@ -87,10 +97,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 					this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
 				);
 			} else {
-				await message.util!.send(
-					this.client.i18n.t('ERROR.UNKNOWN_TRANSFER_ERROR')
-				);
-				console.error(e);
+				await this.logError(message, e);
 			}
 			return;
 		}
@@ -115,27 +122,27 @@ export default class ConfigLogpingCommand extends BotCommand {
 		const map: Record<string, number> = {};
 		try {
 			guildPositions = await got
-				.get(`https://api.yourapps.cyou/guilds/${message.guild!.id}/positions`)
+				.get(
+					`https://api.yourapps.cyou/guilds/${message.guild!.id}/positions`,
+					authHeaders
+				)
 				.json();
 		} catch (e) {
-			await message.util!.send(
-				this.client.i18n.t('ERROR.UNKNOWN_TRANSFER_ERROR')
-			);
-			console.error(e);
+			await this.logError(message, e);
 			return;
 		}
 		for (const position of guildPositions) {
 			let data: PositionData;
 			try {
 				data = await got
-					.get(`https://api.yourapps.cyou/positions/${position.id}}`)
+					.get(
+						`https://api.yourapps.cyou/positions/${position.id}`,
+						authHeaders
+					)
 					.json();
 			} catch (e) {
 				if (e.response?.statusCode == 404) continue;
-				await message.util!.send(
-					this.client.i18n.t('ERROR.UNKNOWN_TRANSFER_ERROR')
-				);
-				console.error(e);
+				await this.logError(message, e);
 				return;
 			}
 			const app = App.build({
@@ -158,14 +165,12 @@ export default class ConfigLogpingCommand extends BotCommand {
 		try {
 			submittedApps = await got
 				.get(
-					`https://api.yourapps.cyou/guilds/${message.guild!.id}/applications`
+					`https://api.yourapps.cyou/guilds/${message.guild!.id}/applications`,
+					authHeaders
 				)
 				.json();
 		} catch (e) {
-			await message.util!.send(
-				this.client.i18n.t('ERROR.UNKNOWN_TRANSFER_ERROR')
-			);
-			console.error(e);
+			await this.logError(message, e);
 			return;
 		}
 		for (const app of submittedApps) {
@@ -184,5 +189,54 @@ export default class ConfigLogpingCommand extends BotCommand {
 		await message.util?.send(
 			'Successfully migrated all compatible settings, positions, and submitted applications.'
 		);
+	}
+
+	async logError(message: Message, e: HTTPError) {
+		const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
+		const errorEmbed = this.client.util
+			.embed()
+			.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.TITLE', { errorNo }))
+			.setDescription(
+				this.client.i18n.t('ERROR_LOGGING.COMMAND.BODY', {
+					userID: message.author.id,
+					userTag: message.author.tag,
+					command: 'config-migrate',
+					channelID: message.channel.id,
+					messageUrl: message.url
+				})
+			)
+			.addField(
+				this.client.i18n.t('GENERIC.ERROR'),
+				await this.client.util.codeblock(`${e.stack}`, 1024, 'js')
+			)
+			.addField(
+				this.client.i18n.t('GENERIC.HTTP_RESPONSE'),
+				await this.client.util.codeblock(
+					stripIndent`
+							Code: ${e.response.statusCode}
+							Message: ${e.response.statusMessage}
+							Url: ${e.response.requestUrl}
+						`,
+					1024,
+					'js'
+				)
+			);
+
+		await this.client.errorChannel.send({
+			embeds: [errorEmbed]
+		});
+		const errorUserEmbed = this.client.util
+			.embed()
+			.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED'))
+			.setDescription(
+				this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', {
+					command: message.util!.parsed!.alias,
+					errorNo
+				})
+			);
+		await message.util!.send({
+			embeds: [errorUserEmbed]
+		});
+		await message.util?.send({ embeds: [errorUserEmbed] });
 	}
 }
