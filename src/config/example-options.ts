@@ -10,3 +10,4 @@ export const channels = {
 	error: 'error channel id'
 	// May add log channel later
 };
+export const migrationToken = 'token here';

@@ -55,6 +55,7 @@ export interface GuildModelAttributes {
 	adminroles: Snowflake[];
 	reviewroles: Snowflake[];
 	blacklistroles: Snowflake[];
+	legacypremium: boolean;
 }
 
 export interface GuildModelCreationAttributes {
@@ -66,6 +67,7 @@ export interface GuildModelCreationAttributes {
 	adminroles?: Snowflake[];
 	reviewroles?: Snowflake[];
 	blacklistroles?: Snowflake[];
+	legacypremium?: boolean;
 }
 
 export interface SubmissionModelAttributes {

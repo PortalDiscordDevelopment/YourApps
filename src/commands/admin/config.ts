@@ -22,7 +22,8 @@ export default class ConfigCommand extends BotCommand {
 				'config-close',
 				'config-log',
 				'config-archive',
-				'config-new'
+				'config-new',
+				'config-migrate'
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'

@@ -18,6 +18,8 @@ export class Guild extends BaseModel<
 	declare adminroles: Snowflake[];
 	declare reviewroles: Snowflake[];
 	declare blacklistroles: Snowflake[];
+	declare legacypremium: boolean;
+
 	static initModel(sequelize: Sequelize, defaultPrefix: string) {
 		Guild.init(
 			{
@@ -58,6 +60,11 @@ export class Guild extends BaseModel<
 					type: DataTypes.ARRAY(DataTypes.STRING),
 					allowNull: false,
 					defaultValue: []
+				},
+				legacypremium: {
+					type: DataTypes.BOOLEAN,
+					allowNull: false,
+					defaultValue: false
 				}
 			},
 			{ sequelize }
