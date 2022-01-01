@@ -26,6 +26,7 @@ export interface BotConfig {
 	channels: {
 		error: Snowflake;
 	};
+	ownerIDs: string[];
 }
 
 export class BotClient extends AkairoClient {
@@ -41,7 +42,7 @@ export class BotClient extends AkairoClient {
 	public constructor(config: BotConfig) {
 		super(
 			{
-				ownerID: ['487443883127472129']
+				ownerID: config.ownerIDs
 			},
 			{
 				allowedMentions: {
