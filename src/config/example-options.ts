@@ -11,3 +11,7 @@ export const channels = {
 	// May add log channel later
 };
 export const migrationToken = 'token here';
+export const ownerIDs = [
+	"559458018048344064",
+	"487443883127472129"
+]
