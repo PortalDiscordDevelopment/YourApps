@@ -41,7 +41,8 @@ export default class ConfigCommand extends BotCommand {
 				['config-close', 'close'],
 				['config-log', 'log'],
 				['config-archive', 'archive'],
-				['config-new', 'new']
+				['config-new', 'new'],
+				['config-migrate', 'migrate']
 			]
 		};
 		if (subcommand !== null) {

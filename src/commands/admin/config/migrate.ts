@@ -53,8 +53,8 @@ export interface ApplicationData {
 
 export default class ConfigLogpingCommand extends BotCommand {
 	public constructor() {
-		super('config-logping', {
-			aliases: ['config-logping'],
+		super('config-migrate', {
+			aliases: ['config-migrate'],
 			description: {
 				content: () =>
 					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_MIGRATE'),
