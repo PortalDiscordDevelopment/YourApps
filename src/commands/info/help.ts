@@ -95,7 +95,7 @@ export default class HelpCommand extends BotCommand {
 									: ''
 							}\``;
 						})
-						.join(' ')
+						.join('\n')
 				);
 			}
 
