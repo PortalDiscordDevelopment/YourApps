@@ -117,6 +117,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		guildEntry.logchannel = guildData.log_channel;
 		guildEntry.archivechannel = guildData.archive_channel;
 		guildEntry.legacypremium = guildData.premium;
+		await guildEntry.save();
 		// Transfer positions
 		let guildPositions: GuildPositionData[];
 		const map: Record<string, number> = {};
