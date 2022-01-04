@@ -17,11 +17,11 @@ export default class UpdateCommand extends BotCommand {
 
 	public async exec(message: Message) {
 		try {
-			await message.util!.send('Git pulling...')
+			await message.util!.send('Git pulling...');
 			await this.client.util.shell(`git pull`);
-			await message.util!.send('Testing build...')
+			await message.util!.send('Testing build...');
 			await this.client.util.shell(`yarn build`);
-			await message.util!.send('Restarting bot...')
+			await message.util!.send('Restarting bot...');
 			await this.client.util.shell(`pm2 restart yourapps`);
 		} catch (e) {
 			return message.util!.send(
