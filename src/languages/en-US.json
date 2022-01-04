@@ -177,7 +177,8 @@
 		"REVIEW_NOT_APPLIED": "That user has not applied for that position!",
 		"REVIEW_TITLE": "{{user}}'s application for {{application}}",
 		"REVIEW_EMBED_DESCRIPTION": "Review the questions and answers below, then press one of the buttons to either approve this person, deny this person, or cancel reviewing. Once approved, the user will be given all reward roles and removed all remove roles.",
-		"HELP_DESCRIPTION": "Displays a list of commands, or detailed information for a specific command."
+		"HELP_DESCRIPTION": "Displays a list of commands, or detailed information for a specific command.",
+		"NO_SUBMISSIONS": "No applications have been submitted!"
 	},
 	"BLOCKED": {
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",
