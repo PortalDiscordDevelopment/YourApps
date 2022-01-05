@@ -15,7 +15,8 @@ export default class ConfigLogpingCommand extends BotCommand {
 			},
 			channel: 'guild',
 			category: 'admin',
-			permissionCheck: 'admin'
+			permissionCheck: 'admin',
+			children: ['config-logping-add', 'config-logping-remove']
 		});
 	}
 	*args(): Generator<ArgumentOptions, Flag | undefined, string> {
