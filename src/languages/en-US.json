@@ -112,7 +112,8 @@
 			"PLEASE_VERIFY": "Please verify that the settings below are correct, then press the continue button. If you want to cancel, you can press the cancel button.",
 			"SUCCESS": "Successfully created application!"
 		},
-		"APPLICATION_MIN_JOIN_TIME": "Minimum join time"
+		"APPLICATION_MIN_JOIN_TIME": "Minimum join time",
+		"APPLICATION_DELETED": "Deleted application {{app}}!"
 	},
 	"HASTEBIN": {
 		"TOO_LARGE": "Too large to display. Hastebin: {{- link}}",
@@ -163,7 +164,8 @@
 			"CONFIG_NEW": "Creates a new application, interactively.",
 			"APPLY": "Starts an application for the specified position, in DMs.",
 			"CONFIG_MIGRATE": "Migrates all data from the v3 version of yourapps to the current version",
-			"UPDATE": "Git pulls the latest code and then restarts with pm2"
+			"UPDATE": "Git pulls the latest code and then restarts with pm2",
+			"CONFIG_DELETE": "Deletes an application. THIS IS IRREVERSABLE!"
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
