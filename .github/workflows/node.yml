@@ -69,7 +69,7 @@ jobs:
       - name: Format and commit code if needed
         run: |
           yarn format
-          git commit -am "Automatically format code" || true
+          git commit -am "refactor: Automatically formatted code" || true
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
