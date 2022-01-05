@@ -121,19 +121,23 @@ export default class ReviewCommand extends BotCommand {
 				i.user.id == message.author.id,
 			componentType: 'BUTTON'
 		});
-		await response.deferReply();
+		await response.deferUpdate();
 		switch (response.customId) {
 			case approveButtonId:
 				await this.client.util.approveSubmission(message.author, submission);
-				await response.editReply(
-					this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED')
-				);
+				await reviewMessage.edit({
+					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
+					components: [],
+					embeds: []
+				});
 				break;
 			case denyButtonId:
 				await this.client.util.denySubmission(message.author, submission);
-				await response.editReply(
-					this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED')
-				);
+				await reviewMessage.edit({
+					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED'),
+					components: [],
+					embeds: []
+				});
 				break;
 			case cancelButtonId:
 				await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
