@@ -170,6 +170,51 @@ export class Util extends ClientUtil {
 		}
 	}
 
+	public async archiveApplication(
+		guildID: Snowflake,
+		submission: Submission,
+		accepted: boolean,
+		user: User,
+		reviewer: User
+	) {
+		const guild = await Guild.findByPk(guildID);
+		if (!guild || !guild.archivechannel) return;
+		const channel = await this.client.channels.fetch(guild.archivechannel);
+		if (channel instanceof TextChannel) {
+			await channel.send({
+				allowedMentions: {
+					parse: []
+				},
+				embeds: [
+					this.client.util
+						.embed()
+						.setTitle(
+							accepted
+								? this.client.i18n.t('LOGGING.APPLICATION_APPROVED')
+								: this.client.i18n.t('LOGGING.APPLICATION_DENIED')
+						)
+						.setFields(
+							Object.entries(submission.answers).map(e => ({
+								name: e[0],
+								value: e[1],
+								inline: true
+							}))
+						)
+						.setAuthor(
+							`Submitted by ${user.tag}`,
+							user.displayAvatarURL({ dynamic: true }),
+							`https://discord.com/users/${user.id}`
+						) // TODO: Change this to discord://-/users once supported
+						.setColor(accepted ? '#74eb34' : '#fc3503')
+						.setFooter(
+							`Reviewed by ${reviewer.tag}`,
+							reviewer.displayAvatarURL({ dynamic: true })
+						)
+				]
+			});
+		}
+	}
+
 	private questionValidationFunctions: Record<
 		AppQuestionType,
 		(answer: string) =>
@@ -225,6 +270,13 @@ export class Util extends ClientUtil {
 			user: member.user.tag,
 			application: app.name
 		});
+		await this.client.util.archiveApplication(
+			guild.id!,
+			submission,
+			true,
+			member.user,
+			user
+		);
 		// Attempt to DM user
 		await member
 			.send(
@@ -246,6 +298,13 @@ export class Util extends ClientUtil {
 			user: member.user.tag,
 			application: app.name
 		});
+		await this.client.util.archiveApplication(
+			guild.id!,
+			submission,
+			false,
+			member.user,
+			user
+		);
 		// Attempt to DM user
 		await member
 			.send(

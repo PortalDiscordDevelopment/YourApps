@@ -204,7 +204,9 @@
 		"OPEN": "{{application}} was opened.",
 		"SUBMISSION_APPROVED": "{{user}} was approved for postion {{application}}.",
 		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}}.",
-		"APPLICATION_SUBMITTED": "{{user}} made a new application for position {{application}}."
+		"APPLICATION_SUBMITTED": "{{user}} made a new application for position {{application}}.",
+		"APPLICATION_APPROVED": "Application approved",
+		"APPLICATION_DENIED": "Application denied"
 	},
 	"ERROR": {
 		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
