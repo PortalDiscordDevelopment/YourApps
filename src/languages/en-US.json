@@ -113,7 +113,8 @@
 			"SUCCESS": "Successfully created application!"
 		},
 		"APPLICATION_MIN_JOIN_TIME": "Minimum join time",
-		"APPLICATION_DELETED": "Deleted application {{app}}!"
+		"APPLICATION_DELETED": "Deleted application {{app}}!",
+		"IGNORING_APP": "Ignoring application {{app}} because application already exists on this version of the bot."
 	},
 	"HASTEBIN": {
 		"TOO_LARGE": "Too large to display. Hastebin: {{- link}}",

@@ -146,19 +146,28 @@ export default class ConfigLogpingCommand extends BotCommand {
 				await this.logError(message, e);
 				return;
 			}
-			const app = App.build({
-				name: data.name,
-				guild: message.guild!.id,
-				questions: Object.entries(data.questions).map(q => ({
-					question: q[0],
-					type: AppQuestionType.STRING
-				})),
-				closed: !data.open,
-				rewardroles: data.reward_roles,
-				removeroles: data.remove_roles,
-				requiredroles: data.required_roles
+			const [app, created] = await App.findOrBuild({
+				where: {
+					name: position.name
+				},
+				defaults: {
+					name: data.name,
+					guild: message.guild!.id,
+					questions: Object.entries(data.questions).map(q => ({
+						question: q[0],
+						type: AppQuestionType.STRING
+					})),
+					closed: !data.open,
+					rewardroles: data.reward_roles,
+					removeroles: data.remove_roles,
+					requiredroles: data.required_roles
+				}
 			});
-			await app.save();
+			if (created) await app.save();
+			else
+				await message.util!.send(
+					this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
+				);
 			map[data.id] = app.id;
 		}
 		// Transfer apps
