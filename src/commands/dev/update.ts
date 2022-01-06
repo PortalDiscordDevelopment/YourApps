@@ -41,7 +41,14 @@ export default class UpdateCommand extends BotCommand {
 			await message.util!.send(
 				'<a:loading3:928388076001189918> Git pulling...'
 			);
-			await this.client.util.shell(`git pull`);
+			const gitpull = await this.client.util.shell(`git pull`);
+			if (gitpull.stdout == 'Already up to date.\n') {
+				await message.util!.send(
+					`<a:no:928757823054184543> Bot is already updated, not ${
+						restart ? 'restarting' : 'reloading'
+					}.`
+				);
+			}
 			await message.util!.send(
 				'<a:loading3:928388076001189918> Testing build...'
 			);
