@@ -18,7 +18,7 @@ export default class ReviewCommand extends BotCommand {
 				examples: ['review @Tyman cool']
 			},
 			channel: 'guild',
-			permissionCheck: 'admin',
+			permissionCheck: 'reviewer',
 			args: [
 				{
 					id: 'user',
