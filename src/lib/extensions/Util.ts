@@ -66,7 +66,13 @@ export class Util extends ClientUtil {
 	}
 
 	public removeConcurrent(command: ConcurrentCommand) {
-		const index = this.concurrentCommands.indexOf(command);
+		const index = this.concurrentCommands.findIndex(
+			cc =>
+				command.guild == cc.guild &&
+				command.id == cc.id &&
+				command.message == cc.message &&
+				command.user == cc.user
+		); // Dk why tf I have to do it like this but I do
 		if (index > -1) {
 			this.concurrentCommands.splice(index, 1);
 		}
