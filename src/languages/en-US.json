@@ -53,7 +53,7 @@
 		"ADMIN_ROLE_NOT_ADDED": "That admin role has not been added!",
 		"TOO_LITTLE_PREFIXES": "You cannot have less than one prefix!",
 		"PREFIX_ADDED": "Prefix `{{- prefix}}` was added to this server. Use the `config prefix` command to see all the prefixes.",
-		"PREFIX_ALREADY_ADDED": "That prefix role has already been added!",
+		"PREFIX_ALREADY_ADDED": "That prefix has already been added!",
 		"PREFIX_REMOVED": "Prefix `{{- prefix}}` was removed from this server. Use the `config prefix` command to see all the prefixes.",
 		"PREFIX_NOT_ADDED": "That prefix has not been added!",
 		"APPLICATION_NOT_OPEN": "That application is not open!",
