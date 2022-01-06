@@ -33,8 +33,11 @@ export default class UpdateCommand extends BotCommand {
 	) {
 		try {
 			if (this.client.util.concurrentCommands.length > 0 && !force) {
+				const len = this.client.util.concurrentCommands.length;
 				await message.util!.send(
-					`There is ${this.client.util.concurrentCommands.length} commands currently running, cancelling. To bypass this, use the --force flag.`
+					`There ${len != 1 ? 'are' : 'is'} ${len} command${
+						len != 1 ? 's' : ''
+					} currently running, cancelling. To bypass this, use the --force flag.`
 				);
 				return;
 			}
