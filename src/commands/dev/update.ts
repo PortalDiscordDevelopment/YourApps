@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, MessageActionRow, MessageButton } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 
 export default class UpdateCommand extends BotCommand {
@@ -35,11 +35,32 @@ export default class UpdateCommand extends BotCommand {
 			if (this.client.util.concurrentCommands.length - 1 > 0 && !force) {
 				// The minus one is because this command also counts for concurrentCommands
 				const len = this.client.util.concurrentCommands.length - 1;
-				await message.util!.send(
-					`There ${len != 1 ? 'are' : 'is'} ${len} command${
+				const id = `remindWhenCommandsDone|0|${message.id}|${
+					message.editedTimestamp ?? message.createdTimestamp
+				}`;
+				const m = await message.util!.send({
+					content: `There ${len != 1 ? 'are' : 'is'} ${len} command${
 						len != 1 ? 's' : ''
-					} currently running, cancelling. To bypass this, use the --force flag.`
-				);
+					} currently running, cancelling. To bypass this, use the --force flag.`,
+					components: [
+						new MessageActionRow().addComponents(
+							new MessageButton()
+								.setLabel('Remind')
+								.setStyle('SUCCESS')
+								.setEmoji('💬')
+								.setCustomId(id)
+						)
+					]
+				});
+				m.awaitMessageComponent({
+					componentType: 'BUTTON',
+					filter: i => i.customId == id && i.user.id == message.author.id
+				}).then(i => {
+					this.client.util.commandFinishedRemind.push(i.user.id);
+					i.reply(
+						'You will be reminded once all commands are finished running.'
+					);
+				});
 				return;
 			}
 			await message.util!.send(
