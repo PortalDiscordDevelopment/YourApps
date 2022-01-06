@@ -600,7 +600,7 @@ export default class ConfigNewCommand extends BotCommand {
 			title: string;
 			description: string;
 			fieldName: string;
-			allowSkip: string | true;
+			allowSkip: boolean;
 			process: (m: Message) =>
 				| {
 						success: true;

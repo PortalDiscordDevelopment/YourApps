@@ -315,4 +315,8 @@ export class Util extends ClientUtil {
 			)
 			.catch(() => undefined);
 	}
+
+	public dbcase(str: string) {
+		return str.replace(/ /g, '').toLowerCase();
+	}
 }

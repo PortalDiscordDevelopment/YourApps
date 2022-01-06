@@ -23,7 +23,9 @@ export default class ConfigCommand extends BotCommand {
 				'config-log',
 				'config-archive',
 				'config-new',
-				'config-migrate'
+				'config-migrate',
+				'config-delete',
+				'config-edit'
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
@@ -42,7 +44,9 @@ export default class ConfigCommand extends BotCommand {
 				['config-log', 'log'],
 				['config-archive', 'archive'],
 				['config-new', 'new'],
-				['config-migrate', 'migrate']
+				['config-migrate', 'migrate'],
+				['config-delete', 'delete'],
+				['config-edit', 'edit']
 			]
 		};
 		if (subcommand !== null) {

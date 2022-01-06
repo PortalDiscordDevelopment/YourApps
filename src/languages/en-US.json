@@ -115,7 +115,9 @@
 		"APPLICATION_MIN_JOIN_TIME": "Minimum join time",
 		"APPLICATION_DELETED": "Deleted application {{app}}!",
 		"IGNORING_APP": "Ignoring application {{app}} because application already exists on this version of the bot.",
-		"DELETE_EXISTING": "There are still existing submissions! If you would like to delete them all first, run this command again with `--force` at the end."
+		"DELETE_EXISTING": "There are still existing submissions! If you would like to delete them all first, run this command again with `--force` at the end.",
+		"SUCCESSFULLY_EDITED": "Successfully edited the {{part}} for {{app}}.",
+		"CHOOSE_PART": "Choose which application option to edit"
 	},
 	"HASTEBIN": {
 		"TOO_LARGE": "Too large to display. Hastebin: {{- link}}",
