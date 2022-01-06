@@ -236,6 +236,14 @@ export default class ApplyCommand extends BotCommand {
 			return;
 		}
 		await submissionResponse.deferReply();
+		await Guild.findOrCreate({
+			where: {
+				id: message.guildId!
+			},
+			defaults: {
+				id: message.guildId!
+			}
+		});
 		const submissionEntry = Submission.build({
 			guild: message.guildId!,
 			author: message.author.id,
