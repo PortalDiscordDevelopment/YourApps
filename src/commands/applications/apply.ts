@@ -41,6 +41,12 @@ export default class ApplyCommand extends BotCommand {
 			);
 			return;
 		}
+		if (
+			(await message.author.send({}).catch(e => e.message)) ==
+			'Cannot send messages to this user'
+		) {
+			await message.util!.send(this.client.i18n.t('ERRORS.CANNOT_DM'));
+		}
 		await ApplyCommand.startApplication(message, application);
 	}
 

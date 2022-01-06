@@ -173,7 +173,7 @@
 		"PING_CALCULATING": "Calculating...",
 		"NO_APPLICATIONS": "This server has no applications!",
 		"POSITIONS_TITLE": "{{- guild}}'s positions",
-		"ARE_YOU_SURE_APPLICATION": "Are you sure you want to apply to {{application}}? If yes, press continue. If no, press cancel. Continuing will DM you (make sure you have them on) with the application questions.",
+		"ARE_YOU_SURE_APPLICATION": "Are you sure you want to apply to {{application}}? If yes, press continue. If no, press cancel. Continuing will DM you with the application questions.",
 		"APPLICATION_FOR": "Application for \"{{application}}\"",
 		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the first empty answer space. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
 		"YOUR_ANSWER": "Your answer here ({{type}})",
@@ -215,5 +215,8 @@
 	"ERROR": {
 		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
 		"UNKNOWN_TRANSFER_ERROR": "An unknown error occured while fetching transfer data. Please report this to the developer."
+	},
+	"ERRORS": {
+		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server."
 	}
 }
