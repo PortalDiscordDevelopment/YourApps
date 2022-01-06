@@ -34,7 +34,7 @@ export default class UpdateCommand extends BotCommand {
 			await this.client.util.shell(`yarn build`);
 			await message.util!.send(
 				`<a:loading3:928388076001189918> ${
-					restart ? 'restarting' : 'reloading'
+					restart ? 'Restarting' : 'Reloading'
 				} bot...`
 			);
 			if (restart) await this.client.util.shell(`pm2 restart yourapps`);
