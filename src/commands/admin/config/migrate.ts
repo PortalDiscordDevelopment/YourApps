@@ -199,7 +199,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		await got.get(
 			`https://api.yourapps.cyou/guilds/${message.guildId!}/migrated?value=true`,
 			authHeaders
-		);
+		).catch(() => undefined);
 		await message.util?.send(
 			'Successfully migrated all compatible settings, positions, and submitted applications.'
 		);
