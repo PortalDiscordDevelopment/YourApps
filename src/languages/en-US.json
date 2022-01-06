@@ -219,6 +219,7 @@
 		"UNKNOWN_TRANSFER_ERROR": "An unknown error occured while fetching transfer data. Please report this to the developer."
 	},
 	"ERRORS": {
-		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server."
+		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server.",
+		"NO_REQUIRED_ROLES": "You do not have any of the required roles set for this application, so you cannot apply to it."
 	}
 }
