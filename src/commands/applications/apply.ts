@@ -2,7 +2,7 @@ import { BotClient } from '@lib/ext/BotClient';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { LogEvent } from '@lib/ext/Util';
 import { App } from '@lib/models/App';
-import { Submission } from '@lib/models/Submission';
+import { Submission, Guild } from '@lib/models';
 import {
 	AnswerType,
 	AppQuestionType,
