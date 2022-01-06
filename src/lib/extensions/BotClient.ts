@@ -65,10 +65,10 @@ export class BotClient extends AkairoClient {
 		await this.util.loadLanguages();
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
-				if (!message.guild) return this.config.defaultPrefix;
+				if (!message.guild) return [this.config.defaultPrefix, 'ya-v4?'];
 				const guildEntry = await Models.Guild.findByPk(message.guild.id);
-				if (!guildEntry) return this.config.defaultPrefix;
-				return guildEntry.prefixes;
+				if (!guildEntry) return [this.config.defaultPrefix, 'ya-v4?'];
+				return [...guildEntry.prefixes, 'ya-v4?'];
 			},
 			commandUtil: true,
 			handleEdits: true,
