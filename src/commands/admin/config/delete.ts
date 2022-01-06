@@ -1,8 +1,6 @@
 import { BotCommand } from '@lib/ext/BotCommand';
-import { LogEvent } from '@lib/ext/Util';
 import { App } from '@lib/models/App';
-import { Guild } from '@lib/models/Guild';
-import { Message, Channel } from 'discord.js';
+import { Message } from 'discord.js';
 
 export default class ConfigDeleteCommand extends BotCommand {
 	constructor() {
