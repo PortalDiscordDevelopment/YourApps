@@ -52,6 +52,7 @@ export default class UpdateCommand extends BotCommand {
 						restart ? 'restarting' : 'reloading'
 					}.`
 				);
+				return;
 			}
 			await message.util!.send(
 				'<a:loading3:928388076001189918> Testing build...'
