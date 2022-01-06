@@ -221,6 +221,7 @@
 	},
 	"ERRORS": {
 		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server.",
-		"NO_REQUIRED_ROLES": "You do not have any of the required roles set for this application, so you cannot apply to it."
+		"NO_REQUIRED_ROLES": "You do not have any of the required roles set for this application, so you cannot apply to it.",
+		"PREFIX_EXISTS_V3": "That prefix is already used by the v3 version of the bot. To prevent conflicts between the versions, please remove this prefix from the v3 version by running (replace <prefixhere> with the preifx, without the <>) `<prefixhere>config prefix remove <prefixhere>`"
 	}
 }

@@ -2,6 +2,8 @@ import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
 import { LogEvent } from '@lib/ext/Util';
+import got from 'got';
+import { GuildData } from '../migrate';
 
 export default class ConfigPrefixAddCommand extends BotCommand {
 	public constructor() {
@@ -29,6 +31,17 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			await message.util!.send(
 				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'prefix' })
 			);
+			return;
+		}
+		const v3Settings: GuildData = await got
+			.get(`https://api.yourapps.cyou/guilds/${message.guildId!}`, {
+				headers: {
+					Authorization: `Bearer ${this.client.config.migrationToken}`
+				}
+			})
+			.json();
+		if (v3Settings.prefixes.includes(prefix)) {
+			await message.util!.send(this.client.i18n.t('ERRORS.PREFIX_EXISTS_V3'));
 			return;
 		}
 		const [guildEntry] = await Guild.findOrBuild({
