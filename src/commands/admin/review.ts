@@ -26,7 +26,8 @@ export default class ReviewCommand extends BotCommand {
 				},
 				{
 					id: 'application',
-					type: 'application'
+					type: 'application',
+					match: 'rest'
 				}
 			]
 		});

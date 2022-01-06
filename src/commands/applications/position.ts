@@ -15,7 +15,8 @@ export default class PositionCommand extends BotCommand {
 			args: [
 				{
 					id: 'application',
-					type: 'application'
+					type: 'application',
+					match: 'rest'
 				}
 			]
 		});

@@ -28,7 +28,8 @@ export default class ApplyCommand extends BotCommand {
 			args: [
 				{
 					id: 'application',
-					type: 'application'
+					type: 'application',
+					match: 'rest'
 				}
 			]
 		});

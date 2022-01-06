@@ -18,7 +18,8 @@ export default class ConfigDeleteCommand extends BotCommand {
 			args: [
 				{
 					id: 'app',
-					type: 'application'
+					type: 'application',
+					match: 'rest'
 				}
 			],
 			channel: 'guild',
