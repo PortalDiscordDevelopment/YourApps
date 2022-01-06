@@ -32,8 +32,9 @@ export default class UpdateCommand extends BotCommand {
 		{ restart, force }: { restart: boolean; force: boolean }
 	) {
 		try {
-			if (this.client.util.concurrentCommands.length > 0 && !force) {
-				const len = this.client.util.concurrentCommands.length;
+			if (this.client.util.concurrentCommands.length - 1 > 0 && !force) {
+				// The minus one is because this command also counts for concurrentCommands
+				const len = this.client.util.concurrentCommands.length - 1;
 				await message.util!.send(
 					`There ${len != 1 ? 'are' : 'is'} ${len} command${
 						len != 1 ? 's' : ''
