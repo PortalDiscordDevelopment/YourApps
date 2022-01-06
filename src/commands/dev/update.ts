@@ -7,14 +7,19 @@ export default class UpdateCommand extends BotCommand {
 			aliases: ['update'],
 			description: {
 				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.UPDATE'),
-				usage: 'update [--restart]',
-				examples: ['update', 'update --restart']
+				usage: 'update [--restart] [--force]',
+				examples: ['update', 'update --restart', 'update --force']
 			},
 			args: [
 				{
 					id: 'restart',
 					match: 'flag',
 					flag: '--restart'
+				},
+				{
+					id: 'force',
+					match: 'flag',
+					flag: '--force'
 				}
 			],
 			ownerOnly: true,
@@ -22,8 +27,17 @@ export default class UpdateCommand extends BotCommand {
 		});
 	}
 
-	public async exec(message: Message, { restart }: { restart: boolean }) {
+	public async exec(
+		message: Message,
+		{ restart, force }: { restart: boolean; force: boolean }
+	) {
 		try {
+			if (this.client.util.concurrentCommands.length > 0 && !force) {
+				await message.util!.send(
+					`There is ${this.client.util.concurrentCommands.length} commands currently running, cancelling. To bypass this, use the --force flag.`
+				);
+				return;
+			}
 			await message.util!.send(
 				'<a:loading3:928388076001189918> Git pulling...'
 			);

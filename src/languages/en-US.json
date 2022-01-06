@@ -216,7 +216,8 @@
 	},
 	"ERROR": {
 		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
-		"UNKNOWN_TRANSFER_ERROR": "An unknown error occured while fetching transfer data. Please report this to the developer."
+		"UNKNOWN_TRANSFER_ERROR": "An unknown error occured while fetching transfer data. Please report this to the developer.",
+		"CONCURRENT": "You are already running this command in this server. Please finish the other one first."
 	},
 	"ERRORS": {
 		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server.",

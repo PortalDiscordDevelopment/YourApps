@@ -31,8 +31,17 @@ export enum LogEvent {
 	APPLICATION_SUBMITTED = 'LOGGING.APPLICATION_SUBMITTED'
 }
 
+export interface ConcurrentCommand {
+	id: string;
+	user: Snowflake;
+	guild: Snowflake;
+	message: string;
+}
+
 export class Util extends ClientUtil {
 	declare client: BotClient;
+
+	public concurrentCommands: ConcurrentCommand[] = [];
 
 	/**
 	 * The hastebin urls used to haste text
@@ -54,6 +63,13 @@ export class Util extends ClientUtil {
 	 */
 	public async shell(command: string) {
 		return await exec(command);
+	}
+
+	public removeConcurrent(command: ConcurrentCommand) {
+		const index = this.concurrentCommands.indexOf(command);
+		if (index > -1) {
+			this.concurrentCommands.splice(index, 1);
+		}
 	}
 
 	/**
