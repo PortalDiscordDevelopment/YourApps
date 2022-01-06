@@ -7,15 +7,22 @@ export default class UpdateCommand extends BotCommand {
 			aliases: ['update'],
 			description: {
 				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.UPDATE'),
-				usage: 'update',
-				examples: ['update']
+				usage: 'update [--restart]',
+				examples: ['update', 'update --restart']
 			},
+			args: [
+				{
+					id: 'restart',
+					match: 'flag',
+					flag: '--restart'
+				}
+			],
 			ownerOnly: true,
 			typing: true
 		});
 	}
 
-	public async exec(message: Message) {
+	public async exec(message: Message, { restart }: { restart: boolean }) {
 		try {
 			await message.util!.send(
 				'<a:loading3:928388076001189918> Git pulling...'
@@ -26,9 +33,17 @@ export default class UpdateCommand extends BotCommand {
 			);
 			await this.client.util.shell(`yarn build`);
 			await message.util!.send(
-				'<a:loading3:928388076001189918> Restarting bot...'
+				`<a:loading3:928388076001189918> ${
+					restart ? 'restarting' : 'reloading'
+				} bot...`
 			);
-			await this.client.util.shell(`pm2 restart yourapps`);
+			if (restart) await this.client.util.shell(`pm2 restart yourapps`);
+			else {
+				this.client.commandHandler.reloadAll();
+				this.client.listenerHandler.reloadAll();
+				this.client.inhibitorHandler.reloadAll();
+				await this.client.util.loadLanguages();
+			}
 		} catch (e) {
 			return message.util!.send(
 				this.client.i18n.t('DEVELOPER.ERROR_RELOADING', {
