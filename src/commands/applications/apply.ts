@@ -49,7 +49,7 @@ export default class ApplyCommand extends BotCommand {
 			return;
 		}
 		const memberRoles = (await message.member!.fetch()).roles.cache;
-		if (!memberRoles.hasAny(...application.requiredroles)) {
+		if (!application.requiredroles.every(r => memberRoles.has(r))) {
 			await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
 			return;
 		}
