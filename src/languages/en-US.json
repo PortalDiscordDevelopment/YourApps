@@ -15,11 +15,17 @@
 		"APPROVE": "Approve",
 		"DENY": "Deny",
 		"APPROVED": "You were approved for application {{application}} in server {{guild}}!",
-		"DENIED": "You were denied for application {{application}} in server {{guild}}.",
+		"DENIED": "You were denied for application {{application}} in server {{guild}} with reason {{reason}}.",
 		"SUCCESSFULLY_APPROVED": "Successfully approved application!",
 		"SUCCESSFULLY_DENIED": "Successfully denied application",
 		"PARENT": "(command group)",
-		"HTTP_RESPONSE": "Http response"
+		"HTTP_RESPONSE": "Http response",
+		"APPROVE_WITH_REASON": "Approve (with reason)",
+		"REASON": "Reason",
+		"ENTER_REASON": "Send the reason to give to the user below this message, and then press continue.",
+		"WITH_REASON": "Reason: {{reason}}",
+		"APPROVED_REASON": "You were approved for application {{application}} in {{guild}} with reason \"{{reason}}\"",
+		"APPROVE_REASON": "Approve with reason"
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
@@ -209,9 +215,11 @@
 		"CLOSE": "{{application}} was closed.",
 		"OPEN": "{{application}} was opened.",
 		"SUBMISSION_APPROVED": "{{user}} was approved for postion {{application}}.",
-		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}}.",
+		"SUBMISSION_APPROVED_REASON": "{{user}} was approved for postion {{application}} with reason {{reason}}.",
+		"SUBMISSION_DENIED": "{{user}} was denied for postion {{application}} with reason {{reason}}.",
 		"APPLICATION_SUBMITTED": "{{user}} made a new application for position {{application}}.",
 		"APPLICATION_APPROVED": "Application approved",
+		"APPLICATION_APPROVED_REASON": "Application approved with reason",
 		"APPLICATION_DENIED": "Application denied"
 	},
 	"ERROR": {

@@ -27,6 +27,7 @@ export enum LogEvent {
 	LOG_CHANNEL = 'LOGGING.LOG_CHANNEL',
 	ARCHIVE_CHANNEL = 'LOGGING.ARCHIVE_CHANNEL',
 	SUBMISSION_APPROVED = 'LOGGING.SUBMISSION_APPROVED',
+	SUBMISSION_APPROVED_REASON = 'LOGGING.SUBMISSION_APPROVED_REASON',
 	SUBMISSION_DENIED = 'LOGGING.SUBMISSION_DENIED',
 	APPLICATION_SUBMITTED = 'LOGGING.APPLICATION_SUBMITTED'
 }
@@ -210,7 +211,8 @@ export class Util extends ClientUtil {
 		submission: Submission,
 		accepted: boolean,
 		user: User,
-		reviewer: User
+		reviewer: User,
+		reason: string | null = null
 	) {
 		const guild = await Guild.findByPk(guildID);
 		if (!guild || !guild.archivechannel) return;
@@ -225,8 +227,15 @@ export class Util extends ClientUtil {
 						.embed()
 						.setTitle(
 							accepted
-								? this.client.i18n.t('LOGGING.APPLICATION_APPROVED')
+								? reason
+									? this.client.i18n.t('LOGGING.APPLICATION_APPROVED')
+									: this.client.i18n.t('LOGGING.APPLICATION_APPROVED_REASON')
 								: this.client.i18n.t('LOGGING.APPLICATION_DENIED')
+						)
+						.setDescription(
+							this.client.i18n.t('GENERIC.WITH_REASON', {
+								reason
+							})
 						)
 						.setFields(
 							Object.entries(submission.answers).map(e => ({
@@ -291,7 +300,11 @@ export class Util extends ClientUtil {
 		return this.questionValidationFunctions[type](answer);
 	}
 
-	public async approveSubmission(user: User, submission: Submission) {
+	public async approveSubmission(
+		user: User,
+		submission: Submission,
+		reason: string | null = null
+	) {
 		const app = (await App.findByPk(submission.position))!;
 		const guild = await this.client.guilds.fetch(submission.guild);
 		const member = await guild.members.fetch(submission.author);
@@ -300,30 +313,54 @@ export class Util extends ClientUtil {
 		// Attempt to remove all remove roles
 		member.roles.remove(app.removeroles).catch(() => undefined);
 		submission.destroy(); // Delete submission
-		this.logEvent(guild.id, user, LogEvent.SUBMISSION_APPROVED, {
-			// Log submission
-			user: member.user.tag,
-			application: app.name
-		});
+		if (reason)
+			this.logEvent(guild.id, user, LogEvent.SUBMISSION_APPROVED_REASON, {
+				// Log submission
+				user: member.user.tag,
+				application: app.name,
+				reason
+			});
+		else
+			this.logEvent(guild.id, user, LogEvent.SUBMISSION_APPROVED, {
+				// Log submission
+				user: member.user.tag,
+				application: app.name
+			});
 		await this.client.util.archiveApplication(
 			guild.id!,
 			submission,
 			true,
 			member.user,
-			user
+			user,
+			reason
 		);
 		// Attempt to DM user
-		await member
-			.send(
-				this.client.i18n.t('GENERIC.APPROVED', {
-					application: app.name,
-					guild: guild.name
-				})
-			)
-			.catch(() => undefined);
+		if (reason)
+			await member
+				.send(
+					this.client.i18n.t('GENERIC.APPROVED_REASON', {
+						application: app.name,
+						guild: guild.name,
+						reason
+					})
+				)
+				.catch(() => undefined);
+		else
+			await member
+				.send(
+					this.client.i18n.t('GENERIC.APPROVED', {
+						application: app.name,
+						guild: guild.name
+					})
+				)
+				.catch(() => undefined);
 	}
 
-	public async denySubmission(user: User, submission: Submission) {
+	public async denySubmission(
+		user: User,
+		submission: Submission,
+		reason: string
+	) {
 		const app = (await App.findByPk(submission.position))!;
 		const guild = await this.client.guilds.fetch(submission.guild);
 		const member = await guild.members.fetch(submission.author);
@@ -338,14 +375,16 @@ export class Util extends ClientUtil {
 			submission,
 			false,
 			member.user,
-			user
+			user,
+			reason
 		);
 		// Attempt to DM user
 		await member
 			.send(
 				this.client.i18n.t('GENERIC.DENIED', {
 					application: app.name,
-					guild: guild.name
+					guild: guild.name,
+					reason
 				})
 			)
 			.catch(() => undefined);

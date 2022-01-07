@@ -7,6 +7,7 @@ import {
 	MessageActionRow,
 	MessageButton
 } from 'discord.js';
+import ConfigNewCommand from './config/new';
 
 export default class ReviewCommand extends BotCommand {
 	constructor() {
@@ -62,8 +63,16 @@ export default class ReviewCommand extends BotCommand {
 			);
 			return;
 		}
-		const { approveButtonId, denyButtonId, cancelButtonId } = {
+		const {
+			approveButtonId,
+			approveWithReasonId,
+			denyButtonId,
+			cancelButtonId
+		} = {
 			approveButtonId: `approveSubmissionReview|0|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`,
+			approveWithReasonId: `approveSubmissionReviewWithReason|0|${message.id}|${
 				message.editedTimestamp ?? message.createdTimestamp
 			}`,
 			denyButtonId: `denySubmissionReview|0|${message.id}|${
@@ -102,6 +111,11 @@ export default class ReviewCommand extends BotCommand {
 						.setLabel(this.client.i18n.t('GENERIC.APPROVE'))
 						.setStyle('SUCCESS'),
 					new MessageButton()
+						.setCustomId(approveWithReasonId)
+						.setEmoji('✅')
+						.setLabel(this.client.i18n.t('GENERIC.APPROVE_WITH_REASON'))
+						.setStyle('SUCCESS'),
+					new MessageButton()
 						.setCustomId(denyButtonId)
 						.setEmoji('✖')
 						.setLabel(this.client.i18n.t('GENERIC.DENY'))
@@ -118,8 +132,12 @@ export default class ReviewCommand extends BotCommand {
 		});
 		const response = await reviewMessage.awaitMessageComponent({
 			filter: i =>
-				[approveButtonId, denyButtonId, cancelButtonId].includes(i.customId) &&
-				i.user.id == message.author.id,
+				[
+					approveButtonId,
+					approveWithReasonId,
+					denyButtonId,
+					cancelButtonId
+				].includes(i.customId) && i.user.id == message.author.id,
 			componentType: 'BUTTON'
 		});
 		await response.deferUpdate();
@@ -132,14 +150,88 @@ export default class ReviewCommand extends BotCommand {
 					embeds: []
 				});
 				break;
-			case denyButtonId:
-				await this.client.util.denySubmission(message.author, submission);
+			case approveWithReasonId: {
+				const ids = {
+					continueButtonId: `continueReview|1|${message.id}|${
+						message.editedTimestamp ?? message.createdTimestamp
+					}`,
+					cancelButtonId: `cancelReview|1|${message.id}|${
+						message.editedTimestamp ?? message.createdTimestamp
+					}`
+				};
+				const reason = await (
+					this.handler.modules.get('config-new') as ConfigNewCommand
+				).sendPromptSingle(message, {
+					ids,
+					allowSkip: false,
+					fieldName: this.client.i18n.t('GENERIC.REASON'),
+					description: this.client.i18n.t('GENERIC.ENTER_REASON'),
+					process: m => ({
+						processed: {
+							user: m.content,
+							data: m.content
+						},
+						success: true
+					}),
+					title: this.client.i18n.t('GENERIC.APPROVE_REASON')
+				});
+				if (reason.cancelled) {
+					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
+					return;
+				}
+				await this.client.util.approveSubmission(
+					message.author,
+					submission,
+					reason.result
+				);
+				await reviewMessage.edit({
+					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
+					components: [],
+					embeds: []
+				});
+				break;
+			}
+			case denyButtonId: {
+				const ids = {
+					continueButtonId: `continueReview|1|${message.id}|${
+						message.editedTimestamp ?? message.createdTimestamp
+					}`,
+					cancelButtonId: `cancelReview|1|${message.id}|${
+						message.editedTimestamp ?? message.createdTimestamp
+					}`
+				};
+				const reason = await (
+					this.handler.modules.get('config-new') as ConfigNewCommand
+				).sendPromptSingle(message, {
+					ids,
+					allowSkip: false,
+					fieldName: this.client.i18n.t('GENERIC.REASON'),
+					description: this.client.i18n.t('GENERIC.ENTER_REASON'),
+					process: m => ({
+						processed: {
+							user: m.content,
+							data: m.content
+						},
+						success: true
+					}),
+					title: this.client.i18n.t('GENERIC.DENY')
+				});
+				if (reason.cancelled) {
+					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
+					return;
+				}
+				await this.client.util.denySubmission(
+					message.author,
+					submission,
+					reason.result!
+				);
 				await reviewMessage.edit({
 					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED'),
 					components: [],
 					embeds: []
 				});
 				break;
+			}
 			case cancelButtonId:
 				await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
 				break;

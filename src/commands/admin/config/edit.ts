@@ -47,7 +47,7 @@ const props: Props = {
 		})
 	},
 	'Reward roles': {
-		skippable: 'roles',
+		skippable: true,
 		multi: true,
 		process: (m: Message) => {
 			const role = (m.client as BotClient).util.resolveRole(
@@ -72,7 +72,7 @@ const props: Props = {
 		}
 	},
 	'Required roles': {
-		skippable: 'roles',
+		skippable: true,
 		multi: true,
 		process: (m: Message) => {
 			const role = (m.client as BotClient).util.resolveRole(
@@ -97,7 +97,7 @@ const props: Props = {
 		}
 	},
 	'Remove roles': {
-		skippable: 'roles',
+		skippable: true,
 		multi: true,
 		process: (m: Message) => {
 			const role = (m.client as BotClient).util.resolveRole(
