@@ -101,9 +101,6 @@ export default class ConfigLogpingCommand extends BotCommand {
 			}
 			return;
 		}
-		guildData.prefixes.forEach(e => {
-			if (!guildEntry.prefixes.includes(e)) guildEntry.prefixes.push(e);
-		});
 		guildData.review_roles.forEach(e => {
 			if (!guildEntry.reviewroles.includes(e)) guildEntry.reviewroles.push(e);
 		});
