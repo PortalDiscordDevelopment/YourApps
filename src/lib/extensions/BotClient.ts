@@ -87,11 +87,11 @@ export class BotClient extends AkairoClient {
 							[Op.or]: [
 								{
 									id: Number(phrase),
-                                                                        guild: message.guildId!
+									guild: message.guildId!
 								},
 								{
 									name: phrase,
-                                                                        guild: message.guildId!
+									guild: message.guildId!
 								}
 							]
 						}
