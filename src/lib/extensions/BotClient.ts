@@ -86,10 +86,12 @@ export class BotClient extends AkairoClient {
 						where: {
 							[Op.or]: [
 								{
-									id: Number(phrase)
+									id: Number(phrase),
+                                                                        guild: message.guildId!
 								},
 								{
-									name: phrase
+									name: phrase,
+                                                                        guild: message.guildId!
 								}
 							]
 						}
