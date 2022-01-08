@@ -90,7 +90,9 @@ export class BotClient extends AkairoClient {
 									guild: message.guildId!
 								},
 								{
-									name: phrase,
+									name: {
+										[Op.iLike]: phrase.replace(/[%_]/g, '\\')
+									},
 									guild: message.guildId!
 								}
 							]
@@ -99,7 +101,10 @@ export class BotClient extends AkairoClient {
 				} else {
 					foundApps = await Models.App.findOne({
 						where: {
-							name: phrase
+							name: {
+								[Op.iLike]: phrase.replace(/[%_]/g, '\\')
+							},
+							guild: message.guildId!
 						}
 					});
 				}
