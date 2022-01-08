@@ -89,6 +89,7 @@ export class Util extends ClientUtil {
 						u.send('All commands are finished running, you can update now!')
 					)
 			);
+			this.commandFinishedRemind = [];
 		}
 	}
 
