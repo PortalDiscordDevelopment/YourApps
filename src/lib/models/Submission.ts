@@ -1,3 +1,4 @@
+import { Snowflake } from 'discord.js';
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 import type {
@@ -11,8 +12,8 @@ export class Submission extends BaseModel<
 	SubmissionModelCreationAttributes
 > {
 	declare id: number;
-	declare author: string;
-	declare guild: string;
+	declare author: Snowflake;
+	declare guild: Snowflake;
 	declare position: number;
 	declare answers: Record<string, AnswerType>;
 	static initModel(sequelize: Sequelize) {

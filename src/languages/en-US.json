@@ -25,7 +25,11 @@
 		"ENTER_REASON": "Send the reason to give to the user below this message, and then press continue.",
 		"WITH_REASON": "Reason: {{reason}}",
 		"APPROVED_REASON": "You were approved for application {{application}} in {{guild}} with reason \"{{reason}}\"",
-		"APPROVE_REASON": "Approve with reason"
+		"APPROVE_REASON": "Approve with reason",
+		"CHOOSE_POS": "Please choose one of the positions below to review.",
+		"CHOSE_POS": "Choose a position",
+		"CHOOSE_SUB": "Choose one of the submissions below for your chosen application.",
+		"CHOOSE_A_SUB": "Choose a submission"
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
@@ -186,7 +190,7 @@
 		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the first empty answer space. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
 		"YOUR_ANSWER": "Your answer here ({{type}})",
 		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted.",
-		"REVIEW_DESCRIPTION": "Reviews a user for a specified application, allowing you to approve or deny them",
+		"REVIEW_DESCRIPTION": "Starts reviewing a submitted application, allows you to approve, approve with reason, or deny.",
 		"REVIEW_NOT_APPLIED": "That user has not applied for that position!",
 		"REVIEW_TITLE": "{{user}}'s application for {{application}}",
 		"REVIEW_EMBED_DESCRIPTION": "Review the questions and answers below, then press one of the buttons to either approve this person, deny this person, or cancel reviewing. Once approved, the user will be given all reward roles and removed all remove roles.",

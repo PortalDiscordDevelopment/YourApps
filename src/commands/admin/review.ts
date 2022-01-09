@@ -2,11 +2,14 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { App } from '@lib/models/App';
 import { Submission } from '@lib/models/Submission';
 import {
-	GuildMember,
 	Message,
 	MessageActionRow,
-	MessageButton
+	MessageButton,
+	MessageSelectMenu,
+	SelectMenuInteraction,
+	User
 } from 'discord.js';
+import { Op } from 'sequelize';
 import ConfigNewCommand from './config/new';
 
 export default class ReviewCommand extends BotCommand {
@@ -15,54 +18,116 @@ export default class ReviewCommand extends BotCommand {
 			aliases: ['review'],
 			description: {
 				content: () => this.client.i18n.t('COMMANDS.REVIEW_DESCRIPTION'),
-				usage: 'review <user> <application>',
-				examples: ['review @Tyman cool']
+				usage: 'review',
+				examples: ['review']
 			},
 			channel: 'guild',
-			permissionCheck: 'reviewer',
-			args: [
-				{
-					id: 'user',
-					type: 'member'
-				},
-				{
-					id: 'application',
-					type: 'application',
-					match: 'rest'
-				}
-			]
+			permissionCheck: 'reviewer'
 		});
 	}
 
-	async exec(
-		message: Message,
-		{ user, application }: { user: GuildMember | null; application: App | null }
-	) {
-		if (!user) {
-			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'user' })
-			);
-			return;
-		}
-		if (!application) {
-			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
-			);
-			return;
-		}
-		const submission = await Submission.findOne({
+	async exec(message: Message) {
+		const submissions = await Submission.findAll({
 			where: {
-				guild: message.guild!.id,
-				position: application.id,
-				author: user.id
+				guild: message.guildId!
 			}
 		});
-		if (!submission) {
-			await message.util!.send(
-				this.client.i18n.t('COMMANDS.REVIEW_NOT_APPLIED')
-			);
-			return;
-		}
+		const positionsSubmitted = submissions.reduce((prev, cur) => {
+			if (prev.includes(cur.position)) return prev;
+			else return [...prev, cur.position];
+		}, [] as number[]);
+		const apps = await App.findAll({
+			where: {
+				[Op.or]: positionsSubmitted.map(id => ({ id }))
+			}
+		});
+		const positions = positionsSubmitted.map(
+			id => apps.find(app => app.id == id)!
+		);
+		const ids = {
+			positionsId: `selectPosReview|0|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`,
+			submissionId: `selectSumissionReview|1|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`
+		};
+		const menu = await message.util!.send({
+			content: this.client.i18n.t('GENERIC.CHOOSE_POS'),
+			components: [
+				new MessageActionRow().addComponents(
+					new MessageSelectMenu()
+						.addOptions(
+							positions.map(app => ({
+								label: app.name,
+								value: app.id.toString(),
+								description: app.description ?? undefined
+							}))
+						)
+						.setCustomId(ids.positionsId)
+						.setPlaceholder(this.client.i18n.t('GENERIC.CHOSE_POS'))
+				)
+			]
+		});
+		const i = await menu.awaitMessageComponent({
+			componentType: 'SELECT_MENU',
+			filter: i =>
+				i.user.id == message.author.id && i.customId == ids.positionsId
+		});
+		await i.deferUpdate();
+		const pos = positions.find(
+			p => p.id.toString() == (i as SelectMenuInteraction).values[0]!
+		)!;
+		const selectedSubmissions = await Promise.all(
+			submissions
+				.filter(
+					s => s.position.toString() == (i as SelectMenuInteraction).values[0]!
+				)
+				.map(async s => ({
+					user: await this.client.users.fetch(s.author),
+					submission: s
+				}))
+		);
+		const menu2 = await message.util!.send({
+			content: this.client.i18n.t('GENERIC.CHOOSE_SUB'),
+			components: [
+				new MessageActionRow().addComponents(
+					new MessageSelectMenu()
+						.addOptions(
+							selectedSubmissions.map(sub => ({
+								label: sub.user.tag,
+								value: sub.submission.id.toString(),
+								description: pos.name
+							}))
+						)
+						.setCustomId(ids.submissionId)
+						.setPlaceholder(this.client.i18n.t('GENERIC.CHOOSE_A_SUB'))
+				)
+			]
+		});
+		const i2 = await menu2.awaitMessageComponent({
+			componentType: 'SELECT_MENU',
+			filter: i =>
+				i.user.id == message.author.id && i.customId == ids.submissionId
+		});
+		await i2.deferUpdate();
+		const sub = submissions.find(
+			s => s.id.toString() == (i2 as SelectMenuInteraction).values[0]!
+		)!;
+		await this.startReview(
+			message,
+			sub,
+			selectedSubmissions.find(s => s.submission.id == sub.id)!.user,
+			pos
+		);
+	}
+
+	async startReview(
+		message: Message,
+		submission: Submission,
+		user: User,
+		application: App
+	) {
 		const {
 			approveButtonId,
 			approveWithReasonId,
@@ -88,7 +153,7 @@ export default class ReviewCommand extends BotCommand {
 					.embed()
 					.setTitle(
 						this.client.i18n.t('COMMANDS.REVIEW_TITLE', {
-							user: user.user.tag,
+							user: user.tag,
 							application: application.name
 						})
 					)
