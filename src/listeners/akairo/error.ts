@@ -39,6 +39,12 @@ export default class CommandErrorListener extends BotListener {
 				embeds: [errorEmbed]
 			});
 		} else {
+			this.client.util.removeConcurrent({
+				guild: message.guildId!,
+				id: command.id,
+				message: message.content,
+				user: message.author.id
+			});
 			const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 			const errorEmbed = this.client.util
 				.embed()
