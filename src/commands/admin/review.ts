@@ -32,6 +32,10 @@ export default class ReviewCommand extends BotCommand {
 				guild: message.guildId!
 			}
 		});
+		if (submissions.length < 1) {
+			await message.util!.send(this.client.i18n.t('NO_SUBMISSIONS'));
+			return;
+		}
 		const positionsSubmitted = submissions.reduce((prev, cur) => {
 			if (prev.includes(cur.position)) return prev;
 			else return [...prev, cur.position];
