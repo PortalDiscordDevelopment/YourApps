@@ -61,7 +61,9 @@ export default class ReviewCommand extends BotCommand {
 							positions.map(app => ({
 								label: app.name,
 								value: app.id.toString(),
-								description: app.description ?? undefined
+								description: this.client.i18n.t('POSITION_CHOICE_DESC', {
+									n: submissions.filter(s => s.position == app.id).length
+								})
 							}))
 						)
 						.setCustomId(ids.positionsId)
