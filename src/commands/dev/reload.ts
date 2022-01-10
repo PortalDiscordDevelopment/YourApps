@@ -31,7 +31,7 @@ export default class ReloadCommand extends BotCommand {
 		} catch (e) {
 			return message.util!.send(
 				this.client.i18n.t('DEVELOPER.ERROR_RELOADING', {
-					link: await this.client.util.haste(e.stack)
+					link: await this.client.util.haste((e as Error).stack!)
 				})
 			);
 		}

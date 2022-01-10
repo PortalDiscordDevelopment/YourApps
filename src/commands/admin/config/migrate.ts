@@ -96,7 +96,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 				await message.util!.send(
 					this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
 				);
-			} else {
+			} else if (e instanceof HTTPError) {
 				await this.logError(message, e);
 			}
 			return;
@@ -126,8 +126,11 @@ export default class ConfigLogpingCommand extends BotCommand {
 				)
 				.json();
 		} catch (e) {
-			await this.logError(message, e);
-			return;
+			if (e instanceof HTTPError) {
+				await this.logError(message, e);
+				return;
+			}
+			throw e
 		}
 		for (const position of guildPositions) {
 			let data: PositionData;
@@ -139,8 +142,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 					)
 					.json();
 			} catch (e) {
-				if (e.response?.statusCode == 404) continue;
-				await this.logError(message, e);
+				if (e instanceof HTTPError && e.response.statusCode == 404) continue;
+				else if (e instanceof HTTPError) await this.logError(message, e);
+				else throw e;
 				return;
 			}
 			const [app, created] = await App.findOrBuild({
@@ -177,7 +181,8 @@ export default class ConfigLogpingCommand extends BotCommand {
 				)
 				.json();
 		} catch (e) {
-			await this.logError(message, e);
+			if (e instanceof HTTPError) await this.logError(message, e);
+			else throw e;
 			return;
 		}
 		for (const app of submittedApps) {

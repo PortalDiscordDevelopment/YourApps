@@ -153,7 +153,7 @@ export default class EvalCommand extends BotCommand {
 			}
 			embed.addField(
 				this.client.i18n.t('DEVELOPER.OUTPUT'),
-				await this.client.util.codeblock(e?.stack, 1024, 'js')
+				await this.client.util.codeblock((e as Error).stack!, 1024, 'js')
 			);
 		}
 		await message.util!.send({ embeds: [embed] });

@@ -7,8 +7,8 @@ import {
 } from 'discord-akairo';
 import { join } from 'path';
 import { Op, Sequelize } from 'sequelize';
-import { Util } from './Util';
-import * as Models from '../models';
+import { Util } from '@lib/ext/Util';
+import * as Models from '@lib/models';
 import { Intents, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
