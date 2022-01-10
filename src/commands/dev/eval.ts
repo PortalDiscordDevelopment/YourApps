@@ -86,7 +86,7 @@ export default class EvalCommand extends BotCommand {
 					depth: args.depth || 0,
 					getters: true,
 					showProxy: true,
-                                        showHidden: true
+					showHidden: true
 				});
 
 			output = output.replace(
