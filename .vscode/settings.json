@@ -1,28 +1,24 @@
 {
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true,
-    "**/dist": true
-  },
-  "eslint.nodePath": ".yarn/sdks",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "i18n-ally.localesPaths": [
-    "src/languages/"
-  ],
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.extract.keygenStyle": "ALL_CAPS",
-  "i18n-ally.refactor.templates": [
-    {
-      "template": "this.client.i18n.t('{key}')"
-    }
-  ],
-  "i18n-ally.extract.autoDetect": true,
-  "i18n-ally.annotationMaxLength": 70,
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "i18n-ally.extract.ignoredByFiles": {
-    "src/commands/applications/apply.ts": [
-      "✖"
-    ]
-  }
+	"search.exclude": {
+		"**/.yarn": true,
+		"**/.pnp.*": true,
+		"**/dist": true
+	},
+	"eslint.nodePath": ".yarn/sdks",
+	"typescript.tsdk": ".yarn/sdks/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"i18n-ally.localesPaths": ["src/languages/"],
+	"i18n-ally.keystyle": "nested",
+	"i18n-ally.extract.keygenStyle": "ALL_CAPS",
+	"i18n-ally.refactor.templates": [
+		{
+			"template": "this.client.i18n.t('{key}')"
+		}
+	],
+	"i18n-ally.extract.autoDetect": true,
+	"i18n-ally.annotationMaxLength": 70,
+	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+	"i18n-ally.extract.ignoredByFiles": {
+		"src/commands/applications/apply.ts": ["✖"]
+	}
 }

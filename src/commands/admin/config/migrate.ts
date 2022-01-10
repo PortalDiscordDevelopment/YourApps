@@ -130,7 +130,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 				await this.logError(message, e);
 				return;
 			}
-			throw e
+			throw e;
 		}
 		for (const position of guildPositions) {
 			let data: PositionData;
