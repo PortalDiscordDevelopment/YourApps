@@ -311,11 +311,17 @@ export class Util extends ClientUtil {
 		const app = (await App.findByPk(submission.position))!;
 		const guild = await this.client.guilds.fetch(submission.guild);
 		const member = await guild.members.fetch(submission.author);
-		// Attempt to add all reward roles
-		member.roles.add(app.rewardroles).catch(() => undefined);
-		// Attempt to remove all remove roles
-		member.roles.remove(app.removeroles).catch(() => undefined);
-		submission.destroy(); // Delete submission
+		// Attempt to add all reward roles and remove all remove roles
+		const roles = member.roles.cache.clone();
+		for (const role of app.rewardroles) {
+			if (guild.roles.cache.get(role))
+				roles.set(role, guild.roles.cache.get(role)!);
+		}
+		for (const role of app.removeroles) {
+			roles.delete(role);
+		}
+		await member.roles.set(roles);
+		await submission.destroy(); // Delete submission
 		if (reason)
 			this.logEvent(guild.id, user, LogEvent.SUBMISSION_APPROVED_REASON, {
 				// Log submission
