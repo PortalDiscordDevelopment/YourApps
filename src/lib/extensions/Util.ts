@@ -82,14 +82,16 @@ export class Util extends ClientUtil {
 		); // Dk why tf I have to do it like this but I do
 		if (index > -1) {
 			this.concurrentCommands.splice(index, 1);
-			this.commandFinishedRemind.forEach(id =>
-				this.client.users
-					.fetch(id)
-					.then(u =>
-						u.send('All commands are finished running, you can update now!')
-					)
-			);
-			this.commandFinishedRemind = [];
+			if (this.concurrentCommands.length < 1) {
+				this.commandFinishedRemind.forEach(id =>
+					this.client.users
+						.fetch(id)
+						.then(u =>
+							u.send('All commands are finished running, you can update now!')
+						)
+				);
+				this.commandFinishedRemind = [];
+			}
 		}
 	}
 
