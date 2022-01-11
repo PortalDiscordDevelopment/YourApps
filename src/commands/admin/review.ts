@@ -213,7 +213,15 @@ export default class ReviewCommand extends BotCommand {
 		});
 		await response.deferUpdate();
 		switch (response.customId) {
-			case approveButtonId:
+			case approveButtonId: {
+				const me = await message.guild!.members.fetch(user.client.user!.id);
+				// Check for role perms
+				if (!me.permissions.has('MANAGE_ROLES')) {
+					await reviewMessage.edit(
+						this.client.i18n.t('COMMANDS.REVIEW_NO_PERMS')
+					);
+					return;
+				}
 				await this.client.util.approveSubmission(message.author, submission);
 				await reviewMessage.edit({
 					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
@@ -221,7 +229,16 @@ export default class ReviewCommand extends BotCommand {
 					embeds: []
 				});
 				break;
+			}
 			case approveWithReasonId: {
+				const me = await message.guild!.members.fetch(user.client.user!.id);
+				// Check for role perms
+				if (!me.permissions.has('MANAGE_ROLES')) {
+					await reviewMessage.edit(
+						this.client.i18n.t('COMMANDS.REVIEW_NO_PERMS')
+					);
+					return;
+				}
 				const ids = {
 					continueButtonId: `continueReview|1|${message.id}|${
 						message.editedTimestamp ?? message.createdTimestamp
