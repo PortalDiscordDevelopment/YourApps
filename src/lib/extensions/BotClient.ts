@@ -49,7 +49,12 @@ export class BotClient extends AkairoClient {
 				allowedMentions: {
 					parse: ['users'] // Disables all mentions except for users
 				},
-				intents: Intents.resolve(32509) // All non priveledged intents
+				intents: [
+					Intents.FLAGS.GUILDS,
+					Intents.FLAGS.GUILD_MEMBERS,
+					Intents.FLAGS.GUILD_MESSAGES,
+					Intents.FLAGS.DIRECT_MESSAGES
+				]
 			}
 		);
 		this.config = config;
