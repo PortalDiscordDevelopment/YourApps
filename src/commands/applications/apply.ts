@@ -53,6 +53,17 @@ export default class ApplyCommand extends BotCommand {
 			await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
 			return;
 		}
+		if (
+			application.minjointime &&
+			(message.editedTimestamp ?? message.createdTimestamp) -
+				message.member!.joinedTimestamp! >
+				application.minjointime
+		) {
+			await message.util!.send(
+				this.client.i18n.t('ERRORS.NOT_JOINED_LONG_ENOUGH')
+			);
+			return;
+		}
 		await ApplyCommand.startApplication(message, application);
 	}
 
