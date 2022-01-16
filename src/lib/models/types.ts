@@ -96,3 +96,17 @@ export type UserModelCreationAttributes = Optional<
 	UserModelAttributes,
 	'language'
 >;
+
+export interface AppButtonModelAttributes {
+	message: Snowflake;
+	channel: Snowflake;
+	guild: Snowflake;
+	app: number;
+}
+
+export interface AppButtonModelCreationAttributes {
+	message: Snowflake;
+	channel: Snowflake;
+	guild: Snowflake;
+	app: number;
+}

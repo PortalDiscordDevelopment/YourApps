@@ -9,6 +9,7 @@ import {
 	AppQuestionTypeNice
 } from '@lib/models/types';
 import {
+	ButtonInteraction,
 	Message,
 	MessageActionRow,
 	MessageButton,
@@ -89,18 +90,47 @@ export default class ApplyCommand extends BotCommand {
 		await ApplyCommand.startApplication(message, application);
 	}
 
-	static async startApplication(message: Message, app: App): Promise<void> {
+	static async startApplication(
+		message: Message | ButtonInteraction,
+		app: App
+	): Promise<void> {
+		const interaction = message instanceof ButtonInteraction;
 		const client = message.client as BotClient;
 		const buttonIds = {
 			continue: `continueApplication|0|${message.id}|${
-				message.editedTimestamp ?? message.createdTimestamp
+				interaction
+					? message.createdTimestamp
+					: message.editedTimestamp ?? message.createdTimestamp
 			}`,
 			cancel: `cancelApplication|0|${message.id}|${
-				message.editedTimestamp ?? message.createdTimestamp
+				interaction
+					? message.createdTimestamp
+					: message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
-		await message.react('✅');
-		const confirmation = await message.author.send({
+		if (!interaction) await message.react('✅');
+		let confirmation = interaction
+		? await message.reply({
+			content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
+				application: app.name
+			}),
+			components: [
+				new MessageActionRow().addComponents(
+					new MessageButton()
+						.setCustomId(buttonIds.continue)
+						.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+						.setEmoji('✅')
+						.setStyle('SUCCESS'),
+					new MessageButton()
+						.setCustomId(buttonIds.cancel)
+						.setLabel(client.i18n.t('GENERIC.CANCEL'))
+						.setEmoji('✖')
+						.setStyle('DANGER')
+				)
+			],
+			ephemeral: true
+		})
+		: await message.author.send({
 			content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
 				application: app.name
 			}),
@@ -121,18 +151,25 @@ export default class ApplyCommand extends BotCommand {
 		});
 		let response: MessageComponentInteraction;
 		try {
-			response = await confirmation.awaitMessageComponent({
+			response = await message.channel!.awaitMessageComponent({
 				filter: i =>
 					Object.values(buttonIds).includes(i.customId) &&
-					i.user.id == message.author.id,
+					i.user.id == (interaction ? message.user : message.author).id,
 				componentType: 'BUTTON',
 				time: 300_000 // 5 Minutes
 			});
 		} catch {
-			await confirmation.edit({
-				content: await client.t('GENERIC.TIMED_OUT', message),
-				components: []
-			});
+			if (confirmation instanceof Message && !interaction) {
+				await confirmation.edit({
+					content: await client.t('GENERIC.TIMED_OUT', message),
+					components: []
+				});
+			} else {
+				await (message as ButtonInteraction).editReply({
+					content: await client.t('GENERIC.TIMED_OUT', message),
+					components: []
+				});
+			}
 			return;
 		}
 		if (response.customId !== buttonIds.continue) {
@@ -145,10 +182,15 @@ export default class ApplyCommand extends BotCommand {
 		// * Actually start the DM application
 		const answers: Record<string, AnswerType> = {};
 		const cancelButtonId = `cancelApplication|1|${message.id}|${
-			message.editedTimestamp ?? message.createdTimestamp
+			interaction
+				? message.createdTimestamp
+				: message.editedTimestamp ?? message.createdTimestamp
 		}`;
 		let curQuestion = 0;
-		const applicationMessage = await message.author.send({
+		const applicationMessage = await (interaction
+			? message.user
+			: message.author
+		).send({
 			embeds: [
 				client.util
 					.embed()
@@ -177,7 +219,8 @@ export default class ApplyCommand extends BotCommand {
 			]
 		});
 		const answerCollector = applicationMessage.channel.createMessageCollector({
-			filter: m => m.author.id === message.author.id,
+			filter: m =>
+				m.author.id === (interaction ? message.user : message.author).id,
 			idle: 600_000
 		});
 		applicationMessage
@@ -237,16 +280,22 @@ export default class ApplyCommand extends BotCommand {
 		});
 		// Cancel if collecter ended because cancelled
 		if (endedReason === 'cancel') {
-			await message.author.send(await client.t('GENERIC.CANCELED', message));
+			await (interaction ? message.user : message.author).send(
+				await client.t('GENERIC.CANCELED', message)
+			);
 			return;
 		}
 		// * Ask for confirmation to submit app
 		const submissionButtonIds = {
 			continue: `continueApplication|3|${message.id}|${
-				message.editedTimestamp ?? message.createdTimestamp
+				interaction
+					? message.createdTimestamp
+					: message.editedTimestamp ?? message.createdTimestamp
 			}`,
 			cancel: `cancelApplication|3|${message.id}|${
-				message.editedTimestamp ?? message.createdTimestamp
+				interaction
+					? message.createdTimestamp
+					: message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
 		const submissionConfirmation = await applicationMessage.reply({
@@ -300,17 +349,17 @@ export default class ApplyCommand extends BotCommand {
 		});
 		const submissionEntry = Submission.build({
 			guild: message.guildId!,
-			author: message.author.id,
+			author: (interaction ? message.user : message.author).id,
 			position: app.id,
 			answers
 		});
 		await submissionEntry.save();
 		await client.util.logEvent(
 			message.guildId!,
-			message.author,
+			interaction ? message.user : message.author,
 			LogEvent.APPLICATION_SUBMITTED,
 			{
-				user: message.author.tag,
+				user: (interaction ? message.user : message.author).tag,
 				application: app.name
 			}
 		);
