@@ -20,5 +20,11 @@
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
 	"i18n-ally.extract.ignoredByFiles": {
 		"src/commands/applications/apply.ts": ["✖"]
+	},
+	"yaml.schemas": {
+		"https://raw.githubusercontent.com/TymanWasTaken/confgen/master/.confgen.schema.json": [
+			".confgen.yaml",
+			"file:///workspace/YourApps_JS/.confgen.yaml"
+		]
 	}
 }

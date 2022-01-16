@@ -1,0 +1,49 @@
+template: |
+  export const token = '${{token}}';
+  export const db = {
+    username: '${{username}}',
+    password: '${{password}}',
+    host: '${{host}}',
+    port: ${{port}}
+  };
+  export const defaultPrefix = '${{defaultPrefix}}';
+  export const channels = {
+    error: '${{errorChannelId}}'
+    // May add log channel later
+  };
+  export const migrationToken = '${{migrationToken}}';
+  export const ownerIDs = ${{ownerIDs}};
+path: src/config/options.ts
+options:
+  - name: Bot token
+    id: token
+    description: The token for the bot to user
+  - name: Database username
+    id: username
+    description: The username for the database
+  - name: Database password
+    id: password
+    description: The password for the database
+  - name: Database host
+    id: host
+    description: The host for the database
+    default: localhost
+  - name: Database port
+    id: port
+    description: The port for the database
+    type: Number
+    default: 5432
+  - name: Default prefix
+    id: defaultPrefix
+    description: The default prefix for the bot
+    default: '-'
+  - name: Error channel ID
+    id: errorChannelId
+    description: The ID of the channel to send error messages to
+  - name: Migration token
+    id: migrationToken
+    description: The token for the bot to use for accessing v3's api
+  - name: Owner IDs
+    id: ownerIDs
+    description: The IDs of the owners of the bot
+    default: "['487443883127472129']"
