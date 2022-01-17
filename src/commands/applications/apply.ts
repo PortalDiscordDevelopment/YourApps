@@ -56,7 +56,7 @@ export default class ApplyCommand extends BotCommand {
 		if (
 			application.minjointime &&
 			(message.editedTimestamp ?? message.createdTimestamp) -
-				message.member!.joinedTimestamp! >
+				message.member!.joinedTimestamp! <
 				application.minjointime
 		) {
 			await message.util!.send(
