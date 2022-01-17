@@ -28,7 +28,9 @@ export default class MessageListener extends BotListener {
 			}
 			const memberRoles = (await message.member!.fetch()).roles.cache;
 			if (!app.requiredroles.every(r => memberRoles.has(r))) {
-				await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
+				await message.util!.send(
+					this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES')
+				);
 				return;
 			}
 			if (
@@ -43,7 +45,7 @@ export default class MessageListener extends BotListener {
 				return;
 			}
 			await ApplyCommand.startApplication(message, app);
-			break
+			break;
 		}
 	}
 }
