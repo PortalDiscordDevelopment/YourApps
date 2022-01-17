@@ -27,9 +27,9 @@ export default class HelpCommand extends BotCommand {
 
 		if (!command) {
 			const embed = this.client.util.embed();
-			embed.setFooter(
-				`For more information about a command use ${prefix}help <command>`
-			);
+			embed.setFooter({
+				text: `For more information about a command use ${prefix}help <command>`
+			});
 			for (const [, category] of this.handler.categories) {
 				const categoryFilter = category.filter(command => {
 					if (command.channel == 'guild' && !message.guild) return false;

@@ -199,11 +199,11 @@ export class Util extends ClientUtil {
 					this.client.util
 						.embed()
 						.setDescription(this.client.i18n.t(event, variables))
-						.setAuthor(
-							user.tag,
-							user.displayAvatarURL({ dynamic: true }),
-							`https://discord.com/users/${user.id}`
-						) // TODO: Change this to discord://-/users once supported
+						.setAuthor({
+							name: user.tag,
+							iconURL: user.displayAvatarURL({ dynamic: true }),
+							url: `https://discord.com/users/${user.id}`
+						}) // TODO: Change this to discord://-/users once supported
 				]
 			});
 		}
@@ -247,16 +247,16 @@ export class Util extends ClientUtil {
 								inline: true
 							}))
 						)
-						.setAuthor(
-							`Submitted by ${user.tag}`,
-							user.displayAvatarURL({ dynamic: true }),
-							`https://discord.com/users/${user.id}`
-						) // TODO: Change this to discord://-/users once supported
+						.setAuthor({
+							name: `Submitted by ${user.tag}`,
+							iconURL: user.displayAvatarURL({ dynamic: true }),
+							url: `https://discord.com/users/${user.id}`
+						}) // TODO: Change this to discord://-/users once supported
 						.setColor(accepted ? '#74eb34' : '#fc3503')
-						.setFooter(
-							`Reviewed by ${reviewer.tag}`,
-							reviewer.displayAvatarURL({ dynamic: true })
-						)
+						.setFooter({
+							text: `Reviewed by ${reviewer.tag}`,
+							iconURL: reviewer.displayAvatarURL({ dynamic: true })
+						})
 				]
 			});
 		}

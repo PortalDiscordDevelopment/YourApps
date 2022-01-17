@@ -99,12 +99,10 @@ export default class EvalCommand extends BotCommand {
 
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 
-			embed
-				.setTitle(this.client.i18n.t('DEVELOPER.EVALED_CODE'))
-				.setFooter(
-					message.author.tag,
-					message.author.displayAvatarURL({ dynamic: true })
-				);
+			embed.setTitle(this.client.i18n.t('DEVELOPER.EVALED_CODE')).setFooter({
+				text: message.author.tag,
+				iconURL: message.author.displayAvatarURL({ dynamic: true })
+			});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
@@ -128,12 +126,10 @@ export default class EvalCommand extends BotCommand {
 			);
 		} catch (e) {
 			const inputJS = Util.cleanCodeBlockContent(code.js);
-			embed
-				.setTitle(this.client.i18n.t('DEVELOPER.EVAL_ERROR'))
-				.setFooter(
-					message.author.tag,
-					message.author.displayAvatarURL({ dynamic: true })
-				);
+			embed.setTitle(this.client.i18n.t('DEVELOPER.EVAL_ERROR')).setFooter({
+				text: message.author.tag,
+				iconURL: message.author.displayAvatarURL({ dynamic: true })
+			});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed

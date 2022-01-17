@@ -5,9 +5,9 @@ import ApplyCommand from '../../commands/applications/apply';
 
 export default class MessageListener extends BotListener {
 	public constructor() {
-		super('message', {
+		super('messageCreate', {
 			emitter: 'client',
-			event: 'message'
+			event: 'messageCreate'
 		});
 	}
 	public async exec(message: Message) {
