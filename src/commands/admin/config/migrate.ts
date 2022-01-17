@@ -68,7 +68,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 	}
 	async exec(message: Message) {
-		await message.util!.reply('The v3 version of the bot is currently down and not running, so this command will not work. This should be fixed relatively soon.')
+		await message.util!.reply(
+			'The v3 version of the bot is currently down and not running, so this command will not work. This should be fixed relatively soon.'
+		);
 		// const authHeaders = {
 		// 	headers: {
 		// 		Authorization: `Bearer ${this.client.config.migrationToken}`
