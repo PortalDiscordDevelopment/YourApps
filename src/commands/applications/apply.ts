@@ -114,6 +114,7 @@ export default class ApplyCommand extends BotCommand {
 		const cancelButtonId = `cancelApplication|1|${message.id}|${
 			message.editedTimestamp ?? message.createdTimestamp
 		}`;
+		let curQuestion = 0;
 		const applicationMessage = await message.author.send({
 			embeds: [
 				client.util
@@ -124,14 +125,12 @@ export default class ApplyCommand extends BotCommand {
 						})
 					)
 					.setDescription(client.i18n.t('COMMANDS.APPLYING_INFO'))
-					.setFields(
-						app.questions.map(q => ({
-							name: q.question,
-							value: client.i18n.t('COMMANDS.YOUR_ANSWER', {
-								type: AppQuestionTypeNice[q.type]
-							}),
-							inline: true
-						}))
+					.addField(
+						app.questions[curQuestion].question,
+						client.i18n.t('COMMANDS.YOUR_ANSWER', {
+							type: AppQuestionTypeNice[app.questions[curQuestion].type]
+						}),
+						true
 					)
 			],
 			components: [
@@ -158,16 +157,12 @@ export default class ApplyCommand extends BotCommand {
 				answerCollector.stop('cancel');
 			});
 		answerCollector.on('collect', async m => {
-			const unansweredQuestions = applicationMessage.embeds[0].fields
-				.map(f => f.name)
-				.filter(q => !Object.keys(answers).includes(q));
 			const answer = `${m.content}\n${m.attachments
 				.map(a => a.url)
 				.join('\n')}`;
 			const validation = client.util.validateQuestionType(
 				answer,
-				app.questions.find(q => q.question === unansweredQuestions[0])?.type ??
-					AppQuestionType.STRING
+				app.questions[curQuestion]?.type ?? AppQuestionType.STRING
 			);
 			if (!validation.valid) {
 				await m.reply({
@@ -175,23 +170,31 @@ export default class ApplyCommand extends BotCommand {
 				});
 				return;
 			}
-			answers[unansweredQuestions[0]] = validation.processed;
+			answers[app.questions[curQuestion].question] = validation.processed;
+			curQuestion++;
+			let newEmbed = applicationMessage.embeds[0].setFields(
+				applicationMessage.embeds[0].fields.map(f =>
+					f.name === app.questions[curQuestion - 1].question
+						? {
+								name: f.name,
+								value: validation.user,
+								inline: true
+						  }
+						: f
+				)
+			);
+			if (curQuestion !== app.questions.length)
+				newEmbed = newEmbed.addField(
+					app.questions[curQuestion].question,
+					client.i18n.t('COMMANDS.YOUR_ANSWER', {
+						type: AppQuestionTypeNice[app.questions[curQuestion].type]
+					}),
+					true
+				);
 			await applicationMessage.edit({
-				embeds: [
-					applicationMessage.embeds[0].setFields(
-						applicationMessage.embeds[0].fields.map(f =>
-							f.name === unansweredQuestions[0]
-								? {
-										name: f.name,
-										value: validation.user,
-										inline: true
-								  }
-								: f
-						)
-					)
-				]
+				embeds: [newEmbed]
 			});
-			if (unansweredQuestions.length === 1) answerCollector.stop('finish');
+			if (curQuestion === app.questions.length) answerCollector.stop('finish');
 		});
 		// Await collector finish (on application complete or cancel)
 		const endedReason: 'finish' | 'cancel' = await new Promise(resolve => {

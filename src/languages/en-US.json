@@ -187,7 +187,7 @@
 		"POSITIONS_TITLE": "{{ guild}}'s positions",
 		"ARE_YOU_SURE_APPLICATION": "Are you sure you want to apply to {{application}}? If yes, press continue. If no, press cancel. Continuing will DM you with the application questions.",
 		"APPLICATION_FOR": "Application for \"{{application}}\"",
-		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the first empty answer space. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
+		"APPLYING_INFO": "To apply for this application, just send a message and it will be filled in to the empty answer space, and the next question will be shown. If you mess up, you can cancel at any time by pressing the cancel button below. At the end, you will be asked to confirm once more, and then it will be submitted to the server who made this application.",
 		"YOUR_ANSWER": "Your answer here ({{type}})",
 		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted.",
 		"REVIEW_DESCRIPTION": "Starts reviewing a submitted application, allows you to approve, approve with reason, or deny.",
