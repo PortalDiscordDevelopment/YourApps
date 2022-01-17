@@ -12,11 +12,13 @@ export default class InteractionCreateListener extends BotListener {
 	}
 	public async exec(interaction: Interaction) {
 		if (
-			!interaction.isButton() ||
-			!interaction.guildId ||
-			!(interaction instanceof ButtonInteraction)
-		)
-			return;
+			!(
+				interaction.isButton() &&
+				interaction.guildId &&
+				interaction instanceof ButtonInteraction &&
+				interaction.customId.startsWith('startAppButton')
+			)
+		) return;
 		const appButton = await AppButton.findByPk(interaction.message.id);
 		if (!appButton) return;
 		const app = await App.findByPk(appButton.app);
