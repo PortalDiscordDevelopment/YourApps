@@ -66,7 +66,8 @@ export default class ApplyCommand extends BotCommand {
 				message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
-		const confirmation = await message.reply({
+		await message.react('✅');
+		const confirmation = await message.author.send({
 			content: client.i18n.t('COMMANDS.ARE_YOU_SURE_APPLICATION', {
 				application: app.name
 			}),
@@ -87,8 +88,10 @@ export default class ApplyCommand extends BotCommand {
 		});
 		let response: MessageComponentInteraction;
 		try {
-			response = await message.channel.awaitMessageComponent({
-				filter: i => Object.values(buttonIds).includes(i.customId),
+			response = await confirmation.awaitMessageComponent({
+				filter: i =>
+					Object.values(buttonIds).includes(i.customId) &&
+					i.user.id == message.author.id,
 				componentType: 'BUTTON',
 				time: 300_000 // 5 Minutes
 			});
