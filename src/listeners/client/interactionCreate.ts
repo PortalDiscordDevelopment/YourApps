@@ -18,7 +18,8 @@ export default class InteractionCreateListener extends BotListener {
 				interaction instanceof ButtonInteraction &&
 				interaction.customId.startsWith('startAppButton')
 			)
-		) return;
+		)
+			return;
 		const appButton = await AppButton.findByPk(interaction.message.id);
 		if (!appButton) return;
 		const app = await App.findByPk(appButton.app);

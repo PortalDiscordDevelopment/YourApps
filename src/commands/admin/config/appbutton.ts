@@ -1,7 +1,8 @@
 import { ArgumentOptions, Flag } from 'discord-akairo';
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { AppButton, Guild } from '@lib/models';
+import { AppButton, App } from '@lib/models';
+import { Op } from 'sequelize';
 
 export default class ConfigBlacklistCommand extends BotCommand {
 	public constructor() {
@@ -40,14 +41,26 @@ export default class ConfigBlacklistCommand extends BotCommand {
 			await message.util!.send(this.client.i18n.t('CONFIG.NO_APPBUTTONS'));
 			return;
 		}
+		const apps = await App.findAll({
+			where: {
+				id: {
+					[Op.in]: appbuttons.map(a => a.app)
+				}
+			}
+		});
 		await message.util!.send({
 			embeds: [
-				this.client.util.embed()
-					.setTitle(this.client.i18n.t('CONFIG.APPBUTTONS', {
-						guild: message.guildId!
-					}))
+				this.client.util
+					.embed()
+					.setTitle(
+						this.client.i18n.t('CONFIG.APPBUTTONS', {
+							guild: message.guildId!
+						})
+					)
 					.setDescription(
 						appbuttons
+							.map(ab => `${ab.message}: ${apps.find(a => a.id == ab.app)}`)
+							.join('\n')
 					)
 			]
 		});
