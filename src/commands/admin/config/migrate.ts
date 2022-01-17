@@ -68,145 +68,146 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 	}
 	async exec(message: Message) {
-		const authHeaders = {
-			headers: {
-				Authorization: `Bearer ${this.client.config.migrationToken}`
-			}
-		};
+		await message.util!.reply('The v3 version of the bot is currently down and not running, so this command will not work. This should be fixed relatively soon.')
+		// const authHeaders = {
+		// 	headers: {
+		// 		Authorization: `Bearer ${this.client.config.migrationToken}`
+		// 	}
+		// };
 
-		const [guildEntry] = await Guild.findOrBuild({
-			where: {
-				id: message.guild!.id
-			},
-			defaults: {
-				id: message.guild!.id
-			}
-		});
-		// Transfer guild config
-		let guildData: GuildData;
-		try {
-			guildData = await got
-				.get(
-					`https://api.yourapps.cyou/guilds/${message.guild!.id}`,
-					authHeaders
-				)
-				.json();
-		} catch (e) {
-			if (e instanceof HTTPError && e.response.statusCode == 404) {
-				await message.util!.send(
-					this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
-				);
-			} else if (e instanceof HTTPError) {
-				await this.logError(message, e);
-			}
-			return;
-		}
-		guildData.review_roles.forEach(e => {
-			if (!guildEntry.reviewroles.includes(e)) guildEntry.reviewroles.push(e);
-		});
-		guildData.admin_roles.forEach(e => {
-			if (!guildEntry.adminroles.includes(e)) guildEntry.adminroles.push(e);
-		});
-		guildData.blacklist_roles.forEach(e => {
-			if (!guildEntry.blacklistroles.includes(e))
-				guildEntry.blacklistroles.push(e);
-		});
-		guildEntry.logchannel = guildData.log_channel;
-		guildEntry.archivechannel = guildData.archive_channel;
-		guildEntry.legacypremium = guildData.premium;
-		await guildEntry.save();
-		// Transfer positions
-		let guildPositions: GuildPositionData[];
-		const map: Record<string, number> = {};
-		try {
-			guildPositions = await got
-				.get(
-					`https://api.yourapps.cyou/guilds/${message.guild!.id}/positions`,
-					authHeaders
-				)
-				.json();
-		} catch (e) {
-			if (e instanceof HTTPError) {
-				await this.logError(message, e);
-				return;
-			}
-			throw e;
-		}
-		for (const position of guildPositions) {
-			let data: PositionData;
-			try {
-				data = await got
-					.get(
-						`https://api.yourapps.cyou/positions/${position.id}`,
-						authHeaders
-					)
-					.json();
-			} catch (e) {
-				if (e instanceof HTTPError && e.response.statusCode == 404) continue;
-				else if (e instanceof HTTPError) await this.logError(message, e);
-				else throw e;
-				return;
-			}
-			const [app, created] = await App.findOrBuild({
-				where: {
-					name: position.name
-				},
-				defaults: {
-					name: data.name,
-					guild: message.guild!.id,
-					questions: Object.entries(data.questions).map(q => ({
-						question: q[0],
-						type: AppQuestionType.STRING
-					})),
-					closed: !data.open,
-					rewardroles: data.reward_roles,
-					removeroles: data.remove_roles,
-					requiredroles: data.required_roles
-				}
-			});
-			if (created) await app.save();
-			else
-				await message.util!.send(
-					this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
-				);
-			map[data.id] = app.id;
-		}
-		// Transfer apps
-		let submittedApps: ApplicationData[];
-		try {
-			submittedApps = await got
-				.get(
-					`https://api.yourapps.cyou/guilds/${message.guild!.id}/applications`,
-					authHeaders
-				)
-				.json();
-		} catch (e) {
-			if (e instanceof HTTPError) await this.logError(message, e);
-			else throw e;
-			return;
-		}
-		for (const app of submittedApps) {
-			const answers: Record<string, string> = {};
-			for (const ans of app.answers) {
-				answers[ans.question] = ans.answer;
-			}
-			const sub = Submission.build({
-				author: app.author_id,
-				guild: message.guild!.id,
-				position: map[app.position_id],
-				answers
-			});
-			await sub.save();
-		}
-		await got
-			.patch(
-				`https://api.yourapps.cyou/guilds/${message.guildId!}/migrated?value=true`,
-				authHeaders
-			)
-			.catch(() => undefined);
-		await message.util?.send(
-			'Successfully migrated all compatible settings, positions, and submitted applications.'
-		);
+		// const [guildEntry] = await Guild.findOrBuild({
+		// 	where: {
+		// 		id: message.guild!.id
+		// 	},
+		// 	defaults: {
+		// 		id: message.guild!.id
+		// 	}
+		// });
+		// // Transfer guild config
+		// let guildData: GuildData;
+		// try {
+		// 	guildData = await got
+		// 		.get(
+		// 			`https://api.yourapps.cyou/guilds/${message.guild!.id}`,
+		// 			authHeaders
+		// 		)
+		// 		.json();
+		// } catch (e) {
+		// 	if (e instanceof HTTPError && e.response.statusCode == 404) {
+		// 		await message.util!.send(
+		// 			this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
+		// 		);
+		// 	} else if (e instanceof HTTPError) {
+		// 		await this.logError(message, e);
+		// 	}
+		// 	return;
+		// }
+		// guildData.review_roles.forEach(e => {
+		// 	if (!guildEntry.reviewroles.includes(e)) guildEntry.reviewroles.push(e);
+		// });
+		// guildData.admin_roles.forEach(e => {
+		// 	if (!guildEntry.adminroles.includes(e)) guildEntry.adminroles.push(e);
+		// });
+		// guildData.blacklist_roles.forEach(e => {
+		// 	if (!guildEntry.blacklistroles.includes(e))
+		// 		guildEntry.blacklistroles.push(e);
+		// });
+		// guildEntry.logchannel = guildData.log_channel;
+		// guildEntry.archivechannel = guildData.archive_channel;
+		// guildEntry.legacypremium = guildData.premium;
+		// await guildEntry.save();
+		// // Transfer positions
+		// let guildPositions: GuildPositionData[];
+		// const map: Record<string, number> = {};
+		// try {
+		// 	guildPositions = await got
+		// 		.get(
+		// 			`https://api.yourapps.cyou/guilds/${message.guild!.id}/positions`,
+		// 			authHeaders
+		// 		)
+		// 		.json();
+		// } catch (e) {
+		// 	if (e instanceof HTTPError) {
+		// 		await this.logError(message, e);
+		// 		return;
+		// 	}
+		// 	throw e;
+		// }
+		// for (const position of guildPositions) {
+		// 	let data: PositionData;
+		// 	try {
+		// 		data = await got
+		// 			.get(
+		// 				`https://api.yourapps.cyou/positions/${position.id}`,
+		// 				authHeaders
+		// 			)
+		// 			.json();
+		// 	} catch (e) {
+		// 		if (e instanceof HTTPError && e.response.statusCode == 404) continue;
+		// 		else if (e instanceof HTTPError) await this.logError(message, e);
+		// 		else throw e;
+		// 		return;
+		// 	}
+		// 	const [app, created] = await App.findOrBuild({
+		// 		where: {
+		// 			name: position.name
+		// 		},
+		// 		defaults: {
+		// 			name: data.name,
+		// 			guild: message.guild!.id,
+		// 			questions: Object.entries(data.questions).map(q => ({
+		// 				question: q[0],
+		// 				type: AppQuestionType.STRING
+		// 			})),
+		// 			closed: !data.open,
+		// 			rewardroles: data.reward_roles,
+		// 			removeroles: data.remove_roles,
+		// 			requiredroles: data.required_roles
+		// 		}
+		// 	});
+		// 	if (created) await app.save();
+		// 	else
+		// 		await message.util!.send(
+		// 			this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
+		// 		);
+		// 	map[data.id] = app.id;
+		// }
+		// // Transfer apps
+		// let submittedApps: ApplicationData[];
+		// try {
+		// 	submittedApps = await got
+		// 		.get(
+		// 			`https://api.yourapps.cyou/guilds/${message.guild!.id}/applications`,
+		// 			authHeaders
+		// 		)
+		// 		.json();
+		// } catch (e) {
+		// 	if (e instanceof HTTPError) await this.logError(message, e);
+		// 	else throw e;
+		// 	return;
+		// }
+		// for (const app of submittedApps) {
+		// 	const answers: Record<string, string> = {};
+		// 	for (const ans of app.answers) {
+		// 		answers[ans.question] = ans.answer;
+		// 	}
+		// 	const sub = Submission.build({
+		// 		author: app.author_id,
+		// 		guild: message.guild!.id,
+		// 		position: map[app.position_id],
+		// 		answers
+		// 	});
+		// 	await sub.save();
+		// }
+		// await got
+		// 	.patch(
+		// 		`https://api.yourapps.cyou/guilds/${message.guildId!}/migrated?value=true`,
+		// 		authHeaders
+		// 	)
+		// 	.catch(() => undefined);
+		// await message.util?.send(
+		// 	'Successfully migrated all compatible settings, positions, and submitted applications.'
+		// );
 	}
 
 	async logError(message: Message, e: HTTPError) {
