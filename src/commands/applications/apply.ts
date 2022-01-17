@@ -158,8 +158,11 @@ export default class ApplyCommand extends BotCommand {
 			const unansweredQuestions = applicationMessage.embeds[0].fields
 				.map(f => f.name)
 				.filter(q => !Object.keys(answers).includes(q));
+			const answer = `${m.content}\n${m.attachments
+				.map(a => a.url)
+				.join('\n')}`;
 			const validation = client.util.validateQuestionType(
-				m.content,
+				answer,
 				app.questions.find(q => q.question === unansweredQuestions[0])?.type ??
 					AppQuestionType.STRING
 			);
