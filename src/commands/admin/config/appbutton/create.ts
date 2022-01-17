@@ -59,7 +59,8 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 		if (prompt.cancelled) return;
 		const content = prompt.result!;
 		const appMessage = await message.util!.send({
-			content: ''
+			content: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP'),
+			components: []
 		});
 	}
 }

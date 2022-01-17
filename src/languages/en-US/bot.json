@@ -177,7 +177,8 @@
 		"APPBUTTON_CREATE": {
 			"GIVE_MESSAGE": "Please give the content of the message to send in the provided channel.",
 			"GIVE_APP": "Please give the application for the appbutton to start when pressed.",
-			"NEW": "New appbutton"
+			"NEW": "New appbutton",
+			"SELECT_APP": "Please select the application that this appbutton will use below."
 		}
 	},
 	"BLOCKED": {

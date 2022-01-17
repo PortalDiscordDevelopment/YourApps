@@ -110,45 +110,45 @@ export default class ApplyCommand extends BotCommand {
 		};
 		if (!interaction) await message.react('✅');
 		let confirmation = interaction
-		? await message.reply({
-			content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
-				application: app.name
-			}),
-			components: [
-				new MessageActionRow().addComponents(
-					new MessageButton()
-						.setCustomId(buttonIds.continue)
-						.setLabel(client.i18n.t('GENERIC.CONTINUE'))
-						.setEmoji('✅')
-						.setStyle('SUCCESS'),
-					new MessageButton()
-						.setCustomId(buttonIds.cancel)
-						.setLabel(client.i18n.t('GENERIC.CANCEL'))
-						.setEmoji('✖')
-						.setStyle('DANGER')
-				)
-			],
-			ephemeral: true
-		})
-		: await message.author.send({
-			content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
-				application: app.name
-			}),
-			components: [
-				new MessageActionRow().addComponents(
-					new MessageButton()
-						.setCustomId(buttonIds.continue)
-						.setLabel(await client.t('GENERIC.CONTINUE', message))
-						.setEmoji('✅')
-						.setStyle('SUCCESS'),
-					new MessageButton()
-						.setCustomId(buttonIds.cancel)
-						.setLabel(await client.t('GENERIC.CANCEL', message))
-						.setEmoji('✖')
-						.setStyle('DANGER')
-				)
-			]
-		});
+			? await message.reply({
+					content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
+						application: app.name
+					}),
+					components: [
+						new MessageActionRow().addComponents(
+							new MessageButton()
+								.setCustomId(buttonIds.continue)
+								.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+								.setEmoji('✅')
+								.setStyle('SUCCESS'),
+							new MessageButton()
+								.setCustomId(buttonIds.cancel)
+								.setLabel(client.i18n.t('GENERIC.CANCEL'))
+								.setEmoji('✖')
+								.setStyle('DANGER')
+						)
+					],
+					ephemeral: true
+			  })
+			: await message.author.send({
+					content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
+						application: app.name
+					}),
+					components: [
+						new MessageActionRow().addComponents(
+							new MessageButton()
+								.setCustomId(buttonIds.continue)
+								.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+								.setEmoji('✅')
+								.setStyle('SUCCESS'),
+							new MessageButton()
+								.setCustomId(buttonIds.cancel)
+								.setLabel(client.i18n.t('GENERIC.CANCEL'))
+								.setEmoji('✖')
+								.setStyle('DANGER')
+						)
+					]
+			  });
 		let response: MessageComponentInteraction;
 		try {
 			response = await message.channel!.awaitMessageComponent({
