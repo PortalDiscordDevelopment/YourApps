@@ -65,7 +65,10 @@ export class BotClient extends AkairoClient {
 			lng: 'en-US',
 			fallbackLng: 'en-US',
 			ns: 'YourApps',
-			fallbackNS: 'YourApps'
+			fallbackNS: 'YourApps',
+			interpolation: {
+				escapeValue: false
+			}
 		});
 		await this.util.loadLanguages();
 		this.commandHandler = new CommandHandler(this, {
