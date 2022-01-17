@@ -2,6 +2,7 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { App } from '@lib/models/App';
 import { Submission } from '@lib/models/Submission';
 import {
+	DiscordAPIError,
 	Message,
 	MessageActionRow,
 	MessageButton,
@@ -222,7 +223,20 @@ export default class ReviewCommand extends BotCommand {
 					);
 					return;
 				}
-				await this.client.util.approveSubmission(message.author, submission);
+				try {
+					await this.client.util.approveSubmission(message.author, submission);
+				} catch (e) {
+					if (e instanceof DiscordAPIError) {
+						await reviewMessage.edit({
+							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							components: [],
+							embeds: []
+						});
+						await submission.destroy();
+						return;
+					}
+					throw e;
+				}
 				await reviewMessage.edit({
 					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
 					components: [],
@@ -267,11 +281,24 @@ export default class ReviewCommand extends BotCommand {
 					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
 					return;
 				}
-				await this.client.util.approveSubmission(
-					message.author,
-					submission,
-					reason.result
-				);
+				try {
+					await this.client.util.approveSubmission(
+						message.author,
+						submission,
+						reason.result
+					);
+				} catch (e) {
+					if (e instanceof DiscordAPIError) {
+						await reviewMessage.edit({
+							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							components: [],
+							embeds: []
+						});
+						await submission.destroy();
+						return;
+					}
+					throw e;
+				}
 				await reviewMessage.edit({
 					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
 					components: [],
@@ -308,11 +335,24 @@ export default class ReviewCommand extends BotCommand {
 					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
 					return;
 				}
-				await this.client.util.denySubmission(
-					message.author,
-					submission,
-					reason.result!
-				);
+				try {
+					await this.client.util.denySubmission(
+						message.author,
+						submission,
+						reason.result!
+					);
+				} catch (e) {
+					if (e instanceof DiscordAPIError) {
+						await reviewMessage.edit({
+							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							components: [],
+							embeds: []
+						});
+						await submission.destroy();
+						return;
+					}
+					throw e;
+				}
 				await reviewMessage.edit({
 					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED'),
 					components: [],
