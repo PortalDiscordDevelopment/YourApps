@@ -25,18 +25,15 @@ export class AppButton extends BaseModel<
 				},
 				channel: {
 					type: DataTypes.STRING,
-					primaryKey: false,
 					allowNull: false
 				},
 				guild: {
 					type: DataTypes.STRING,
-					primaryKey: false,
 					allowNull: false,
 					references: { model: 'Guilds' }
 				},
 				app: {
 					type: DataTypes.INTEGER,
-					primaryKey: false,
 					allowNull: false,
 					references: { model: 'Apps' }
 				}

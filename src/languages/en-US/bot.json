@@ -152,7 +152,9 @@
 			"UPDATE": "Git pulls the latest code and then restarts with pm2",
 			"CONFIG_DELETE": "Deletes an application. THIS IS IRREVERSABLE!",
 			"CONFIG_EDIT": "Edits an already created application.",
-			"LANGUAGE": "Gets/sets your user language."
+			"LANGUAGE": "Gets/sets your user language.",
+			"CONFIG_CREATE_APPBUTTON": "Creates a new appbutton",
+			"CONFIG_APPBUTTON_DELETE": "Deletes an appbutton"
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",

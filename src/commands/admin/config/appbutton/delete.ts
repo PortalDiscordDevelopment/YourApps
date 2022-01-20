@@ -6,13 +6,13 @@ import { LogEvent } from '@lib/ext/Util';
 
 export default class ConfigBlacklistRemoveCommand extends BotCommand {
 	public constructor() {
-		super('config-blacklist-remove', {
-			aliases: ['config-blacklist-remove'],
+		super('config-appbutton-delete', {
+			aliases: ['config-appbutton-delete'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE'),
-				usage: 'config blacklist remove <role>',
-				examples: ['config blacklist remove Moderator']
+					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_APPBUTTON_DELETE'),
+				usage: 'config appbutton delete',
+				examples: ['config appbutton delete']
 			},
 			category: 'admin',
 			args: [

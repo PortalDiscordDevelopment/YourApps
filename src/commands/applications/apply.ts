@@ -109,7 +109,7 @@ export default class ApplyCommand extends BotCommand {
 			}`
 		};
 		if (!interaction) await message.react('✅');
-		let confirmation = interaction
+		const confirmation = interaction
 			? await message.reply({
 					content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
 						application: app.name

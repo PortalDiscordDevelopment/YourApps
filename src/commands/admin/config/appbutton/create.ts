@@ -1,8 +1,12 @@
-import { Message, TextChannel } from 'discord.js';
+import {
+	Message,
+	MessageActionRow,
+	MessageButton,
+	MessageSelectMenu,
+	TextChannel
+} from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { Guild } from '@lib/models';
-import { Role } from 'discord.js';
-import { LogEvent } from '@lib/ext/Util';
+import { App } from '@lib/models';
 import ConfigNewCommand from '../new';
 
 export default class ConfigAppbuttonCreateCommand extends BotCommand {
@@ -58,9 +62,48 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 		});
 		if (prompt.cancelled) return;
 		const content = prompt.result!;
+		const ids = {
+			selectId: `selectAppCreateAppbuttonMessage|1|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`,
+			continueButtonId: `continueCreateAppbuttonMessage|1|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`,
+			cancelButtonId: `cancelCreateAppbuttonMessage|0|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`
+		};
+		const apps = await App.findAll({
+			attributes: ['id', 'name', 'description'],
+			where: {
+				guild: message.guild!.id
+			}
+		});
 		const appMessage = await message.util!.send({
 			content: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP'),
-			components: []
+			components: [
+				new MessageActionRow().addComponents(
+					new MessageSelectMenu().setCustomId(ids.selectId).setOptions(
+						apps.map(a => ({
+							label: a.name,
+							value: a.id.toString(),
+							description: a.description ?? undefined
+						}))
+					)
+				),
+				new MessageActionRow().addComponents(
+					new MessageButton()
+						.setLabel(this.client.i18n.t('GENERIC.CONTINUE'))
+						.setCustomId(ids.continueButtonId)
+						.setStyle('PRIMARY')
+						.setEmoji('✅'),
+					new MessageButton()
+						.setLabel(this.client.i18n.t('GENERIC.CANCEL'))
+						.setCustomId(ids.cancelButtonId)
+						.setStyle('DANGER')
+						.setEmoji('❌')
+				)
+			]
 		});
 	}
 }
