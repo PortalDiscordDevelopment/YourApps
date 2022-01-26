@@ -11,7 +11,7 @@
 		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
 	},
 	"author": "Tyman",
-	"license": "MIT",
+	"license": "NPOSL-3.0",
 	"devDependencies": {
 		"@types/common-tags": "^1.8.1",
 		"@types/node": "^17.0.8",
