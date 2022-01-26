@@ -237,7 +237,8 @@
 		"NO_REQUIRED_ROLES": "You do not have any of the required roles set for this application, so you cannot apply to it.",
 		"PREFIX_EXISTS_V3": "That prefix is already used by the v3 version of the bot. To prevent conflicts between the versions, please remove this prefix from the v3 version by running (replace <prefixhere> with the preifx, without the <>) `<prefixhere>config prefix remove <prefixhere>`",
 		"UNABLE_TO_FETCH": "The bot was unable to find the member. The most likley cause of this is the member leaving the server. Since the member left, I will delete the submission.",
-		"NOT_JOINED_LONG_ENOUGH": "You have not been in this server for long enough!"
+		"NOT_JOINED_LONG_ENOUGH": "You have not been in this server for long enough!",
+		"ALREADY_APPLIED": "You have already applied for this application, please wait for it to be approved or denied before submitting another."
 	},
 	"POSITION_CHOICE_DESC": "{{n}} submitted applications",
 	"NO_SUBMISSIONS": "There does not appear to be any submissions to review!"

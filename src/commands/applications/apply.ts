@@ -48,6 +48,16 @@ export default class ApplyCommand extends BotCommand {
 			await message.util!.send(this.client.i18n.t('ERRORS.CANNOT_DM'));
 			return;
 		}
+		const submittedApps = await Submission.count({
+			where: {
+				author: message.author.id,
+				position: application.id
+			}
+		});
+		if (submittedApps > 0) {
+			await message.util!.send(this.client.i18n.t('ERRORS.ALREADY_APPLIED'));
+			return;
+		}
 		const memberRoles = (await message.member!.fetch()).roles.cache;
 		if (!application.requiredroles.every(r => memberRoles.has(r))) {
 			await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
