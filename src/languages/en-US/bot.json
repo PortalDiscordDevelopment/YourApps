@@ -26,7 +26,8 @@
 		"CHOSE_POS": "Choose a position",
 		"CHOOSE_SUB": "Choose one of the submissions below for your chosen application.",
 		"CHOOSE_A_SUB": "Choose a submission",
-		"MIGRATING": "Migrating..."
+		"MIGRATING": "Migrating...",
+		"CONTENT": "Message content"
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
