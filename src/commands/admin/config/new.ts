@@ -576,7 +576,7 @@ export default class ConfigNewCommand extends BotCommand {
 		endedReason: 'cancel' | 'continue';
 	}> {
 		const collected: T[] = [];
-		const newAppMessage = await message.reply({
+		const newAppMessage = await message.util!.reply({
 			embeds: [
 				this.client.util
 					.embed()
@@ -706,7 +706,7 @@ export default class ConfigNewCommand extends BotCommand {
 		cancelled: boolean;
 	}> {
 		let collected: T | null = null;
-		const newAppMessage = await message.reply({
+		const newAppMessage = await message.util!.reply({
 			embeds: [
 				this.client.util
 					.embed()

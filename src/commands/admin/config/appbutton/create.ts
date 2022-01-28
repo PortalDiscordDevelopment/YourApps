@@ -95,7 +95,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 					new MessageButton()
 						.setLabel(this.client.i18n.t('GENERIC.CONTINUE'))
 						.setCustomId(ids.continueButtonId)
-						.setStyle('PRIMARY')
+						.setStyle('SUCCESS')
 						.setEmoji('✅'),
 					new MessageButton()
 						.setLabel(this.client.i18n.t('GENERIC.CANCEL'))
@@ -105,5 +105,14 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				)
 			]
 		});
+		const appInteraction = await appMessage.awaitMessageComponent({
+			filter: i => Object.values(ids).includes(i.customId),
+			time: 300000
+		})
+		switch (appInteraction.customId) {
+			case ids.selectId: {
+				break
+			}
+		}
 	}
 }

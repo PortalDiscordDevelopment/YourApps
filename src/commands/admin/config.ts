@@ -25,7 +25,8 @@ export default class ConfigCommand extends BotCommand {
 				'config-new',
 				'config-migrate',
 				'config-delete',
-				'config-edit'
+				'config-edit',
+				'config-appbutton'
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
@@ -46,6 +47,7 @@ export default class ConfigCommand extends BotCommand {
 				['config-new', 'new'],
 				['config-migrate', 'migrate'],
 				['config-delete', 'delete'],
+				['config-appbutton', 'appbutton'],
 				['config-edit', 'edit']
 			]
 		};
