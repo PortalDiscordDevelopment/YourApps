@@ -27,6 +27,10 @@ export default class CommandBlockedListener extends BotListener {
 				await message.util!.send(this.client.i18n.t('BLOCKED.ADMIN_ONLY'));
 				break;
 			}
+			case 'notReviewer': {
+				await message.util!.send(this.client.i18n.t('BLOCKED.REVIEWER_ONLY'));
+				break;
+			}
 		}
 	}
 }

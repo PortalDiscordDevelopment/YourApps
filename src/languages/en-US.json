@@ -202,7 +202,8 @@
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",
 		"DM_ONLY": "This command can only be run in DMs.",
 		"GUILD_ONLY": "This command can only be run in servers.",
-		"ADMIN_ONLY": "Only admins (people with the set admin roles or manage server permission) can run this command."
+		"ADMIN_ONLY": "Only admins (people with the set admin roles or manage server permission) can run this command.",
+		"REVIEWER_ONLY": "Only reviewers (people with the set review roles or manage roles permission) can run this command."
 	},
 	"LOGGING": {
 		"LOG_CHANNEL": "Server log channel was changed to <#{{channelID}}>.",
