@@ -377,7 +377,8 @@ export class Util extends ClientUtil {
 		this.logEvent(guild.id, user, LogEvent.SUBMISSION_DENIED, {
 			// Log submission
 			user: member.user.tag,
-			application: app.name
+			application: app.name,
+			reason
 		});
 		await this.client.util.archiveApplication(
 			guild.id!,
