@@ -6,7 +6,7 @@ import { BotClient } from '@lib/ext/BotClient';
 
 interface Props {
 	[prop: string]: {
-		skippable: boolean | string;
+		skippable: true | string;
 		multi: boolean;
 		process: (m: Message) =>
 			| {
@@ -25,7 +25,7 @@ interface Props {
 
 const props: Props = {
 	'Name': {
-		skippable: false,
+		skippable: 'name',
 		multi: false,
 		process: (m: Message) => ({
 			success: true,
@@ -268,7 +268,7 @@ export default class EditCommand extends BotCommand {
 						? ' or press continue to delete the existing value.'
 						: ''
 				}`,
-				allowSkip: props[parsed[1]].skippable as boolean,
+				allowSkip: props[parsed[1]].skippable,
 				fieldName: parsed[1],
 				process: props[parsed[1]].process
 			});

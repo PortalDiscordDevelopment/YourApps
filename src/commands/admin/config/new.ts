@@ -687,7 +687,7 @@ export default class ConfigNewCommand extends BotCommand {
 			title: string;
 			description: string;
 			fieldName: string;
-			allowSkip: boolean;
+			allowSkip: true | string;
 			process: (m: Message) =>
 				| {
 						success: true;
@@ -733,12 +733,10 @@ export default class ConfigNewCommand extends BotCommand {
 				])
 			]
 		});
-		const messageCollector = await newAppMessage.channel.createMessageCollector(
-			{
-				filter: m => m.author.id == message.author.id,
-				idle: 600_000
-			}
-		);
+		const messageCollector = newAppMessage.channel.createMessageCollector({
+			filter: m => m.author.id == message.author.id,
+			idle: 600_000
+		});
 		messageCollector.on('collect', async m => {
 			if (m.deletable) m.delete();
 			const validate = options.process(m);

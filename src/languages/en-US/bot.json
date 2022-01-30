@@ -27,7 +27,8 @@
 		"CHOOSE_SUB": "Choose one of the submissions below for your chosen application.",
 		"CHOOSE_A_SUB": "Choose a submission",
 		"MIGRATING": "Migrating...",
-		"CONTENT": "Message content"
+		"CONTENT": "Message content",
+		"APPBUTTON_MESSAGE": "Select one of the buttons below to start applying for their respective positions."
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
@@ -224,7 +225,8 @@
 		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
 		"COMMAND_ERROR_OCCURRED": "A command error occurred",
 		"COMMAND_ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`.",
-		"APP_CLOSED": "This application is closed!"
+		"APP_CLOSED": "This application is closed!",
+		"NO_APP_SELECTED": "You have not selected an application, please do so and then press continue."
 	},
 	"POSITION_CHOICE_DESC": "{{n}} submitted applications",
 	"NO_SUBMISSIONS": "There does not appear to be any submissions to review!"

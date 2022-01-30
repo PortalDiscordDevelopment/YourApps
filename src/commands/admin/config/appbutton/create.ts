@@ -7,7 +7,7 @@ import {
 	TextChannel
 } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { App } from '@lib/models';
+import { App, AppButton } from '@lib/models';
 import ConfigNewCommand from '../new';
 
 export default class ConfigAppbuttonCreateCommand extends BotCommand {
@@ -49,7 +49,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 					message.editedTimestamp ?? message.createdTimestamp
 				}`
 			},
-			allowSkip: false,
+			allowSkip: 'message content',
 			description: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.GIVE_MESSAGE'),
 			fieldName: this.client.i18n.t('GENERIC.CONTENT'),
 			title: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.NEW'),
@@ -70,7 +70,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			continueButtonId: `continueCreateAppbuttonMessage|1|${message.id}|${
 				message.editedTimestamp ?? message.createdTimestamp
 			}`,
-			cancelButtonId: `cancelCreateAppbuttonMessage|0|${message.id}|${
+			cancelButtonId: `cancelCreateAppbuttonMessage|1|${message.id}|${
 				message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
@@ -111,20 +111,54 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			componentType: 'SELECT_MENU',
 			time: 300000
 		});
-		let app: App
+		let app: App | null = null;
 		appInteraction.on('collect', i => {
-			i.deferUpdate()
-			app = apps.find(a => a.id.toString() == (i as SelectMenuInteraction).values[0])!
-		})
-		const buttonInteraction = await appMessage.awaitMessageComponent({
-			filter: i => [ids.continueButtonId, ids.cancelButtonId].includes(i.customId),
-			componentType: 'BUTTON',
-			time: 300000
-		})
-		if (buttonInteraction.customId == ids.cancelButtonId) {
-			await message.util!.reply(this.client.i18n.t('GENERIC.CANCELED'))
-			return
+			i.deferUpdate();
+			app = apps.find(
+				a => a.id.toString() == (i as SelectMenuInteraction).values[0]
+			)!;
+		});
+		for (;;) {
+			const buttonInteraction = await appMessage.awaitMessageComponent({
+				filter: i =>
+					[ids.continueButtonId, ids.cancelButtonId].includes(i.customId),
+				componentType: 'BUTTON',
+				time: 300000
+			});
+			if (buttonInteraction.customId === ids.cancelButtonId) {
+				await buttonInteraction.deferUpdate();
+				await message.util!.reply(this.client.i18n.t('GENERIC.CANCELED'));
+				return;
+			}
+			if (buttonInteraction.customId === ids.continueButtonId && app === null) {
+				await buttonInteraction.reply({
+					content: this.client.i18n.t('ERRORS.NO_APP_SELECTED'),
+					ephemeral: true
+				});
+				continue;
+			}
+			if (buttonInteraction.customId === ids.continueButtonId && app !== null) {
+				await buttonInteraction.deferUpdate();
+				break;
+			}
+			return;
 		}
-		
+		const { id: appbuttonId } = await channel.send({
+			content,
+			components: [
+				new MessageActionRow().addComponents(
+					new MessageButton()
+						.setCustomId('startAppButton')
+						.setLabel((app as App).name)
+						.setStyle('PRIMARY')
+				)
+			]
+		});
+		await AppButton.create({
+			app: (app as App).id,
+			channel: channel.id,
+			guild: message.guildId!,
+			message: appbuttonId
+		});
 	}
 }
