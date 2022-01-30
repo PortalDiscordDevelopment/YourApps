@@ -3,6 +3,7 @@ import {
 	MessageActionRow,
 	MessageButton,
 	MessageSelectMenu,
+	SelectMenuInteraction,
 	TextChannel
 } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
@@ -105,14 +106,25 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				)
 			]
 		});
-		const appInteraction = await appMessage.awaitMessageComponent({
-			filter: i => Object.values(ids).includes(i.customId),
+		const appInteraction = appMessage.createMessageComponentCollector({
+			filter: i => i.customId == ids.selectId,
+			componentType: 'SELECT_MENU',
 			time: 300000
 		});
-		switch (appInteraction.customId) {
-			case ids.selectId: {
-				break;
-			}
+		let app: App
+		appInteraction.on('collect', i => {
+			i.deferUpdate()
+			app = apps.find(a => a.id.toString() == (i as SelectMenuInteraction).values[0])!
+		})
+		const buttonInteraction = await appMessage.awaitMessageComponent({
+			filter: i => [ids.continueButtonId, ids.cancelButtonId].includes(i.customId),
+			componentType: 'BUTTON',
+			time: 300000
+		})
+		if (buttonInteraction.customId == ids.cancelButtonId) {
+			await message.util!.reply(this.client.i18n.t('GENERIC.CANCELED'))
+			return
 		}
+		
 	}
 }
