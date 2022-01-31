@@ -1,10 +1,9 @@
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { Guild } from '@lib/models';
-import { Role } from 'discord.js';
-import { LogEvent } from '@lib/ext/Util';
+import { AppButton } from '@lib/models';
+import { CustomArgType, InvalidArgError } from '@lib/ext/BotClient';
 
-export default class ConfigBlacklistRemoveCommand extends BotCommand {
+export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 	public constructor() {
 		super('config-appbutton-delete', {
 			aliases: ['config-appbutton-delete'],
@@ -17,49 +16,28 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 			category: 'admin',
 			args: [
 				{
-					id: 'role',
-					type: 'role'
+					id: 'appbutton'
 				}
 			],
 			channel: 'guild',
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { role }: { role?: Role }) {
-		if (!role) {
+	async exec(
+		message: Message,
+		{ appbutton }: { appbutton: CustomArgType<AppButton> }
+	) {
+		if (appbutton instanceof InvalidArgError) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				this.client.i18n.t('ARGS.PLEASE_GIVE_VALID', { type: 'appbutton' })
 			);
 			return;
 		}
-		const [guildEntry] = await Guild.findOrBuild({
-			where: {
-				id: message.guild!.id
-			},
-			defaults: {
-				id: message.guild!.id
-			}
-		});
-		if (!guildEntry.blacklistroles.includes(role.id)) {
+		if (appbutton === null) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.BLACKLIST_ROLE_NOT_ADDED')
+				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'appbutton' })
 			);
 			return;
 		}
-		guildEntry.blacklistroles.splice(
-			guildEntry.blacklistroles.indexOf(role.id),
-			1
-		);
-		guildEntry.changed('blacklistroles', true);
-		await guildEntry.save();
-		await message.util!.send(
-			this.client.i18n.t('CONFIG.BLACKLIST_ROLE_REMOVED', { roleID: role.id })
-		);
-		await this.client.util.logEvent(
-			message.guild!.id,
-			message.author,
-			LogEvent.BLACKLIST_ROLE_REMOVE,
-			{ roleID: role.id }
-		);
 	}
 }

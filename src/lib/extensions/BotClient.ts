@@ -42,6 +42,9 @@ export interface BotConfig {
 	migrationApiUrl: string;
 }
 
+export class InvalidArgError extends Error {}
+export type CustomArgType<T> = T | InvalidArgError;
+
 export class BotClient extends AkairoClient {
 	public config: BotConfig;
 	public commandHandler!: CommandHandler;
@@ -157,6 +160,15 @@ export class BotClient extends AkairoClient {
 					});
 				}
 				return foundApps;
+			}
+		);
+		this.commandHandler.resolver.addType(
+			'appbutton',
+			async (message: Message, phrase: string) => {
+				if (!phrase) return null;
+				const btn = await Models.AppButton.findByPk(phrase);
+				if (!btn) return new InvalidArgError();
+				else return btn;
 			}
 		);
 		this.commandHandler.resolver.addType(
