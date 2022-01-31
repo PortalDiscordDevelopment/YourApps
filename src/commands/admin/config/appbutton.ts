@@ -1,5 +1,5 @@
 import { ArgumentOptions, Flag } from 'discord-akairo';
-import { Message } from 'discord.js';
+import { Message, Snowflake } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { AppButton, App } from '@lib/models';
 import { Op } from 'sequelize';
@@ -47,24 +47,41 @@ export default class ConfigBlacklistCommand extends BotCommand {
 					[Op.in]: appbuttons.map(a => a.app)
 				}
 			}
-		});
+		})
+		const combinedAppbuttons: {
+			message: Snowflake,
+			channel: Snowflake,
+			guild: Snowflake,
+			apps: string[]
+		}[] = []
+		for (const appbutton of appbuttons) {
+			const existing = combinedAppbuttons.findIndex(ab => ab.message == appbutton.message)
+			const app = apps.find(a => a.id === appbutton.app)
+			if (existing !== -1) {
+				combinedAppbuttons[existing].apps.push(app!.name)
+			} else {
+				combinedAppbuttons.push({
+					message: appbutton.message,
+					channel: appbutton.channel,
+					guild: appbutton.guild,
+					apps: [app!.name]
+				})
+			}
+		}
 		await message.util!.send({
 			embeds: [
 				this.client.util
 					.embed()
 					.setTitle(
 						this.client.i18n.t('CONFIG.APPBUTTONS', {
-							guild: message.guildId!
+							guild: message.guild!.name
 						})
 					)
 					.setDescription(
-						appbuttons
+						combinedAppbuttons
 							.map(
 								ab =>
-									`${ab.message}: ${apps
-										.filter(a => ab.app === a.id)
-										.map(a => a.name)
-										.join(', ')}`
+									`${ab.message}: ${ab.apps.join(', ')} ([message link](https://discord.com/channels/${ab.guild}/${ab.channel}/${ab.message}))`
 							)
 							.join('\n')
 					)

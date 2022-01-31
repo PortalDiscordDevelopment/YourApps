@@ -28,7 +28,8 @@
 		"CHOOSE_A_SUB": "Choose a submission",
 		"MIGRATING": "Migrating...",
 		"CONTENT": "Message content",
-		"APPBUTTON_MESSAGE": "Select one of the buttons below to start applying for their respective positions."
+		"APPBUTTON_MESSAGE": "Select one of the buttons below to start applying for their respective positions.",
+		"DELETING": "Deleting..."
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
@@ -184,6 +185,10 @@
 			"GIVE_APP": "Please give the application for the appbutton to start when pressed.",
 			"NEW": "New appbutton",
 			"SELECT_APP": "Please select the application that this appbutton will use below."
+		},
+		"APPBUTTON_DELETE": {
+			"DELETED_NO_MESSAGE": "The appbutton was deleted, but I was unable to delete the actual message for some reason.",
+			"DELETED": "Deleted appbutton!"
 		}
 	},
 	"BLOCKED": {

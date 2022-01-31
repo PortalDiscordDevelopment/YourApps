@@ -166,9 +166,13 @@ export class BotClient extends AkairoClient {
 			'appbutton',
 			async (message: Message, phrase: string) => {
 				if (!phrase) return null;
-				const btn = await Models.AppButton.findByPk(phrase);
-				if (!btn) return new InvalidArgError();
-				else return btn;
+				const btns = await Models.AppButton.findAll({
+					where: {
+						message: phrase
+					}
+				});
+				if (btns.length < 1) return new InvalidArgError();
+				else return btns;
 			}
 		);
 		this.commandHandler.resolver.addType(
