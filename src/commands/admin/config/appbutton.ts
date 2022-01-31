@@ -59,7 +59,13 @@ export default class ConfigBlacklistCommand extends BotCommand {
 					)
 					.setDescription(
 						appbuttons
-							.map(ab => `${ab.message}: ${apps.find(a => a.id == ab.app)}`)
+							.map(
+								ab =>
+									`${ab.message}: ${apps
+										.filter(a => ab.app === a.id)
+										.map(a => a.name)
+										.join(', ')}`
+							)
 							.join('\n')
 					)
 			]

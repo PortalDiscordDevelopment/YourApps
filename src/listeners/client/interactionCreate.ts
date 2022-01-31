@@ -1,6 +1,6 @@
 import { BotListener } from '@lib/ext/BotListener';
 import { ButtonInteraction, type Interaction } from 'discord.js';
-import { AppButton, App } from '@lib/models';
+import { App } from '@lib/models';
 import ApplyCommand from '../../commands/applications/apply';
 
 export default class InteractionCreateListener extends BotListener {
@@ -20,9 +20,7 @@ export default class InteractionCreateListener extends BotListener {
 			)
 		)
 			return;
-		const appButton = await AppButton.findByPk(interaction.message.id);
-		if (!appButton) return;
-		const app = await App.findByPk(appButton.app);
+		const app = await App.findByPk(Number(interaction.customId.split('|')[1]));
 		await ApplyCommand.startApplication(interaction, app!);
 	}
 }

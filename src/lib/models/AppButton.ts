@@ -10,6 +10,7 @@ export class AppButton extends BaseModel<
 	AppButtonModelAttributes,
 	AppButtonModelCreationAttributes
 > {
+	declare id: number;
 	declare message: Snowflake;
 	declare channel: Snowflake;
 	declare guild: Snowflake;
@@ -18,9 +19,14 @@ export class AppButton extends BaseModel<
 	static initModel(sequelize: Sequelize) {
 		AppButton.init(
 			{
+				id: {
+					type: DataTypes.INTEGER,
+					allowNull: false,
+					primaryKey: true,
+					autoIncrement: true
+				},
 				message: {
 					type: DataTypes.STRING,
-					primaryKey: true,
 					allowNull: false
 				},
 				channel: {

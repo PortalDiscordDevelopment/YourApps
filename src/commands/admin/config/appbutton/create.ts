@@ -84,13 +84,17 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			content: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP'),
 			components: [
 				new MessageActionRow().addComponents(
-					new MessageSelectMenu().setCustomId(ids.selectId).setOptions(
-						apps.map(a => ({
-							label: a.name,
-							value: a.id.toString(),
-							description: a.description ?? undefined
-						}))
-					)
+					new MessageSelectMenu()
+						.setCustomId(ids.selectId)
+						.setOptions(
+							apps.map(a => ({
+								label: a.name,
+								value: a.id.toString(),
+								description: a.description ?? undefined
+							}))
+						)
+						.setMaxValues(apps.length >= 5 ? 5 : apps.length)
+						.setMinValues(1)
 				),
 				new MessageActionRow().addComponents(
 					new MessageButton()
@@ -111,11 +115,11 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			componentType: 'SELECT_MENU',
 			time: 300000
 		});
-		let app: App | null = null;
+		let selectedApps: App[] | null = null;
 		appInteraction.on('collect', i => {
 			i.deferUpdate();
-			app = apps.find(
-				a => a.id.toString() == (i as SelectMenuInteraction).values[0]
+			selectedApps = apps.filter(a =>
+				(i as SelectMenuInteraction).values.includes(a.id.toString())
 			)!;
 		});
 		for (;;) {
@@ -130,14 +134,20 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				await message.util!.reply(this.client.i18n.t('GENERIC.CANCELED'));
 				return;
 			}
-			if (buttonInteraction.customId === ids.continueButtonId && app === null) {
+			if (
+				buttonInteraction.customId === ids.continueButtonId &&
+				selectedApps === null
+			) {
 				await buttonInteraction.reply({
 					content: this.client.i18n.t('ERRORS.NO_APP_SELECTED'),
 					ephemeral: true
 				});
 				continue;
 			}
-			if (buttonInteraction.customId === ids.continueButtonId && app !== null) {
+			if (
+				buttonInteraction.customId === ids.continueButtonId &&
+				selectedApps !== null
+			) {
 				await buttonInteraction.deferUpdate();
 				break;
 			}
@@ -147,18 +157,22 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			content,
 			components: [
 				new MessageActionRow().addComponents(
-					new MessageButton()
-						.setCustomId('startAppButton')
-						.setLabel((app as App).name)
-						.setStyle('PRIMARY')
+					(selectedApps as App[]).map(app =>
+						new MessageButton()
+							.setCustomId(`startAppButton|${app.id}`)
+							.setLabel(app.name)
+							.setStyle('PRIMARY')
+					)
 				)
 			]
 		});
-		await AppButton.create({
-			app: (app as App).id,
-			channel: channel.id,
-			guild: message.guildId!,
-			message: appbuttonId
-		});
+		for (const app of selectedApps as App[]) {
+			await AppButton.create({
+				app: app.id,
+				channel: channel.id,
+				guild: message.guildId!,
+				message: appbuttonId
+			});
+		}
 	}
 }

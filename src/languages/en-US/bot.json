@@ -227,7 +227,7 @@
 		"COMMAND_ERROR_OCCURRED": "A command error occurred",
 		"COMMAND_ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`.",
 		"APP_CLOSED": "This application is closed!",
-		"NO_APP_SELECTED": "You have not selected an application, please do so and then press continue."
+		"NO_APP_SELECTED": "You have not selected any applications, please do so and then press continue."
 	},
 	"POSITION_CHOICE_DESC": "{{n}} submitted applications",
 	"NO_SUBMISSIONS": "There does not appear to be any submissions to review!"

@@ -151,7 +151,10 @@ export default class ApplyCommand extends BotCommand {
 			  });
 		let response: MessageComponentInteraction;
 		try {
-			response = await message.channel!.awaitMessageComponent({
+			response = await (interaction
+				? message
+				: (confirmation as Message)
+			).channel!.awaitMessageComponent({
 				filter: i =>
 					Object.values(buttonIds).includes(i.customId) &&
 					i.user.id == (interaction ? message.user : message.author).id,
@@ -173,9 +176,14 @@ export default class ApplyCommand extends BotCommand {
 			return;
 		}
 		if (response.customId !== buttonIds.continue) {
-			await response.reply({
-				content: await client.t('GENERIC.CANCELED', message)
-			});
+			interaction
+				? await response.reply({
+						content: await client.t('GENERIC.CANCELED', message),
+						ephemeral: true
+				  })
+				: await response.reply({
+						content: await client.t('GENERIC.CANCELED', message)
+				  });
 			return;
 		}
 		await response.deferUpdate();

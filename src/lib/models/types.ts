@@ -98,15 +98,14 @@ export type UserModelCreationAttributes = Optional<
 >;
 
 export interface AppButtonModelAttributes {
+	id: number;
 	message: Snowflake;
 	channel: Snowflake;
 	guild: Snowflake;
 	app: number;
 }
 
-export interface AppButtonModelCreationAttributes {
-	message: Snowflake;
-	channel: Snowflake;
-	guild: Snowflake;
-	app: number;
-}
+export type AppButtonModelCreationAttributes = Optional<
+	AppButtonModelAttributes,
+	'id'
+>;
