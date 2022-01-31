@@ -73,7 +73,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 				Authorization: `Bearer ${this.client.config.migrationToken}`
 			}
 		};
-
+		await message.util!.reply(this.client.i18n.t('GENERIC.MIGRATING'));
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -95,7 +95,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 				.json();
 		} catch (e) {
 			if (e instanceof HTTPError && e.response.statusCode == 404) {
-				await message.util!.send(
+				await message.util!.reply(
 					this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
 				);
 			} else if (e instanceof HTTPError) {
@@ -170,7 +170,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 			});
 			if (created) await app.save();
 			else
-				await message.util!.send(
+				await message.util!.reply(
 					this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
 				);
 			map[data.id] = app.id;
@@ -260,7 +260,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 					errorNo
 				})
 			);
-		await message.util!.send({
+		await message.util!.reply({
 			embeds: [errorUserEmbed]
 		});
 		await message.util?.send({ embeds: [errorUserEmbed] });

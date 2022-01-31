@@ -29,7 +29,8 @@
 		"CHOOSE_POS": "Please choose one of the positions below to review.",
 		"CHOSE_POS": "Choose a position",
 		"CHOOSE_SUB": "Choose one of the submissions below for your chosen application.",
-		"CHOOSE_A_SUB": "Choose a submission"
+		"CHOOSE_A_SUB": "Choose a submission",
+		"MIGRATING": "Migrating..."
 	},
 	"ERROR_LOGGING": {
 		"INHIBITOR": {
