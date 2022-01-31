@@ -14,14 +14,14 @@ export default class PingCommand extends BotCommand {
 	}
 
 	public async exec(message: Message): Promise<void> {
-		const m = await message.util!.send(
+		const m = await message.util!.reply(
 			this.client.i18n.t('COMMANDS.PING_CALCULATING')
 		);
 		await m.edit({
 			content: this.client.i18n.t('COMMANDS.PING_MESSAGE', {
 				shard: message.guild?.shardId ?? 0,
-				delay: m.editedTimestamp
-					? m.editedTimestamp! - message.editedTimestamp!
+				delay: message.editedTimestamp
+					? (m.editedTimestamp ?? m.createdTimestamp) - message.editedTimestamp
 					: m.createdTimestamp - message.createdTimestamp,
 				api: this.client.ws.ping
 			})
