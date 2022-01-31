@@ -28,6 +28,7 @@ export interface BotConfig {
 	};
 	ownerIDs: string[];
 	migrationToken: string;
+	migrationApiUrl: string;
 }
 
 export class BotClient extends AkairoClient {

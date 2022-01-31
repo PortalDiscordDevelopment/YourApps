@@ -12,6 +12,7 @@ template: |
     // May add log channel later
   };
   export const migrationToken = '${{migrationToken}}';
+  export const migrationApiUrl = '${{migrationApiUrl}}';
   export const ownerIDs = ${{ownerIDs}};
 path: src/config/options.ts
 options:
@@ -43,6 +44,10 @@ options:
   - name: Migration token
     id: migrationToken
     description: The token for the bot to use for accessing v3's api
+  - name: Migration api url
+    id: migrationToken
+    description: The api url for the bot to use for accessing v3's api
+    default: api.yourapps.cyou
   - name: Owner IDs
     id: ownerIDs
     description: The IDs of the owners of the bot
