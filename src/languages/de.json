@@ -1,0 +1,41 @@
+{
+	"GENERIC": {
+		"YES": "Ja",
+		"NO": "Nein",
+		"CONTINUE": "Fortfahren",
+		"SKIP": "Überspringen",
+		"CANCEL": "Abbrechen",
+		"CANCELED": "Abgebrochen",
+		"QUESTIONS": "Fragen",
+		"NONE_YET": "Noch keine!",
+		"SUBMITTING": "Einreichen...",
+		"SUBMITTED": "Erfolgreich deine Bewerbung eingereicht!",
+		"APPROVE": "Akzeptiern",
+		"DENY": "Ablehnen",
+		"APPROVED": "Du wurdest für {{application}} in Server {{guild}} akzeptiert!",
+		"DENIED": "Du wurdest für {{application}} in Server {{guild}} abgelehnt.",
+		"SUCCESSFULLY_APPROVED": "Erfolgreich angenommen!",
+		"SUCCESSFULLY_DENIED": "Erfolgreich abgelehnt."
+	},
+	"ERROR_LOGGING": {
+		"COMMAND": {
+			"TITLE": "Befehl error #{{errorNo}}",
+			"BODY": "**Benutzer:** <@{{userID}}> ({{userTag}})\n**Befehl:** {{command}}\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{- messageUrl}})",
+			"ERROR_OCCURRED": "Ein Befehl Error ist aufgetreten.",
+			"ERROR_MESSAGE": "Oh nein! Während des Ausführen des Befehls `{{command}}`, ist ein Error aufgetreten. Bitte gebe folgenden Code an die Entwickler weiter: `{{errorNo}}`."
+		}
+	},
+	"CONFIG": {
+		"NO_CONFIG": "Dieser Server hat noch keine Config Optionen geändert.",
+		"NONE_SET": "Keine gesetzt",
+		"OR_MENTION": "{{- prefixes}} (oder Erwähnung)",
+		"ADMIN_ROLES": "Admin Rollen",
+		"BLACKLIST_ROLES": "Blacklist Rollen",
+		"LOG_PING_ROLES": "Log Erwähnungsrollen",
+		"LOG_CHANNEL": "Log Kanal",
+		"ARCHIVE_CHANNEL": "Archiv Kanal",
+		"NO_ADMIN_ROLES": "Dieser Server hat keine Admin Rollen.",
+		"SERVER_ADMIN_ROLES": "Die Admin Rolle(n) für diesen Server sind {{- roles}}.",
+		"ADMIN_ROLE_ADDED": "Admin Rolle <@&{{roleID}}> wurde für diesen Server hinzugefügt. Use the `config admin` command to see all the admin roles."
+	}
+}
