@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "yarn run lint && yarn run build",
-		"build": "yarn tsc && rm dist/languages -r && cp src/languages dist/languages -r",
+		"build": "yarn tsc && rm dist/languages -rf && cp src/languages dist/languages -r",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
 		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
