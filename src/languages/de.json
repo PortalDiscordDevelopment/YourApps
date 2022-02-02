@@ -37,5 +37,13 @@
 		"NO_ADMIN_ROLES": "Dieser Server hat keine Admin Rollen.",
 		"SERVER_ADMIN_ROLES": "Die Admin Rolle(n) für diesen Server sind {{- roles}}.",
 		"ADMIN_ROLE_ADDED": "Admin Rolle <@&{{roleID}}> wurde für diesen Server hinzugefügt. Use the `config admin` command to see all the admin roles."
+	},
+	"ARGS": {
+		"INVALID": "Das ist kein gültiger {{type}}!"
+	},
+	"COMMANDS": {
+		"DESCRIPTIONS": {
+			"CONFIG_EDIT": "Bearbeitet eine bereits erstellte anwendung."
+		}
 	}
 }

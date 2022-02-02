@@ -181,7 +181,8 @@
 			"APPLY": "Starts an application for the specified position, in DMs.",
 			"CONFIG_MIGRATE": "Migrates all data from the v3 version of yourapps to the current version",
 			"UPDATE": "Git pulls the latest code and then restarts with pm2",
-			"CONFIG_DELETE": "Deletes an application. THIS IS IRREVERSABLE!"
+			"CONFIG_DELETE": "Deletes an application. THIS IS IRREVERSABLE!",
+			"CONFIG_EDIT": "Edits an already created application."
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
