@@ -192,6 +192,15 @@ export default class ConfigLogpingCommand extends BotCommand {
 			return;
 		}
 		for (const app of submittedApps) {
+			if (!Object.keys(map).includes(app.position_id)) {
+				await message.util!.reply({
+					content: this.client.i18n.t('CONFIG.IGNORING_SUBMISSION'),
+					allowedMentions: {
+						parse: []
+					}
+				});
+				continue;
+			}
 			const answers: Record<string, string> = {};
 			for (const ans of app.answers) {
 				answers[ans.question] = ans.answer;
