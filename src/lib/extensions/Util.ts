@@ -111,7 +111,7 @@ export class Util extends ClientUtil {
 				continue;
 			}
 		}
-		return await this.client.t('HASTEBIN.UNABLE_TO_POST', message);
+		return await this.client.t('HASTEBIN.UNABLE_TO_POST', undefined);
 	}
 
 	/**
@@ -130,7 +130,7 @@ export class Util extends ClientUtil {
 		const formattingLength =
 			2 * tildes.length + language.length + 2 * '\n'.length;
 		if (code.length + formattingLength > length)
-			hasteOut = await this.client.t('HASTEBIN.TOO_LARGE', message, {
+			hasteOut = await this.client.t('HASTEBIN.TOO_LARGE', undefined, {
 				link: await this.haste(code)
 			});
 
@@ -217,12 +217,12 @@ export class Util extends ClientUtil {
 						.setTitle(
 							accepted
 								? reason
-									? await this.client.t('LOGGING.APPLICATION_APPROVED', message)
-									: await this.client.t('LOGGING.APPLICATION_APPROVED_REASON', message)
-								: await this.client.t('LOGGING.APPLICATION_DENIED', message)
+									? await this.client.t('LOGGING.APPLICATION_APPROVED', undefined)
+									: await this.client.t('LOGGING.APPLICATION_APPROVED_REASON', undefined)
+								: await this.client.t('LOGGING.APPLICATION_DENIED', undefined)
 						)
 						.setDescription(
-							await this.client.t('GENERIC.WITH_REASON', message, {
+							await this.client.t('GENERIC.WITH_REASON', undefined, {
 								reason
 							})
 						)
@@ -333,7 +333,7 @@ export class Util extends ClientUtil {
 		if (reason)
 			await member
 				.send(
-					await this.client.t('GENERIC.APPROVED_REASON', message, {
+					await this.client.t('GENERIC.APPROVED_REASON', undefined, {
 						application: app.name,
 						guild: guild.name,
 						reason
@@ -343,7 +343,7 @@ export class Util extends ClientUtil {
 		else
 			await member
 				.send(
-					await this.client.t('GENERIC.APPROVED', message, {
+					await this.client.t('GENERIC.APPROVED', undefined, {
 						application: app.name,
 						guild: guild.name
 					})
@@ -377,7 +377,7 @@ export class Util extends ClientUtil {
 		// Attempt to DM user
 		await member
 			.send(
-				await this.client.t('GENERIC.DENIED', message, {
+				await this.client.t('GENERIC.DENIED', undefined, {
 					application: app.name,
 					guild: guild.name,
 					reason

@@ -219,7 +219,10 @@ export class BotClient extends AkairoClient {
 	}
 
 	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
-	public async t(key: RecursiveKeyOf<typeof import("../../languages/Bot/en-US.json")>, message: Message, options = {}) {
+	public async t(key: RecursiveKeyOf<typeof import("../../languages/Bot/en-US.json")>, message?: Message, options = {}) {
+		if (!message) {
+			return this.i18n.t(key, options)
+		}
 		const lng = await ModelUser.findByPk(message.author.id).then(u => u?.language)
 		return this.i18n.t(key, {
 			lng,
