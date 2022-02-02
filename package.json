@@ -8,6 +8,7 @@
 		"build": "yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
+		"format:check": "yarn prettier --check .",
 		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
 	},
 	"author": "Tyman",
