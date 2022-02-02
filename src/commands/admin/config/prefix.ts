@@ -8,8 +8,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 		super('config-prefix', {
 			aliases: ['config-prefix'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX'),
 				usage: 'config prefix',
 				examples: ['config prefix']
 			},

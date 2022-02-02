@@ -57,8 +57,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		super('config-migrate', {
 			aliases: ['config-migrate'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_MIGRATE', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_MIGRATE'),
 				usage: 'config migratre',
 				examples: ['config migrate']
 			},

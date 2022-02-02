@@ -8,8 +8,7 @@ export default class ConfigArchiveCommand extends BotCommand {
 		super('config-archive', {
 			aliases: ['config-archive'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ARCHIVE', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ARCHIVE'),
 				usage: 'config log [channel]',
 				examples: ['config archive #logs', 'config archive']
 			},

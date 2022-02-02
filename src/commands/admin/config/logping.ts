@@ -8,8 +8,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		super('config-logping', {
 			aliases: ['config-logping'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING'),
 				usage: 'config logping',
 				examples: ['config logping']
 			},

@@ -8,8 +8,7 @@ export default class ConfigDeleteCommand extends BotCommand {
 		super('config-delete', {
 			aliases: ['config-delete'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_DELETE', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_DELETE'),
 				usage: 'config delete <application> [--force]',
 				examples: ['config delete moderator', 'config delete moderator --force']
 			},
