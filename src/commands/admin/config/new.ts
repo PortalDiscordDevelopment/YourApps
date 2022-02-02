@@ -47,8 +47,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.DESCRIPTION_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t(
@@ -85,8 +86,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.NEW_APPLICATION_QUESTIONS',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t('GENERIC.QUESTIONS', message),
@@ -124,8 +126,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.REWARD_ROLES_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t(
@@ -176,8 +179,9 @@ export default class ConfigNewCommand extends BotCommand {
 					application
 				}
 			),
-			description: this.client.i18n.t(
+			description: await this.client.t(
 				'CONFIG.APPLICATION_NEW.REQUIRED_ROLES_BODY',
+				message,
 				{ application }
 			),
 			fieldName: await this.client.t(
@@ -226,8 +230,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.REMOVE_ROLES_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t(
@@ -276,8 +281,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.CUSTOM_COMMAND_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t(
@@ -314,8 +320,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.COOLDOWN_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t('CONFIG.APPLICATION_COOLDOWN', message),
@@ -356,8 +363,9 @@ export default class ConfigNewCommand extends BotCommand {
 						application
 					}
 				),
-				description: this.client.i18n.t(
+				description: await this.client.t(
 					'CONFIG.APPLICATION_NEW.MIN_JOIN_TIME_BODY',
+					message,
 					{ application }
 				),
 				fieldName: await this.client.t(
@@ -644,8 +652,9 @@ export default class ConfigNewCommand extends BotCommand {
 				} else {
 					if (collected.length === 0 && options.allowZero !== true) {
 						await buttonInteraction.reply({
-							content: this.client.i18n.t(
+							content: await this.client.t(
 								'CONFIG.APPLICATION_NEW.NONE_GIVEN_MULTI',
+								message,
 								{
 									type: options.allowZero
 								}
@@ -768,8 +777,9 @@ export default class ConfigNewCommand extends BotCommand {
 				} else {
 					if (collected === null && options.allowSkip !== true) {
 						await buttonInteraction.reply({
-							content: this.client.i18n.t(
+							content: await this.client.t(
 								'CONFIG.APPLICATION_NEW.NONE_GIVEN_SINGLE',
+								message,
 								{
 									type: options.allowSkip
 								}

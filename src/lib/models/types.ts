@@ -1,4 +1,5 @@
 import type { Snowflake } from 'discord.js';
+import type { Optional } from 'sequelize';
 
 export interface AppModelAttributes {
 	id: number;
@@ -91,4 +92,7 @@ export interface UserModelAttributes {
 	language: string;
 }
 
-export type UserModelCreationAttributes = UserModelAttributes;
+export type UserModelCreationAttributes = Optional<
+	UserModelAttributes,
+	'language'
+>;

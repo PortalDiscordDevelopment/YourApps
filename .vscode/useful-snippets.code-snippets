@@ -27,7 +27,7 @@
 		"scope": "typescript",
 		"prefix": "i18n",
 		"body": [
-			"this.client.i18n.t('$1')"
+			"this.client.t('$1', message)"
 		],
 		"description": "Fetch i18n text from file"
 	}

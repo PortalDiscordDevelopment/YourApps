@@ -184,7 +184,7 @@ export class Util extends ClientUtil {
 				embeds: [
 					this.client.util
 						.embed()
-						.setDescription(this.client.i18n.t(event, variables))
+						.setDescription(await this.client.t(event, undefined, variables))
 						.setAuthor({
 							name: user.tag,
 							iconURL: user.displayAvatarURL({ dynamic: true }),

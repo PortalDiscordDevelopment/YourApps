@@ -129,7 +129,8 @@
 		"DELETE_EXISTING": "There are still existing submissions! If you would like to delete them all first, run this command again with `--force` at the end.",
 		"SUCCESSFULLY_EDITED": "Successfully edited the {{part}} for {{app}}.",
 		"CHOOSE_PART": "Choose which application option to edit",
-		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for."
+		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for.",
+		"NO_LANGUAGE": "You have not set a language."
 	},
 	"HASTEBIN": {
 		"TOO_LARGE": "Too large to display. Hastebin: {{ link}}",
@@ -182,7 +183,8 @@
 			"CONFIG_MIGRATE": "Migrates all data from the v3 version of yourapps to the current version",
 			"UPDATE": "Git pulls the latest code and then restarts with pm2",
 			"CONFIG_DELETE": "Deletes an application. THIS IS IRREVERSABLE!",
-			"CONFIG_EDIT": "Edits an already created application."
+			"CONFIG_EDIT": "Edits an already created application.",
+			"LANGUAGE": "Gets/sets your user language."
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
@@ -199,7 +201,10 @@
 		"REVIEW_EMBED_DESCRIPTION": "Review the questions and answers below, then press one of the buttons to either approve this person, deny this person, or cancel reviewing. Once approved, the user will be given all reward roles and removed all remove roles.",
 		"HELP_DESCRIPTION": "Displays a list of commands, or detailed information for a specific command.",
 		"NO_SUBMISSIONS": "No applications have been submitted!",
-		"REVIEW_NO_PERMS": "I do not have permissions to manage roles, and this application has either remove roles or reward roles. Please give me this permission and then try again."
+		"REVIEW_NO_PERMS": "I do not have permissions to manage roles, and this application has either remove roles or reward roles. Please give me this permission and then try again.",
+		"LANGUAGE": {
+			"YOUR_LANG": "Your set language is `{{lang}}`."
+		}
 	},
 	"BLOCKED": {
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",

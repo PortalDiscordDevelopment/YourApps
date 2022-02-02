@@ -12,7 +12,7 @@ import * as Models from '@lib/models';
 import { Collection, Intents, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
-import i18n from 'i18next';
+import i18n, { TOptions } from 'i18next';
 import I18nBackend from 'i18next-fs-backend';
 import { User as ModelUser } from '@lib/models/User';
 
@@ -222,13 +222,13 @@ export class BotClient extends AkairoClient {
 	public async t(
 		key: RecursiveKeyOf<typeof import('../../languages/Bot/en-US.json')>,
 		message?: Message,
-		options = {}
+		options: TOptions = {}
 	) {
 		if (!message) {
 			return this.i18n.t(key, options);
 		}
 		const lng = await ModelUser.findByPk(message.author.id).then(
-			u => u?.language
+			u => u?.language ?? undefined
 		);
 		return this.i18n.t(key, {
 			lng,

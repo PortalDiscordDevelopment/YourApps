@@ -195,7 +195,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		for (const app of submittedApps) {
 			if (!Object.keys(map).includes(app.position_id)) {
 				await message.channel.send({
-					content: this.client.i18n.t('CONFIG.IGNORING_SUBMISSION'),
+					content: await this.client.t('CONFIG.IGNORING_SUBMISSION', message),
 					allowedMentions: {
 						parse: []
 					}

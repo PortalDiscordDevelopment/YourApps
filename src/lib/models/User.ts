@@ -8,7 +8,7 @@ export class User extends BaseModel<
 	UserModelCreationAttributes
 > {
 	declare id: Snowflake;
-	declare language: string;
+	declare language: string | null;
 	static initModel(sequelize: Sequelize) {
 		User.init(
 			{
