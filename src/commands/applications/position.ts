@@ -8,7 +8,7 @@ export default class PositionCommand extends BotCommand {
 			aliases: ['position', 'app', 'application'],
 			channel: 'guild',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.POSITION'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.POSITION', message),
 				usage: 'position',
 				examples: ['position']
 			},
@@ -24,7 +24,7 @@ export default class PositionCommand extends BotCommand {
 	async exec(message: Message, { application }: { application: App | null }) {
 		if (!application) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
@@ -33,74 +33,74 @@ export default class PositionCommand extends BotCommand {
 				this.client.util
 					.embed()
 					.setTitle(
-						this.client.i18n.t('CONFIG.APPLICATION_DETAILS', {
+						await this.client.t('CONFIG.APPLICATION_DETAILS', message, {
 							application: application.name
 						})
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_NAME'),
+						await this.client.t('CONFIG.APPLICATION_NAME', message),
 						application.name,
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_DESCRIPTION'),
-						application.description ?? this.client.i18n.t('CONFIG.NOT_SET'),
+						await this.client.t('CONFIG.APPLICATION_DESCRIPTION', message),
+						application.description ?? await this.client.t('CONFIG.NOT_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_QUESTION_COUNT'),
+						await this.client.t('CONFIG.APPLICATION_QUESTION_COUNT', message),
 						application.questions.length.toString(),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_REWARD_ROLES'),
+						await this.client.t('CONFIG.APPLICATION_REWARD_ROLES', message),
 						application.rewardroles.length > 0
 							? application.rewardroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_REMOVE_ROLES'),
+						await this.client.t('CONFIG.APPLICATION_REMOVE_ROLES', message),
 						application.removeroles.length > 0
 							? application.removeroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_REQUIRED_ROLES'),
+						await this.client.t('CONFIG.APPLICATION_REQUIRED_ROLES', message),
 						application.requiredroles.length > 0
 							? application.requiredroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_CUSTOM_COMMAND'),
-						application.customcommand ?? this.client.i18n.t('CONFIG.NOT_SET'),
+						await this.client.t('CONFIG.APPLICATION_CUSTOM_COMMAND', message),
+						application.customcommand ?? await this.client.t('CONFIG.NOT_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_CLOSED_TITLE'),
+						await this.client.t('CONFIG.APPLICATION_CLOSED_TITLE', message),
 						application.closed
-							? this.client.i18n.t('GENERIC.YES')
-							: this.client.i18n.t('GENERIC.NO'),
+							? await this.client.t('GENERIC.YES', message)
+							: await this.client.t('GENERIC.NO', message),
 						true
 					)
 					.addField(
 						'Cooldown',
 						application.cooldown
 							? `${application.cooldown} milliseconds`
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
 						'Minimum join time',
 						application.minjointime
 							? `${application.minjointime} milliseconds`
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.APPLICATION_ID'),
+						await this.client.t('CONFIG.APPLICATION_ID', message),
 						application.id.toString(),
 						true
 					)

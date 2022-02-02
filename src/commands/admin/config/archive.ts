@@ -9,7 +9,7 @@ export default class ConfigArchiveCommand extends BotCommand {
 			aliases: ['config-archive'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ARCHIVE'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ARCHIVE', message),
 				usage: 'config log [channel]',
 				examples: ['config archive #logs', 'config archive']
 			},
@@ -36,13 +36,13 @@ export default class ConfigArchiveCommand extends BotCommand {
 		if (!channel) {
 			if (guildEntry.archivechannel) {
 				await message.util!.send(
-					this.client.i18n.t('CONFIG.SERVER_ARCHIVE_CHANNEL', {
+					await this.client.t('CONFIG.SERVER_ARCHIVE_CHANNEL', message, {
 						channelID: guildEntry.archivechannel
 					})
 				);
 			} else {
 				await message.util!.send(
-					this.client.i18n.t('CONFIG.NO_ARCHIVE_CHANNEL')
+					await this.client.t('CONFIG.NO_ARCHIVE_CHANNEL', message)
 				);
 			}
 			return;
@@ -50,7 +50,7 @@ export default class ConfigArchiveCommand extends BotCommand {
 		guildEntry.archivechannel = channel.id;
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.ARCHIVE_CHANNEL_SET', {
+			await this.client.t('CONFIG.ARCHIVE_CHANNEL_SET', message, {
 				channelID: channel.id
 			})
 		);

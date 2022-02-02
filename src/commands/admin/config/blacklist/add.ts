@@ -10,7 +10,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 			aliases: ['config-blacklist-add'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD', message),
 				usage: 'config blacklist add <role>',
 				examples: ['config blacklist add Blacklisted']
 			},
@@ -28,7 +28,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +42,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 		});
 		if (guildEntry.blacklistroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.BLACKLIST_ROLE_ALREADY_ADDED')
+				await this.client.t('CONFIG.BLACKLIST_ROLE_ALREADY_ADDED', message)
 			);
 			return;
 		}
@@ -50,7 +50,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 		guildEntry.changed('blacklistroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.BLACKLIST_ROLE_ADDED', { roleID: role.id })
+			await this.client.t('CONFIG.BLACKLIST_ROLE_ADDED', message, { roleID: role.id })
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

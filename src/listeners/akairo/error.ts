@@ -18,9 +18,9 @@ export default class CommandErrorListener extends BotListener {
 		if (!command && this.client.errorChannel) {
 			const errorEmbed = this.client.util
 				.embed()
-				.setTitle(this.client.i18n.t('ERROR_LOGGING.INHIBITOR.TITLE'))
+				.setTitle(await this.client.t('ERROR_LOGGING.INHIBITOR.TITLE', message))
 				.setDescription(
-					this.client.i18n.t('ERROR_LOGGING.INHIBITOR.BODY', {
+					await this.client.t('ERROR_LOGGING.INHIBITOR.BODY', message, {
 						userID: message.author.id,
 						userTag: message.author.tag,
 						channelID: message.channel.id,
@@ -28,7 +28,7 @@ export default class CommandErrorListener extends BotListener {
 					})
 				)
 				.addField(
-					this.client.i18n.t('GENERIC.ERROR'),
+					await this.client.t('GENERIC.ERROR', message),
 					await this.client.util.codeblock(
 						`${error?.stack ?? error}`,
 						1024,
@@ -51,10 +51,10 @@ export default class CommandErrorListener extends BotListener {
 				const errorEmbed = this.client.util
 					.embed()
 					.setTitle(
-						this.client.i18n.t('ERROR_LOGGING.COMMAND.TITLE', { errorNo })
+						await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo })
 					)
 					.setDescription(
-						this.client.i18n.t('ERROR_LOGGING.COMMAND.BODY', {
+						await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
 							userID: message.author.id,
 							userTag: message.author.tag,
 							command: command.id,
@@ -63,7 +63,7 @@ export default class CommandErrorListener extends BotListener {
 						})
 					)
 					.addField(
-						this.client.i18n.t('GENERIC.ERROR'),
+						await this.client.t('GENERIC.ERROR', message),
 						await this.client.util.codeblock(
 							`${error?.stack ?? error}`,
 							1024,
@@ -78,9 +78,9 @@ export default class CommandErrorListener extends BotListener {
 			if (command) {
 				const errorUserEmbed = this.client.util
 					.embed()
-					.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED'))
+					.setTitle(await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message))
 					.setDescription(
-						this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', {
+						await this.client.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', message, {
 							command: message.util!.parsed!.alias,
 							errorNo
 						})

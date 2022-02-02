@@ -179,7 +179,7 @@ export default class EditCommand extends BotCommand {
 		super('config-edit', {
 			aliases: ['config-edit'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_EDIT'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_EDIT', message),
 				usage: 'config edit <application>',
 				examples: ['config edit moderator']
 			},
@@ -198,7 +198,7 @@ export default class EditCommand extends BotCommand {
 	async exec(message: Message, { application }: { application?: App }) {
 		if (!application) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
@@ -216,7 +216,7 @@ export default class EditCommand extends BotCommand {
 				.setStyle('PRIMARY')
 		);
 		const selectMessage = await message.util!.reply({
-			content: this.client.i18n.t('CONFIG.CHOOSE_PART'),
+			content: await this.client.t('CONFIG.CHOOSE_PART', message),
 			components: [
 				new MessageActionRow().addComponents(
 					btns.slice(0, 2).map(b => b.setStyle('PRIMARY'))
@@ -252,7 +252,7 @@ export default class EditCommand extends BotCommand {
 				process: props[parsed[1]].process
 			});
 			if (response.endedReason == 'cancel') {
-				await message.util!.send(this.client.i18n.t('GENERIC.CANCELED'));
+				await message.util!.send(await this.client.t('GENERIC.CANCELED', message));
 				return;
 			}
 			//@ts-expect-error This works, however I do not know a way to make it better
@@ -271,7 +271,7 @@ export default class EditCommand extends BotCommand {
 				process: props[parsed[1]].process
 			});
 			if (response.cancelled) {
-				await message.util!.send(this.client.i18n.t('GENERIC.CANCELED'));
+				await message.util!.send(await this.client.t('GENERIC.CANCELED', message));
 				return;
 			}
 			//@ts-expect-error This works, however I do not know a way to make it better
@@ -279,7 +279,7 @@ export default class EditCommand extends BotCommand {
 		}
 		await application.save();
 		await message.channel.send(
-			this.client.i18n.t('CONFIG.SUCCESSFULLY_EDITED', {
+			await this.client.t('CONFIG.SUCCESSFULLY_EDITED', message, {
 				app: application.name,
 				part: parsed[1].toLowerCase()
 			})

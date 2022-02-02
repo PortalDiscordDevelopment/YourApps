@@ -9,7 +9,7 @@ export default class ConfigPrefixCommand extends BotCommand {
 			aliases: ['config-prefix'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX', message),
 				usage: 'config prefix',
 				examples: ['config prefix']
 			},
@@ -34,14 +34,14 @@ export default class ConfigPrefixCommand extends BotCommand {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.SERVER_PREFIXES', {
+				await this.client.t('CONFIG.SERVER_PREFIXES', message, {
 					prefixes: this.client.config.defaultPrefix
 				})
 			);
 			return;
 		}
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.SERVER_PREFIXES', {
+			await this.client.t('CONFIG.SERVER_PREFIXES', message, {
 				prefixes: guildEntry.prefixes.map(p => `\`${p}\``).join(', ')
 			})
 		);

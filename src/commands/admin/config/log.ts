@@ -8,7 +8,7 @@ export default class ConfigLogCommand extends BotCommand {
 		super('config-log', {
 			aliases: ['config-log'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_LOG'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOG', message),
 				usage: 'config log [channel]',
 				examples: ['config log #logs', 'config log']
 			},
@@ -35,19 +35,19 @@ export default class ConfigLogCommand extends BotCommand {
 		if (!channel) {
 			if (guildEntry.logchannel) {
 				await message.util!.send(
-					this.client.i18n.t('CONFIG.SERVER_LOG_CHANNEL', {
+					await this.client.t('CONFIG.SERVER_LOG_CHANNEL', message, {
 						channelID: guildEntry.logchannel
 					})
 				);
 			} else {
-				await message.util!.send(this.client.i18n.t('CONFIG.NO_LOG_CHANNEL'));
+				await message.util!.send(await this.client.t('CONFIG.NO_LOG_CHANNEL', message));
 			}
 			return;
 		}
 		guildEntry.logchannel = channel.id;
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.LOG_CHANNEL_SET', {
+			await this.client.t('CONFIG.LOG_CHANNEL_SET', message, {
 				channelID: channel.id
 			})
 		);

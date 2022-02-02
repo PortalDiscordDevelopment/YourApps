@@ -11,7 +11,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			aliases: ['config-prefix-add'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD', message),
 				usage: 'config prefix add <prefix>',
 				examples: ['config prefix add ya!']
 			},
@@ -29,7 +29,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 	async exec(message: Message, { prefix }: { prefix?: string }) {
 		if (!prefix) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'prefix' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'prefix' })
 			);
 			return;
 		}
@@ -46,7 +46,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			)
 			.json();
 		if (v3Settings.prefixes.includes(prefix)) {
-			await message.util!.send(this.client.i18n.t('ERRORS.PREFIX_EXISTS_V3'));
+			await message.util!.send(await this.client.t('ERRORS.PREFIX_EXISTS_V3', message));
 			return;
 		}
 		const [guildEntry] = await Guild.findOrBuild({
@@ -59,7 +59,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		});
 		if (guildEntry.prefixes.includes(prefix)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.PREFIX_ALREADY_ADDED')
+				await this.client.t('CONFIG.PREFIX_ALREADY_ADDED', message)
 			);
 			return;
 		}
@@ -67,7 +67,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		guildEntry.changed('prefixes', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.PREFIX_ADDED', { prefix })
+			await this.client.t('CONFIG.PREFIX_ADDED', message, { prefix })
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

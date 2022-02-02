@@ -6,7 +6,7 @@ export default class PingCommand extends BotCommand {
 		super('ping', {
 			aliases: ['ping'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.PING'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.PING', message),
 				usage: 'ping',
 				examples: ['ping']
 			}
@@ -15,10 +15,10 @@ export default class PingCommand extends BotCommand {
 
 	public async exec(message: Message): Promise<void> {
 		const m = await message.util!.reply(
-			this.client.i18n.t('COMMANDS.PING_CALCULATING')
+			await this.client.t('COMMANDS.PING_CALCULATING', message)
 		);
 		await m.edit({
-			content: this.client.i18n.t('COMMANDS.PING_MESSAGE', {
+			content: await this.client.t('COMMANDS.PING_MESSAGE', message, {
 				shard: message.guild?.shardId ?? 0,
 				delay: message.editedTimestamp
 					? (m.editedTimestamp ?? m.createdTimestamp) - message.editedTimestamp

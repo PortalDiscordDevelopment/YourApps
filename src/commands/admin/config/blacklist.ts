@@ -9,7 +9,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 			aliases: ['config-blacklist'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST', message),
 				usage: 'config blacklist',
 				examples: ['config blacklist']
 			},
@@ -33,11 +33,11 @@ export default class ConfigBlacklistCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry || guildEntry.blacklistroles.length < 1) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_BLACKLIST_ROLES'));
+			await message.util!.send(await this.client.t('CONFIG.NO_BLACKLIST_ROLES', message));
 			return;
 		}
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.SERVER_BLACKLIST_ROLES', {
+			await this.client.t('CONFIG.SERVER_BLACKLIST_ROLES', message, {
 				roles: guildEntry.blacklistroles.map(p => `<@&${p}>`).join(', ')
 			})
 		);

@@ -8,7 +8,7 @@ export default class ConfigCommand extends BotCommand {
 		super('config', {
 			aliases: ['config'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG', message),
 				usage: 'config',
 				examples: ['config']
 			},
@@ -56,61 +56,61 @@ export default class ConfigCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_CONFIG'));
+			await message.util!.send(await this.client.t('CONFIG.NO_CONFIG', message));
 			return;
 		}
 		await message.util!.send({
 			embeds: [
 				this.client.util
 					.embed()
-					.setTitle(this.client.i18n.t('CONFIG.GUILD_CONFIG'))
+					.setTitle(await this.client.t('CONFIG.GUILD_CONFIG', message))
 					.addField(
-						this.client.i18n.t('CONFIG.PREFIXES'),
-						this.client.i18n.t('CONFIG.OR_MENTION', {
+						await this.client.t('CONFIG.PREFIXES', message),
+						await this.client.t('CONFIG.OR_MENTION', message, {
 							prefixes: guildEntry.prefixes.map(p => `\`${p}\``).join(', ')
 						}),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.REVIEW_ROLES'),
+						await this.client.t('CONFIG.REVIEW_ROLES', message),
 						guildEntry.reviewroles.length > 0
 							? guildEntry.reviewroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.ADMIN_ROLES'),
+						await this.client.t('CONFIG.ADMIN_ROLES', message),
 						guildEntry.adminroles.length > 0
 							? guildEntry.adminroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.BLACKLIST_ROLES'),
+						await this.client.t('CONFIG.BLACKLIST_ROLES', message),
 						guildEntry.blacklistroles.length > 0
 							? guildEntry.blacklistroles.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.LOG_PING_ROLES'),
+						await this.client.t('CONFIG.LOG_PING_ROLES', message),
 						guildEntry.logpings.length > 0
 							? guildEntry.logpings.map(r => `<@&${r}>`).join(', ')
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.LOG_CHANNEL'),
+						await this.client.t('CONFIG.LOG_CHANNEL', message),
 						guildEntry.logchannel !== null
 							? `<#${guildEntry.logchannel}>`
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
-						this.client.i18n.t('CONFIG.ARCHIVE_CHANNEL'),
+						await this.client.t('CONFIG.ARCHIVE_CHANNEL', message),
 						guildEntry.archivechannel !== null
 							? `<#${guildEntry.archivechannel}>`
-							: this.client.i18n.t('CONFIG.NONE_SET'),
+							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 			]

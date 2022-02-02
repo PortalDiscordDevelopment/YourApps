@@ -111,7 +111,7 @@ export class Util extends ClientUtil {
 				continue;
 			}
 		}
-		return this.client.i18n.t('HASTEBIN.UNABLE_TO_POST');
+		return await this.client.t('HASTEBIN.UNABLE_TO_POST', message);
 	}
 
 	/**
@@ -130,7 +130,7 @@ export class Util extends ClientUtil {
 		const formattingLength =
 			2 * tildes.length + language.length + 2 * '\n'.length;
 		if (code.length + formattingLength > length)
-			hasteOut = this.client.i18n.t('HASTEBIN.TOO_LARGE', {
+			hasteOut = await this.client.t('HASTEBIN.TOO_LARGE', message, {
 				link: await this.haste(code)
 			});
 
@@ -217,12 +217,12 @@ export class Util extends ClientUtil {
 						.setTitle(
 							accepted
 								? reason
-									? this.client.i18n.t('LOGGING.APPLICATION_APPROVED')
-									: this.client.i18n.t('LOGGING.APPLICATION_APPROVED_REASON')
-								: this.client.i18n.t('LOGGING.APPLICATION_DENIED')
+									? await this.client.t('LOGGING.APPLICATION_APPROVED', message)
+									: await this.client.t('LOGGING.APPLICATION_APPROVED_REASON', message)
+								: await this.client.t('LOGGING.APPLICATION_DENIED', message)
 						)
 						.setDescription(
-							this.client.i18n.t('GENERIC.WITH_REASON', {
+							await this.client.t('GENERIC.WITH_REASON', message, {
 								reason
 							})
 						)
@@ -333,7 +333,7 @@ export class Util extends ClientUtil {
 		if (reason)
 			await member
 				.send(
-					this.client.i18n.t('GENERIC.APPROVED_REASON', {
+					await this.client.t('GENERIC.APPROVED_REASON', message, {
 						application: app.name,
 						guild: guild.name,
 						reason
@@ -343,7 +343,7 @@ export class Util extends ClientUtil {
 		else
 			await member
 				.send(
-					this.client.i18n.t('GENERIC.APPROVED', {
+					await this.client.t('GENERIC.APPROVED', message, {
 						application: app.name,
 						guild: guild.name
 					})
@@ -377,7 +377,7 @@ export class Util extends ClientUtil {
 		// Attempt to DM user
 		await member
 			.send(
-				this.client.i18n.t('GENERIC.DENIED', {
+				await this.client.t('GENERIC.DENIED', message, {
 					application: app.name,
 					guild: guild.name,
 					reason

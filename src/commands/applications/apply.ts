@@ -21,7 +21,7 @@ export default class ApplyCommand extends BotCommand {
 			aliases: ['apply'],
 			channel: 'guild',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.APPLY'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.APPLY', message),
 				usage: 'apply <position>',
 				examples: ['apply moderator']
 			},
@@ -37,7 +37,7 @@ export default class ApplyCommand extends BotCommand {
 	async exec(message: Message, { application }: { application: App | null }) {
 		if (!application) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
@@ -45,7 +45,7 @@ export default class ApplyCommand extends BotCommand {
 			(await message.author.send({}).catch(e => e.message)) ==
 			'Cannot send messages to this user'
 		) {
-			await message.util!.send(this.client.i18n.t('ERRORS.CANNOT_DM'));
+			await message.util!.send(await this.client.t('ERRORS.CANNOT_DM', message));
 			return;
 		}
 		const submittedApps = await Submission.count({
@@ -55,12 +55,12 @@ export default class ApplyCommand extends BotCommand {
 			}
 		});
 		if (submittedApps > 0) {
-			await message.util!.send(this.client.i18n.t('ERRORS.ALREADY_APPLIED'));
+			await message.util!.send(await this.client.t('ERRORS.ALREADY_APPLIED', message));
 			return;
 		}
 		const memberRoles = (await message.member!.fetch()).roles.cache;
 		if (!application.requiredroles.every(r => memberRoles.has(r))) {
-			await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
+			await message.util!.send(await this.client.t('ERRORS.NO_REQUIRED_ROLES', message));
 			return;
 		}
 		if (
@@ -70,7 +70,7 @@ export default class ApplyCommand extends BotCommand {
 				application.minjointime
 		) {
 			await message.util!.send(
-				this.client.i18n.t('ERRORS.NOT_JOINED_LONG_ENOUGH')
+				await this.client.t('ERRORS.NOT_JOINED_LONG_ENOUGH', message)
 			);
 			return;
 		}

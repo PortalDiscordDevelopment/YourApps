@@ -7,7 +7,7 @@ export default class HelpCommand extends BotCommand {
 			aliases: ['help'],
 			category: 'info',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.HELP_DESCRIPTION'),
+				content: () => await this.client.t('COMMANDS.HELP_DESCRIPTION', message),
 				usage: 'help [command]',
 				examples: ['help prefix add']
 			},
@@ -53,7 +53,7 @@ export default class HelpCommand extends BotCommand {
 						cmd =>
 							`\`${cmd.aliases[0]}${
 								(cmd as BotCommand).children.length > 0
-									? ` ${this.client.i18n.t('GENERIC.PARENT')}`
+									? ` ${await this.client.t('GENERIC.PARENT', message)}`
 									: ''
 							}\``
 					);
@@ -91,7 +91,7 @@ export default class HelpCommand extends BotCommand {
 							if (!cmd) return;
 							return `\`${cmd.aliases[0].replace(/-/g, ' ')}${
 								cmd.children.length > 0
-									? ` ${this.client.i18n.t('GENERIC.PARENT')}`
+									? ` ${await this.client.t('GENERIC.PARENT', message)}`
 									: ''
 							}\``;
 						})

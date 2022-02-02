@@ -10,7 +10,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 			aliases: ['config-admin-add'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_ADD'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_ADD', message),
 				usage: 'config admin add <role>',
 				examples: ['config admin add Administrator']
 			},
@@ -28,7 +28,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +42,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 		});
 		if (guildEntry.adminroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.ADMIN_ROLE_ALREADY_ADDED')
+				await this.client.t('CONFIG.ADMIN_ROLE_ALREADY_ADDED', message)
 			);
 			return;
 		}
@@ -50,7 +50,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 		guildEntry.changed('adminroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.ADMIN_ROLE_ADDED', { roleID: role.id })
+			await this.client.t('CONFIG.ADMIN_ROLE_ADDED', message, { roleID: role.id })
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

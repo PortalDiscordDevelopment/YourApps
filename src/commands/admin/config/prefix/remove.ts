@@ -9,7 +9,7 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			aliases: ['config-prefix-remove'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE', message),
 				usage: 'config prefix remove <prefix>',
 				examples: ['config prefix remove ya!']
 			},
@@ -27,7 +27,7 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 	async exec(message: Message, { prefix }: { prefix?: string }) {
 		if (!prefix) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'prefix' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'prefix' })
 			);
 			return;
 		}
@@ -40,20 +40,20 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			}
 		});
 		if (!guildEntry.prefixes.includes(prefix)) {
-			await message.util!.send(this.client.i18n.t('CONFIG.PREFIX_NOT_ADDED'));
+			await message.util!.send(await this.client.t('CONFIG.PREFIX_NOT_ADDED', message));
 			return;
 		}
 		guildEntry.prefixes.splice(guildEntry.prefixes.indexOf(prefix), 1);
 		guildEntry.changed('prefixes', true);
 		if (guildEntry.prefixes.length < 1) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.TOO_LITTLE_PREFIXES')
+				await this.client.t('CONFIG.TOO_LITTLE_PREFIXES', message)
 			);
 			return;
 		}
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.PREFIX_REMOVED', { prefix })
+			await this.client.t('CONFIG.PREFIX_REMOVED', message, { prefix })
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

@@ -6,7 +6,7 @@ export default class UpdateCommand extends BotCommand {
 		super('update', {
 			aliases: ['update'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.UPDATE'),
+				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.UPDATE', message),
 				usage: 'update [--restart] [--force]',
 				examples: ['update', 'update --restart', 'update --force']
 			},
@@ -96,7 +96,7 @@ export default class UpdateCommand extends BotCommand {
 			}
 		} catch (e) {
 			return message.util!.send(
-				this.client.i18n.t('DEVELOPER.ERROR_RELOADING', {
+				await this.client.t('DEVELOPER.ERROR_RELOADING', message, {
 					link: await this.client.util.haste((e as Error).stack!)
 				})
 			);

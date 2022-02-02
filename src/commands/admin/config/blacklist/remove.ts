@@ -10,7 +10,7 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 			aliases: ['config-blacklist-remove'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE'),
+					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE', message),
 				usage: 'config blacklist remove <role>',
 				examples: ['config blacklist remove Moderator']
 			},
@@ -28,7 +28,7 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +42,7 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 		});
 		if (!guildEntry.blacklistroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.BLACKLIST_ROLE_NOT_ADDED')
+				await this.client.t('CONFIG.BLACKLIST_ROLE_NOT_ADDED', message)
 			);
 			return;
 		}
@@ -53,7 +53,7 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 		guildEntry.changed('blacklistroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.BLACKLIST_ROLE_REMOVED', { roleID: role.id })
+			await this.client.t('CONFIG.BLACKLIST_ROLE_REMOVED', message, { roleID: role.id })
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
