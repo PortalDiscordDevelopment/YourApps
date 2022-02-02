@@ -8,11 +8,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 		super('config-blacklist', {
 			aliases: ['config-blacklist'],
 			description: {
-				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST',
-						message
-					),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
 				usage: 'config blacklist',
 				examples: ['config blacklist']
 			},

@@ -10,10 +10,7 @@ export default class ConfigLogpingRemoveCommand extends BotCommand {
 			aliases: ['config-logping-remove'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_REMOVE',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_REMOVE'),
 				usage: 'config logping remove <role>',
 				examples: ['config logping remove Moderator']
 			},

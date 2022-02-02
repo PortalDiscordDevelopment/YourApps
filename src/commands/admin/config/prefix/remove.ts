@@ -9,10 +9,7 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			aliases: ['config-prefix-remove'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE'),
 				usage: 'config prefix remove <prefix>',
 				examples: ['config prefix remove ya!']
 			},

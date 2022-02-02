@@ -10,10 +10,7 @@ export default class ConfigLogpingAddCommand extends BotCommand {
 			aliases: ['config-logping-add'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_ADD',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_ADD'),
 				usage: 'config logping add <role>',
 				examples: ['config logping add Administrator']
 			},

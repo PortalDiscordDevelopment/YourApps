@@ -10,11 +10,7 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 		super('config-prefix-add', {
 			aliases: ['config-prefix-add'],
 			description: {
-				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD',
-						message
-					),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD'),
 				usage: 'config prefix add <prefix>',
 				examples: ['config prefix add ya!']
 			},

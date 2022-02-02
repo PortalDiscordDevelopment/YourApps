@@ -10,10 +10,7 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 			aliases: ['config-blacklist-add'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD'),
 				usage: 'config blacklist add <role>',
 				examples: ['config blacklist add Blacklisted']
 			},

@@ -10,10 +10,7 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 			aliases: ['config-admin-remove'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE'),
 				usage: 'config admin remove <role>',
 				examples: ['config admin remove Moderator']
 			},

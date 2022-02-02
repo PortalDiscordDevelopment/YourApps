@@ -9,11 +9,7 @@ export default class ConfigAdminAddCommand extends BotCommand {
 		super('config-admin-add', {
 			aliases: ['config-admin-add'],
 			description: {
-				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_ADD',
-						message
-					),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_ADD'),
 				usage: 'config admin add <role>',
 				examples: ['config admin add Administrator']
 			},

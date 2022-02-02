@@ -10,10 +10,7 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 			aliases: ['config-blacklist-remove'],
 			description: {
 				content: () =>
-					await this.client.t(
-						'COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE',
-						message
-					),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE'),
 				usage: 'config blacklist remove <role>',
 				examples: ['config blacklist remove Moderator']
 			},
