@@ -10,7 +10,10 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 			aliases: ['config-blacklist-remove'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_REMOVE',
+						message
+					),
 				usage: 'config blacklist remove <role>',
 				examples: ['config blacklist remove Moderator']
 			},
@@ -53,7 +56,9 @@ export default class ConfigBlacklistRemoveCommand extends BotCommand {
 		guildEntry.changed('blacklistroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.BLACKLIST_ROLE_REMOVED', message, { roleID: role.id })
+			await this.client.t('CONFIG.BLACKLIST_ROLE_REMOVED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

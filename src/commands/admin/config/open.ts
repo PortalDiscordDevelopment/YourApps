@@ -8,7 +8,7 @@ export default class OpenCommand extends BotCommand {
 		super('config-open', {
 			aliases: ['config-open'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_OPEN', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_OPEN'),
 				usage: 'config open <application>',
 				examples: ['config open moderator']
 			},

@@ -9,8 +9,7 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		super('config-review-add', {
 			aliases: ['config-review-add'],
 			description: {
-				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_ADD', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_ADD'),
 				usage: 'config review add <role>',
 				examples: ['config review add Reviewer']
 			},
@@ -50,7 +49,9 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		guildEntry.changed('reviewroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.REVIEW_ROLE_ADDED', message, { roleID: role.id })
+			await this.client.t('CONFIG.REVIEW_ROLE_ADDED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

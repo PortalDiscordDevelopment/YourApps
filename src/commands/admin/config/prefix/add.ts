@@ -11,7 +11,10 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			aliases: ['config-prefix-add'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_ADD',
+						message
+					),
 				usage: 'config prefix add <prefix>',
 				examples: ['config prefix add ya!']
 			},
@@ -46,7 +49,9 @@ export default class ConfigPrefixAddCommand extends BotCommand {
 			)
 			.json();
 		if (v3Settings.prefixes.includes(prefix)) {
-			await message.util!.send(await this.client.t('ERRORS.PREFIX_EXISTS_V3', message));
+			await message.util!.send(
+				await this.client.t('ERRORS.PREFIX_EXISTS_V3', message)
+			);
 			return;
 		}
 		const [guildEntry] = await Guild.findOrBuild({

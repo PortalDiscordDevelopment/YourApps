@@ -23,7 +23,9 @@ export default class MessageListener extends BotListener {
 				(await message.author.send({}).catch(e => e.message)) ==
 				'Cannot send messages to this user'
 			) {
-				await message.util!.send(await this.client.t('ERRORS.CANNOT_DM', message));
+				await message.util!.send(
+					await this.client.t('ERRORS.CANNOT_DM', message)
+				);
 				return;
 			}
 			const memberRoles = (await message.member!.fetch()).roles.cache;

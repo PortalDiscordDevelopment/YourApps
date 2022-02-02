@@ -6,7 +6,7 @@ export default class ReloadCommand extends BotCommand {
 		super('reload', {
 			aliases: ['reload'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.RELOAD', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.RELOAD'),
 				usage: 'reload',
 				examples: ['reload']
 			},

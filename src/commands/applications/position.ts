@@ -8,7 +8,7 @@ export default class PositionCommand extends BotCommand {
 			aliases: ['position', 'app', 'application'],
 			channel: 'guild',
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.POSITION', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.POSITION'),
 				usage: 'position',
 				examples: ['position']
 			},
@@ -44,7 +44,8 @@ export default class PositionCommand extends BotCommand {
 					)
 					.addField(
 						await this.client.t('CONFIG.APPLICATION_DESCRIPTION', message),
-						application.description ?? await this.client.t('CONFIG.NOT_SET', message),
+						application.description ??
+							(await this.client.t('CONFIG.NOT_SET', message)),
 						true
 					)
 					.addField(
@@ -75,7 +76,8 @@ export default class PositionCommand extends BotCommand {
 					)
 					.addField(
 						await this.client.t('CONFIG.APPLICATION_CUSTOM_COMMAND', message),
-						application.customcommand ?? await this.client.t('CONFIG.NOT_SET', message),
+						application.customcommand ??
+							(await this.client.t('CONFIG.NOT_SET', message)),
 						true
 					)
 					.addField(

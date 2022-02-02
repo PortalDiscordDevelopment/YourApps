@@ -6,7 +6,7 @@ export default class UpdateCommand extends BotCommand {
 		super('update', {
 			aliases: ['update'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.UPDATE', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.UPDATE'),
 				usage: 'update [--restart] [--force]',
 				examples: ['update', 'update --restart', 'update --force']
 			},

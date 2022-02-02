@@ -10,7 +10,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 			aliases: ['config-review-remove'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_REMOVE', message),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_REMOVE'),
 				usage: 'config review remove <role>',
 				examples: ['config review remove Moderator']
 			},
@@ -50,7 +50,9 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 		guildEntry.changed('reviewroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.REVIEW_ROLE_REMOVED', message, { roleID: role.id })
+			await this.client.t('CONFIG.REVIEW_ROLE_REMOVED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

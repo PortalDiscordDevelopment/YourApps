@@ -43,13 +43,17 @@ export default class ConfigDeleteCommand extends BotCommand {
 			}
 		});
 		if (submissions.length >= 1 && !force) {
-			await message.util?.reply(await this.client.t('CONFIG.DELETE_EXISTING', message));
+			await message.util?.reply(
+				await this.client.t('CONFIG.DELETE_EXISTING', message)
+			);
 			return;
 		}
 		await Promise.all(submissions.map(s => s.destroy()));
 		await app.destroy();
 		await message.util!.reply(
-			await this.client.t('CONFIG.APPLICATION_DELETED', message, { app: app.name })
+			await this.client.t('CONFIG.APPLICATION_DELETED', message, {
+				app: app.name
+			})
 		);
 	}
 }

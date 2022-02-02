@@ -8,7 +8,7 @@ export default class ConfigLogCommand extends BotCommand {
 		super('config-log', {
 			aliases: ['config-log'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOG', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOG'),
 				usage: 'config log [channel]',
 				examples: ['config log #logs', 'config log']
 			},
@@ -40,7 +40,9 @@ export default class ConfigLogCommand extends BotCommand {
 					})
 				);
 			} else {
-				await message.util!.send(await this.client.t('CONFIG.NO_LOG_CHANNEL', message));
+				await message.util!.send(
+					await this.client.t('CONFIG.NO_LOG_CHANNEL', message)
+				);
 			}
 			return;
 		}

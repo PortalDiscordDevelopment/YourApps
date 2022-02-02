@@ -13,7 +13,7 @@ export default class EvalCommand extends BotCommand {
 		super('eval', {
 			aliases: ['eval', 'ev'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.EVAL', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.EVAL'),
 				usage: 'eval <code> [--depth #] [--ts]',
 				examples: ['eval message.guild.name', 'eval this.client.ownerID']
 			},
@@ -99,10 +99,12 @@ export default class EvalCommand extends BotCommand {
 
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 
-			embed.setTitle(await this.client.t('DEVELOPER.EVALED_CODE', message)).setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
-			});
+			embed
+				.setTitle(await this.client.t('DEVELOPER.EVALED_CODE', message))
+				.setFooter({
+					text: message.author.tag,
+					iconURL: message.author.displayAvatarURL({ dynamic: true })
+				});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
@@ -126,10 +128,12 @@ export default class EvalCommand extends BotCommand {
 			);
 		} catch (e) {
 			const inputJS = Util.cleanCodeBlockContent(code.js);
-			embed.setTitle(await this.client.t('DEVELOPER.EVAL_ERROR', message)).setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
-			});
+			embed
+				.setTitle(await this.client.t('DEVELOPER.EVAL_ERROR', message))
+				.setFooter({
+					text: message.author.tag,
+					iconURL: message.author.displayAvatarURL({ dynamic: true })
+				});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed

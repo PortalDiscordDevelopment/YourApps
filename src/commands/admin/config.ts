@@ -8,7 +8,7 @@ export default class ConfigCommand extends BotCommand {
 		super('config', {
 			aliases: ['config'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG'),
 				usage: 'config',
 				examples: ['config']
 			},
@@ -56,7 +56,9 @@ export default class ConfigCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry) {
-			await message.util!.send(await this.client.t('CONFIG.NO_CONFIG', message));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_CONFIG', message)
+			);
 			return;
 		}
 		await message.util!.send({

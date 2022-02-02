@@ -9,7 +9,7 @@ export default class ConfigNewCommand extends BotCommand {
 		super('config-new', {
 			aliases: ['config-new'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_NEW', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_NEW'),
 				usage: 'config new',
 				examples: ['config new']
 			},
@@ -31,21 +31,30 @@ export default class ConfigNewCommand extends BotCommand {
 	) {
 		if (!application) {
 			await message.reply(
-				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'application' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, {
+					type: 'application'
+				})
 			);
 			return;
 		}
 		// * Description
 		const { result: description, cancelled: descriptionCancelled } =
 			await this.sendPromptSingle(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.DESCRIPTION_BODY',
 					{ application }
 				),
-				fieldName: await this.client.t('CONFIG.APPLICATION_DESCRIPTION', message),
+				fieldName: await this.client.t(
+					'CONFIG.APPLICATION_DESCRIPTION',
+					message
+				),
 				allowSkip: true,
 				process: m => {
 					return {
@@ -69,9 +78,13 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Questions
 		const { collected: questions, endedReason: questionsEndReason } =
 			await this.sendPrompt(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.NEW_APPLICATION_QUESTIONS',
 					{ application }
@@ -104,14 +117,21 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Reward roles
 		const { collected: parsedRewardRoles, endedReason: rewardRolesEndReason } =
 			await this.sendPrompt(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.REWARD_ROLES_BODY',
 					{ application }
 				),
-				fieldName: await this.client.t('CONFIG.APPLICATION_REWARD_ROLES', message),
+				fieldName: await this.client.t(
+					'CONFIG.APPLICATION_REWARD_ROLES',
+					message
+				),
 				allowZero: true,
 				process: m => {
 					const role = this.client.util.resolveRole(
@@ -149,14 +169,21 @@ export default class ConfigNewCommand extends BotCommand {
 			collected: parsedRequiredRoles,
 			endedReason: requiredRolesEndReason
 		} = await this.sendPrompt(message, {
-			title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-				application
-			}),
+			title: await this.client.t(
+				'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+				message,
+				{
+					application
+				}
+			),
 			description: this.client.i18n.t(
 				'CONFIG.APPLICATION_NEW.REQUIRED_ROLES_BODY',
 				{ application }
 			),
-			fieldName: await this.client.t('CONFIG.APPLICATION_REQUIRED_ROLES', message),
+			fieldName: await this.client.t(
+				'CONFIG.APPLICATION_REQUIRED_ROLES',
+				message
+			),
 			allowZero: true,
 			process: m => {
 				const role = this.client.util.resolveRole(
@@ -192,14 +219,21 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Remove roles
 		const { collected: parsedRemoveRoles, endedReason: removeRolesEndReason } =
 			await this.sendPrompt(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.REMOVE_ROLES_BODY',
 					{ application }
 				),
-				fieldName: await this.client.t('CONFIG.APPLICATION_REMOVE_ROLES', message),
+				fieldName: await this.client.t(
+					'CONFIG.APPLICATION_REMOVE_ROLES',
+					message
+				),
 				allowZero: true,
 				process: m => {
 					const role = this.client.util.resolveRole(
@@ -235,14 +269,21 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Custom command
 		const { result: customcommand, cancelled: customcommandCancelled } =
 			await this.sendPromptSingle(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.CUSTOM_COMMAND_BODY',
 					{ application }
 				),
-				fieldName: await this.client.t('CONFIG.APPLICATION_CUSTOM_COMMAND', message),
+				fieldName: await this.client.t(
+					'CONFIG.APPLICATION_CUSTOM_COMMAND',
+					message
+				),
 				allowSkip: true,
 				process: m => {
 					return {
@@ -266,9 +307,13 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Cooldown
 		const { result: cooldown, cancelled: cooldownCancelled } =
 			await this.sendPromptSingle(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.COOLDOWN_BODY',
 					{ application }
@@ -304,14 +349,21 @@ export default class ConfigNewCommand extends BotCommand {
 		// * Minimum join time
 		const { result: minjointime, cancelled: minjointimeCancelled } =
 			await this.sendPromptSingle(message, {
-				title: await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-					application
-				}),
+				title: await this.client.t(
+					'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+					message,
+					{
+						application
+					}
+				),
 				description: this.client.i18n.t(
 					'CONFIG.APPLICATION_NEW.MIN_JOIN_TIME_BODY',
 					{ application }
 				),
-				fieldName: await this.client.t('CONFIG.APPLICATION_MIN_JOIN_TIME', message),
+				fieldName: await this.client.t(
+					'CONFIG.APPLICATION_MIN_JOIN_TIME',
+					message
+				),
 				allowSkip: true,
 				process: m => {
 					if (isNaN(Number(m.content)))
@@ -353,17 +405,26 @@ export default class ConfigNewCommand extends BotCommand {
 				this.client.util
 					.embed()
 					.setTitle(
-						await this.client.t('CONFIG.APPLICATION_NEW.NEW_APPLICATION', message, {
-							application
-						})
+						await this.client.t(
+							'CONFIG.APPLICATION_NEW.NEW_APPLICATION',
+							message,
+							{
+								application
+							}
+						)
 					)
 					.setDescription(
 						await this.client.t('CONFIG.APPLICATION_NEW.PLEASE_VERIFY', message)
 					)
 					.setFields([
 						{
-							name: await this.client.t('CONFIG.APPLICATION_DESCRIPTION', message),
-							value: description ?? await this.client.t('CONFIG.NONE_SET', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_DESCRIPTION',
+								message
+							),
+							value:
+								description ??
+								(await this.client.t('CONFIG.NONE_SET', message)),
 							inline: true
 						},
 						{
@@ -372,28 +433,40 @@ export default class ConfigNewCommand extends BotCommand {
 							inline: true
 						},
 						{
-							name: await this.client.t('CONFIG.APPLICATION_REWARD_ROLES', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_REWARD_ROLES',
+								message
+							),
 							value:
 								parsedRewardRoles.map(q => `- <@&${q}>`).join('\n') ||
-								await this.client.t('CONFIG.NONE_SET', message),
+								(await this.client.t('CONFIG.NONE_SET', message)),
 							inline: true
 						},
 						{
-							name: await this.client.t('CONFIG.APPLICATION_REQUIRED_ROLES', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_REQUIRED_ROLES',
+								message
+							),
 							value:
 								parsedRequiredRoles.map(q => `- <@&${q}>`).join('\n') ||
-								await this.client.t('CONFIG.NONE_SET', message),
+								(await this.client.t('CONFIG.NONE_SET', message)),
 							inline: true
 						},
 						{
-							name: await this.client.t('CONFIG.APPLICATION_REMOVE_ROLES', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_REMOVE_ROLES',
+								message
+							),
 							value:
 								parsedRemoveRoles.map(q => `- <@&${q}>`).join('\n') ||
-								await this.client.t('CONFIG.NONE_SET', message),
+								(await this.client.t('CONFIG.NONE_SET', message)),
 							inline: true
 						},
 						{
-							name: await this.client.t('CONFIG.APPLICATION_CUSTOM_COMMAND', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_CUSTOM_COMMAND',
+								message
+							),
 							value: customcommand
 								? `\`${message.util!.parsed!.prefix}${customcommand}\``
 								: await this.client.t('CONFIG.NONE_SET', message),
@@ -407,7 +480,10 @@ export default class ConfigNewCommand extends BotCommand {
 							inline: true
 						},
 						{
-							name: await this.client.t('CONFIG.APPLICATION_MIN_JOIN_TIME', message),
+							name: await this.client.t(
+								'CONFIG.APPLICATION_MIN_JOIN_TIME',
+								message
+							),
 							value: minjointime
 								? `${minjointime} milliseconds`
 								: await this.client.t('CONFIG.NONE_SET', message),
@@ -562,7 +638,9 @@ export default class ConfigNewCommand extends BotCommand {
 			.on('collect', async buttonInteraction => {
 				if (buttonInteraction.customId == options.ids.cancelButtonId) {
 					messageCollector.stop('cancel');
-					await buttonInteraction.reply(await this.client.t('GENERIC.CANCELED', message));
+					await buttonInteraction.reply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 				} else {
 					if (collected.length === 0 && options.allowZero !== true) {
 						await buttonInteraction.reply({
@@ -684,7 +762,9 @@ export default class ConfigNewCommand extends BotCommand {
 			.on('collect', async buttonInteraction => {
 				if (buttonInteraction.customId == options.ids.cancelButtonId) {
 					messageCollector.stop('cancel');
-					await buttonInteraction.reply(await this.client.t('GENERIC.CANCELED', message));
+					await buttonInteraction.reply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 				} else {
 					if (collected === null && options.allowSkip !== true) {
 						await buttonInteraction.reply({

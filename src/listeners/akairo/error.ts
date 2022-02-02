@@ -51,7 +51,9 @@ export default class CommandErrorListener extends BotListener {
 				const errorEmbed = this.client.util
 					.embed()
 					.setTitle(
-						await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo })
+						await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, {
+							errorNo
+						})
 					)
 					.setDescription(
 						await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
@@ -78,12 +80,18 @@ export default class CommandErrorListener extends BotListener {
 			if (command) {
 				const errorUserEmbed = this.client.util
 					.embed()
-					.setTitle(await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message))
+					.setTitle(
+						await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message)
+					)
 					.setDescription(
-						await this.client.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', message, {
-							command: message.util!.parsed!.alias,
-							errorNo
-						})
+						await this.client.t(
+							'ERROR_LOGGING.COMMAND.ERROR_MESSAGE',
+							message,
+							{
+								command: message.util!.parsed!.alias,
+								errorNo
+							}
+						)
 					);
 				await message.util!.send({
 					embeds: [errorUserEmbed]

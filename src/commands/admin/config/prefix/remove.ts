@@ -9,7 +9,10 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			aliases: ['config-prefix-remove'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_PREFIX_REMOVE',
+						message
+					),
 				usage: 'config prefix remove <prefix>',
 				examples: ['config prefix remove ya!']
 			},
@@ -40,7 +43,9 @@ export default class ConfigPrefixRemoveCommand extends BotCommand {
 			}
 		});
 		if (!guildEntry.prefixes.includes(prefix)) {
-			await message.util!.send(await this.client.t('CONFIG.PREFIX_NOT_ADDED', message));
+			await message.util!.send(
+				await this.client.t('CONFIG.PREFIX_NOT_ADDED', message)
+			);
 			return;
 		}
 		guildEntry.prefixes.splice(guildEntry.prefixes.indexOf(prefix), 1);

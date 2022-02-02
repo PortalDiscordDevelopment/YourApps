@@ -7,7 +7,7 @@ export default class SubmissionsCommand extends BotCommand {
 		super('submissions', {
 			aliases: ['submissions'],
 			description: {
-				content: () => await this.client.t('COMMANDS.REVIEW_DESCRIPTION', message),
+				content: () => this.client.t('COMMANDS.REVIEW_DESCRIPTION'),
 				usage: 'submissions',
 				examples: ['submissions']
 			},
@@ -23,7 +23,9 @@ export default class SubmissionsCommand extends BotCommand {
 			}
 		});
 		if (submissions.length < 1) {
-			await message.util?.send(await this.client.t('COMMANDS.NO_SUBMISSIONS', message));
+			await message.util?.send(
+				await this.client.t('COMMANDS.NO_SUBMISSIONS', message)
+			);
 		}
 		let string = '';
 		for (const submission of submissions) {

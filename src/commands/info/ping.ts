@@ -6,7 +6,7 @@ export default class PingCommand extends BotCommand {
 		super('ping', {
 			aliases: ['ping'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.PING', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.PING'),
 				usage: 'ping',
 				examples: ['ping']
 			}

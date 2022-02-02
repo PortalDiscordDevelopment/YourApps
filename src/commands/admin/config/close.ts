@@ -8,7 +8,7 @@ export default class CloseCommand extends BotCommand {
 		super('config-close', {
 			aliases: ['config-close'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE'),
 				usage: 'config close <application>',
 				examples: ['config close moderator']
 			},

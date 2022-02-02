@@ -179,7 +179,7 @@ export default class EditCommand extends BotCommand {
 		super('config-edit', {
 			aliases: ['config-edit'],
 			description: {
-				content: () => await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_EDIT', message),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_EDIT'),
 				usage: 'config edit <application>',
 				examples: ['config edit moderator']
 			},
@@ -252,7 +252,9 @@ export default class EditCommand extends BotCommand {
 				process: props[parsed[1]].process
 			});
 			if (response.endedReason == 'cancel') {
-				await message.util!.send(await this.client.t('GENERIC.CANCELED', message));
+				await message.util!.send(
+					await this.client.t('GENERIC.CANCELED', message)
+				);
 				return;
 			}
 			//@ts-expect-error This works, however I do not know a way to make it better
@@ -271,7 +273,9 @@ export default class EditCommand extends BotCommand {
 				process: props[parsed[1]].process
 			});
 			if (response.cancelled) {
-				await message.util!.send(await this.client.t('GENERIC.CANCELED', message));
+				await message.util!.send(
+					await this.client.t('GENERIC.CANCELED', message)
+				);
 				return;
 			}
 			//@ts-expect-error This works, however I do not know a way to make it better

@@ -10,7 +10,10 @@ export default class ConfigLogpingAddCommand extends BotCommand {
 			aliases: ['config-logping-add'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_ADD', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_LOGPING_ADD',
+						message
+					),
 				usage: 'config logping add <role>',
 				examples: ['config logping add Administrator']
 			},
@@ -50,7 +53,9 @@ export default class ConfigLogpingAddCommand extends BotCommand {
 		guildEntry.changed('logpings', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.LOGPING_ROLE_ADDED', message, { roleID: role.id })
+			await this.client.t('CONFIG.LOGPING_ROLE_ADDED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

@@ -18,7 +18,7 @@ export default class ReviewCommand extends BotCommand {
 		super('review', {
 			aliases: ['review'],
 			description: {
-				content: () => await this.client.t('COMMANDS.REVIEW_DESCRIPTION', message),
+				content: () => this.client.t('COMMANDS.REVIEW_DESCRIPTION'),
 				usage: 'review',
 				examples: ['review']
 			},
@@ -63,13 +63,19 @@ export default class ReviewCommand extends BotCommand {
 				new MessageActionRow().addComponents(
 					new MessageSelectMenu()
 						.addOptions(
-							positions.map(app => ({
-								label: app.name,
-								value: app.id.toString(),
-								description: await this.client.t('POSITION_CHOICE_DESC', message, {
-									n: submissions.filter(s => s.position == app.id).length
-								})
-							}))
+							await Promise.all(
+								positions.map(async app => ({
+									label: app.name,
+									value: app.id.toString(),
+									description: await this.client.t(
+										'POSITION_CHOICE_DESC',
+										message,
+										{
+											n: submissions.filter(s => s.position == app.id).length
+										}
+									)
+								}))
+							)
 						)
 						.setCustomId(ids.positionsId)
 						.setPlaceholder(await this.client.t('GENERIC.CHOSE_POS', message))
@@ -108,7 +114,9 @@ export default class ReviewCommand extends BotCommand {
 							}))
 						)
 						.setCustomId(ids.submissionId)
-						.setPlaceholder(await this.client.t('GENERIC.CHOOSE_A_SUB', message))
+						.setPlaceholder(
+							await this.client.t('GENERIC.CHOOSE_A_SUB', message)
+						)
 				)
 			]
 		});
@@ -185,7 +193,9 @@ export default class ReviewCommand extends BotCommand {
 					new MessageButton()
 						.setCustomId(approveWithReasonId)
 						.setEmoji('✅')
-						.setLabel(await this.client.t('GENERIC.APPROVE_WITH_REASON', message))
+						.setLabel(
+							await this.client.t('GENERIC.APPROVE_WITH_REASON', message)
+						)
 						.setStyle('SUCCESS'),
 					new MessageButton()
 						.setCustomId(denyButtonId)
@@ -238,7 +248,10 @@ export default class ReviewCommand extends BotCommand {
 					throw e;
 				}
 				await reviewMessage.edit({
-					content: await this.client.t('GENERIC.SUCCESSFULLY_APPROVED', message),
+					content: await this.client.t(
+						'GENERIC.SUCCESSFULLY_APPROVED',
+						message
+					),
 					components: [],
 					embeds: []
 				});
@@ -278,7 +291,9 @@ export default class ReviewCommand extends BotCommand {
 					title: await this.client.t('GENERIC.APPROVE_REASON', message)
 				});
 				if (reason.cancelled) {
-					await response.editReply(await this.client.t('GENERIC.CANCELED', message));
+					await response.editReply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 					return;
 				}
 				try {
@@ -300,7 +315,10 @@ export default class ReviewCommand extends BotCommand {
 					throw e;
 				}
 				await reviewMessage.edit({
-					content: await this.client.t('GENERIC.SUCCESSFULLY_APPROVED', message),
+					content: await this.client.t(
+						'GENERIC.SUCCESSFULLY_APPROVED',
+						message
+					),
 					components: [],
 					embeds: []
 				});
@@ -332,7 +350,9 @@ export default class ReviewCommand extends BotCommand {
 					title: await this.client.t('GENERIC.DENY', message)
 				});
 				if (reason.cancelled) {
-					await response.editReply(await this.client.t('GENERIC.CANCELED', message));
+					await response.editReply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 					return;
 				}
 				try {
@@ -361,7 +381,9 @@ export default class ReviewCommand extends BotCommand {
 				break;
 			}
 			case cancelButtonId:
-				await response.editReply(await this.client.t('GENERIC.CANCELED', message));
+				await response.editReply(
+					await this.client.t('GENERIC.CANCELED', message)
+				);
 				break;
 		}
 	}

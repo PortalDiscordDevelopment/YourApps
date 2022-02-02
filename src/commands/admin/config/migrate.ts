@@ -73,7 +73,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 				Authorization: `Bearer ${this.client.config.migrationToken}`
 			}
 		};
-		await message.util!.reply(await this.client.t('GENERIC.MIGRATING', message));
+		await message.util!.reply(
+			await this.client.t('GENERIC.MIGRATING', message)
+		);
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -230,7 +232,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 		const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 		const errorEmbed = this.client.util
 			.embed()
-			.setTitle(await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo }))
+			.setTitle(
+				await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo })
+			)
 			.setDescription(
 				await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
 					userID: message.author.id,
@@ -262,7 +266,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 		const errorUserEmbed = this.client.util
 			.embed()
-			.setTitle(await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message))
+			.setTitle(
+				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message)
+			)
 			.setDescription(
 				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', message, {
 					command: message.util!.parsed!.alias,

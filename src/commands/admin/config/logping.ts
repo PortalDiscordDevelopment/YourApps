@@ -33,7 +33,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry || guildEntry.logpings.length < 1) {
-			await message.util!.send(await this.client.t('CONFIG.NO_LOGPING_ROLES', message));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_LOGPING_ROLES', message)
+			);
 			return;
 		}
 		await message.util!.send(

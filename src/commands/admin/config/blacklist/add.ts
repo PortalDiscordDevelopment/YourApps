@@ -10,7 +10,10 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 			aliases: ['config-blacklist-add'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST_ADD',
+						message
+					),
 				usage: 'config blacklist add <role>',
 				examples: ['config blacklist add Blacklisted']
 			},
@@ -50,7 +53,9 @@ export default class ConfigBlacklistAddCommand extends BotCommand {
 		guildEntry.changed('blacklistroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.BLACKLIST_ROLE_ADDED', message, { roleID: role.id })
+			await this.client.t('CONFIG.BLACKLIST_ROLE_ADDED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

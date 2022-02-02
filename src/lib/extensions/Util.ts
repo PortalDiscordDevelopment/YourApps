@@ -217,8 +217,14 @@ export class Util extends ClientUtil {
 						.setTitle(
 							accepted
 								? reason
-									? await this.client.t('LOGGING.APPLICATION_APPROVED', undefined)
-									: await this.client.t('LOGGING.APPLICATION_APPROVED_REASON', undefined)
+									? await this.client.t(
+											'LOGGING.APPLICATION_APPROVED',
+											undefined
+									  )
+									: await this.client.t(
+											'LOGGING.APPLICATION_APPROVED_REASON',
+											undefined
+									  )
 								: await this.client.t('LOGGING.APPLICATION_DENIED', undefined)
 						)
 						.setDescription(

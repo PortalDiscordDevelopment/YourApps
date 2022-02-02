@@ -10,7 +10,10 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 			aliases: ['config-admin-remove'],
 			description: {
 				content: () =>
-					await this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE', message),
+					await this.client.t(
+						'COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE',
+						message
+					),
 				usage: 'config admin remove <role>',
 				examples: ['config admin remove Moderator']
 			},
@@ -50,7 +53,9 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 		guildEntry.changed('adminroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			await this.client.t('CONFIG.ADMIN_ROLE_REMOVED', message, { roleID: role.id })
+			await this.client.t('CONFIG.ADMIN_ROLE_REMOVED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

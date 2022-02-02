@@ -18,12 +18,12 @@ import { User as ModelUser } from '@lib/models/User';
 
 // I love typescript fuckery I can just copy paste from stackoverflow
 export type RecursiveKeyOf<TObj extends object> = {
-	[TKey in keyof TObj & (string | number)]:
-	  TObj[TKey] extends unknown[] ? `${TKey}` :
-	  TObj[TKey] extends object
+	[TKey in keyof TObj & (string | number)]: TObj[TKey] extends unknown[]
+		? `${TKey}`
+		: TObj[TKey] extends object
 		? `${TKey}` | `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
 		: `${TKey}`;
-  }[keyof TObj & (string | number)];
+}[keyof TObj & (string | number)];
 
 export interface BotConfig {
 	token: string;
@@ -219,14 +219,20 @@ export class BotClient extends AkairoClient {
 	}
 
 	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
-	public async t(key: RecursiveKeyOf<typeof import("../../languages/Bot/en-US.json")>, message?: Message, options = {}) {
+	public async t(
+		key: RecursiveKeyOf<typeof import('../../languages/Bot/en-US.json')>,
+		message?: Message,
+		options = {}
+	) {
 		if (!message) {
-			return this.i18n.t(key, options)
+			return this.i18n.t(key, options);
 		}
-		const lng = await ModelUser.findByPk(message.author.id).then(u => u?.language)
+		const lng = await ModelUser.findByPk(message.author.id).then(
+			u => u?.language
+		);
 		return this.i18n.t(key, {
 			lng,
 			...options
-		})
+		});
 	}
 }
