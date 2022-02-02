@@ -13,7 +13,7 @@ export class User extends BaseModel<
 		User.init(
 			{
 				id: {
-					type: DataTypes.INTEGER,
+					type: DataTypes.STRING,
 					primaryKey: true,
 					allowNull: false
 				},

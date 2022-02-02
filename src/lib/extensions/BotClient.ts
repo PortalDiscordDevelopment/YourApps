@@ -14,6 +14,16 @@ import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
 import i18n from 'i18next';
 import I18nBackend from 'i18next-fs-backend';
+import { User as ModelUser } from '@lib/models/User';
+
+// I love typescript fuckery I can just copy paste from stackoverflow
+export type RecursiveKeyOf<TObj extends object> = {
+	[TKey in keyof TObj & (string | number)]:
+	  TObj[TKey] extends unknown[] ? `${TKey}` :
+	  TObj[TKey] extends object
+		? `${TKey}` | `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
+		: `${TKey}`;
+  }[keyof TObj & (string | number)];
 
 export interface BotConfig {
 	token: string;
@@ -49,6 +59,7 @@ export class BotClient extends AkairoClient {
 			cachedAt: number;
 		}
 	>;
+	public supportedLangs = ['en-US', 'de'];
 
 	public constructor(config: BotConfig) {
 		super(
@@ -83,10 +94,9 @@ export class BotClient extends AkairoClient {
 		);
 	}
 	private async _init(): Promise<void> {
-		const langs = ['en-US', 'de'];
 		await i18n.use(I18nBackend).init({
-			supportedLngs: langs,
-			fallbackLng: langs[0],
+			supportedLngs: this.supportedLangs,
+			fallbackLng: this.supportedLangs[0],
 			ns: ['Bot'],
 			fallbackNS: 'Bot',
 			interpolation: {
@@ -99,7 +109,7 @@ export class BotClient extends AkairoClient {
 					'../../../src/languages/{{ns}}/{{lng}}.missing.json'
 				)
 			},
-			preload: langs
+			preload: this.supportedLangs
 		});
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
@@ -206,5 +216,14 @@ export class BotClient extends AkairoClient {
 			if (+match === 0) return '';
 			return index === 0 ? match.toLowerCase() : match.toUpperCase();
 		});
+	}
+
+	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
+	public async t(key: RecursiveKeyOf<typeof import("../../languages/Bot/en-US.json")>, message: Message, options = {}) {
+		const lng = await ModelUser.findByPk(message.author.id).then(u => u?.language)
+		return this.i18n.t(key, {
+			lng,
+			...options
+		})
 	}
 }
