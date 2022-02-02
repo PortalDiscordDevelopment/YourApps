@@ -170,7 +170,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 			});
 			if (created) await app.save();
 			else
-				await message.util!.reply(
+				await message.channel.send(
 					this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
 				);
 			map[data.id] = app.id;
@@ -193,7 +193,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		}
 		for (const app of submittedApps) {
 			if (!Object.keys(map).includes(app.position_id)) {
-				await message.util!.reply({
+				await message.channel.send({
 					content: this.client.i18n.t('CONFIG.IGNORING_SUBMISSION'),
 					allowedMentions: {
 						parse: []
