@@ -85,3 +85,10 @@ export interface SubmissionModelCreationAttributes {
 	position: number;
 	answers: Record<string, AnswerType>;
 }
+
+export interface UserModelAttributes {
+	id: Snowflake;
+	language: string;
+}
+
+export type UserModelCreationAttributes = UserModelAttributes;

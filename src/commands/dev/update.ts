@@ -89,7 +89,7 @@ export default class UpdateCommand extends BotCommand {
 				this.client.commandHandler.reloadAll();
 				this.client.listenerHandler.reloadAll();
 				this.client.inhibitorHandler.reloadAll();
-				await this.client.util.loadLanguages();
+				await this.client.i18n.reloadResources();
 				await message.util!.send(
 					'<a:checkmark:928707645483929630> Successfully reloaded bot!'
 				);

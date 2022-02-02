@@ -7,7 +7,7 @@
 	"eslint.nodePath": ".yarn/sdks",
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"i18n-ally.localesPaths": ["src/languages/"],
+	"i18n-ally.localesPaths": ["src/languages/*"],
 	"i18n-ally.keystyle": "nested",
 	"i18n-ally.extract.keygenStyle": "ALL_CAPS",
 	"i18n-ally.refactor.templates": [

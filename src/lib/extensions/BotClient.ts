@@ -9,10 +9,11 @@ import { join } from 'path';
 import { Op, Sequelize } from 'sequelize';
 import { Util } from '@lib/ext/Util';
 import * as Models from '@lib/models';
-import { Intents, Message } from 'discord.js';
+import { Collection, Intents, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
-import { default as i18n } from 'i18next';
+import i18n from 'i18next';
+import I18nBackend from 'i18next-fs-backend';
 
 export interface BotConfig {
 	token: string;
@@ -37,9 +38,17 @@ export class BotClient extends AkairoClient {
 	public listenerHandler!: ListenerHandler;
 	public inhibitorHandler!: InhibitorHandler;
 	public util: Util = new Util(this);
-	public db!: Sequelize;
+	public db: Sequelize;
+	public static dbConnected = false;
 	public errorChannel!: TextChannel;
-	public i18n!: typeof i18n;
+	public i18n: typeof i18n;
+	public languageCache: Collection<
+		Snowflake,
+		{
+			lang: string;
+			cachedAt: number;
+		}
+	>;
 
 	public constructor(config: BotConfig) {
 		super(
@@ -59,19 +68,39 @@ export class BotClient extends AkairoClient {
 			}
 		);
 		this.config = config;
+		this.languageCache = new Collection();
+		this.i18n = i18n;
+		this.db = new Sequelize(
+			'yourapps',
+			this.config.db.username,
+			this.config.db.password,
+			{
+				dialect: 'postgres',
+				host: this.config.db.host,
+				port: this.config.db.port,
+				logging: false
+			}
+		);
 	}
 	private async _init(): Promise<void> {
-		this.i18n = i18n;
-		await i18n.init({
-			lng: 'en-US',
-			fallbackLng: 'en-US',
-			ns: 'YourApps',
-			fallbackNS: 'YourApps',
+		const langs = ['en-US', 'de'];
+		await i18n.use(I18nBackend).init({
+			supportedLngs: langs,
+			fallbackLng: langs[0],
+			ns: ['Bot'],
+			fallbackNS: 'Bot',
 			interpolation: {
 				escapeValue: false
-			}
+			},
+			backend: {
+				loadPath: join(__dirname, '../../../src/languages/{{ns}}/{{lng}}.json'),
+				addPath: join(
+					__dirname,
+					'../../../src/languages/{{ns}}/{{lng}}.missing.json'
+				)
+			},
+			preload: langs
 		});
-		await this.util.loadLanguages();
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
 				if (!message.guild) return [this.config.defaultPrefix, 'ya-v4?'];
@@ -144,22 +173,12 @@ export class BotClient extends AkairoClient {
 			process
 		});
 		// Connects to DB
-		this.db = new Sequelize(
-			'yourapps',
-			this.config.db.username,
-			this.config.db.password,
-			{
-				dialect: 'postgres',
-				host: this.config.db.host,
-				port: this.config.db.port,
-				logging: false
-			}
-		);
 		await this.db.authenticate();
 		for (const model of Object.values(Models)) {
 			model.initModel(this.db, this.config.defaultPrefix);
 		}
 		await this.db.sync({ alter: true });
+		BotClient.dbConnected = true;
 		// loads all the stuff
 		const loaders: Record<string, AkairoHandler> = {
 			commands: this.commandHandler,

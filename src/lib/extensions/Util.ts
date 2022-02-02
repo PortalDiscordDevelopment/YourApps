@@ -8,8 +8,6 @@ import { Snowflake } from 'discord.js';
 import { App, Guild, Submission } from '@lib/models';
 import { TextChannel } from 'discord.js';
 import { AnswerType, AppQuestionType } from '@lib/models/types';
-import { promises as fs } from 'fs';
-import { join } from 'path';
 
 const exec = promisify(execCallback);
 
@@ -152,23 +150,6 @@ export class Util extends ClientUtil {
 			tildes +
 			(hasteOut.length ? '\n' + hasteOut : '')
 		);
-	}
-
-	/**
-	 * Loads (or reloads) the language files that the bot uses
-	 */
-	public async loadLanguages() {
-		const files = await fs.readdir(join(__dirname, '..', '..', 'languages'));
-		for (const lang of files.map(f => f.replace('.json', ''))) {
-			delete require.cache[require.resolve(`@lib/i18n/${lang}.json`)];
-			this.client.i18n.addResourceBundle(
-				lang,
-				'YourApps',
-				await import(`@lib/i18n/${lang}.json`),
-				true,
-				true
-			);
-		}
 	}
 
 	/**

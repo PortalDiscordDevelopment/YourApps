@@ -22,7 +22,7 @@ export default class ReloadCommand extends BotCommand {
 			this.client.commandHandler.reloadAll();
 			this.client.listenerHandler.reloadAll();
 			this.client.inhibitorHandler.reloadAll();
-			await this.client.util.loadLanguages();
+			await this.client.i18n.reloadResources();
 			return message.util!.send(
 				this.client.i18n.t('DEVELOPER.RELOADED', {
 					milliseconds: new Date().getTime() - s.getTime()
