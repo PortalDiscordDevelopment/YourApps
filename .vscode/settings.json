@@ -7,7 +7,8 @@
 	"eslint.nodePath": ".yarn/sdks",
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"i18n-ally.localesPaths": ["src/languages/*"],
+	"i18n-ally.localesPaths": ["src/languages"],
+	"i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
 	"i18n-ally.keystyle": "nested",
 	"i18n-ally.extract.keygenStyle": "ALL_CAPS",
 	"i18n-ally.refactor.templates": [
@@ -15,6 +16,8 @@
 			"template": "this.client.t('{key}')"
 		}
 	],
+	"i18n-ally.defaultNamespace": "bot",
+	"i18n-ally.namespace": true,
 	"i18n-ally.extract.autoDetect": true,
 	"i18n-ally.annotationMaxLength": 70,
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",

@@ -21,7 +21,7 @@ export type RecursiveKeyOf<TObj extends object> = {
 	[TKey in keyof TObj & (string | number)]: TObj[TKey] extends unknown[]
 		? `${TKey}`
 		: TObj[TKey] extends object
-		? `${TKey}` | `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
+		? `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
 		: `${TKey}`;
 }[keyof TObj & (string | number)];
 
@@ -97,16 +97,16 @@ export class BotClient extends AkairoClient {
 		await i18n.use(I18nBackend).init({
 			supportedLngs: this.supportedLangs,
 			fallbackLng: this.supportedLangs[0],
-			ns: ['Bot'],
-			fallbackNS: 'Bot',
+			ns: ['bot'],
+			fallbackNS: 'bot',
 			interpolation: {
 				escapeValue: false
 			},
 			backend: {
-				loadPath: join(__dirname, '../../../src/languages/{{ns}}/{{lng}}.json'),
+				loadPath: join(__dirname, '../../../src/languages/{{lng}}/{{ns}}.json'),
 				addPath: join(
 					__dirname,
-					'../../../src/languages/{{ns}}/{{lng}}.missing.json'
+					'../../../src/languages/{{lng}}/{{ns}}.missing.json'
 				)
 			},
 			preload: this.supportedLangs
@@ -220,7 +220,7 @@ export class BotClient extends AkairoClient {
 
 	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
 	public async t(
-		key: RecursiveKeyOf<typeof import('../../languages/Bot/en-US.json')>,
+		key: RecursiveKeyOf<typeof import('../../languages/en-US/bot.json')>,
 		message?: Message,
 		options: TOptions = {}
 	) {
