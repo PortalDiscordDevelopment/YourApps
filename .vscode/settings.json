@@ -30,5 +30,6 @@
 			"file:///workspace/YourApps_JS/.confgen.yaml"
 		]
 	},
-	"i18n-ally.enabledFrameworks": ["custom"]
+	"i18n-ally.enabledFrameworks": ["custom"],
+	"editor.acceptSuggestionOnCommitCharacter": false
 }

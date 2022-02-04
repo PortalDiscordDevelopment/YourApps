@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { Guild, User } from '@lib/models';
+import { User } from '@lib/models';
 
 export default class ConfigCommand extends BotCommand {
 	public constructor() {
@@ -21,18 +21,23 @@ export default class ConfigCommand extends BotCommand {
 	async exec(message: Message, { code }: { code: string | null }) {
 		if (!code) {
 			const userEntry = await User.findByPk(message.author.id);
-			if (!userEntry?.language) {
-				await message.util!.reply(
-					await this.client.t('CONFIG.NO_LANGUAGE', message)
-				);
-				return;
-			}
 			await message.util!.reply(
 				await this.client.t('COMMANDS.LANGUAGE.YOUR_LANG', message, {
-					lang: userEntry.language
+					lang: userEntry?.language ?? this.client.supportedLangs[0]
 				})
 			);
 		} else {
+			if (!this.client.supportedLangs.includes(code)) {
+				await message.util!.reply(
+					await this.client.t('COMMANDS.LANGUAGE.INVALID_LANG', message, {
+						code,
+						langs: this.client.supportedLangs
+							.map(code => `\`${code}\``)
+							.join(', ')
+					})
+				);
+				return;
+			}
 			const [userEntry] = await User.findOrBuild({
 				where: {
 					id: message.author.id
@@ -41,6 +46,15 @@ export default class ConfigCommand extends BotCommand {
 					id: message.author.id
 				}
 			});
+			const oldCode = userEntry.language ?? this.client.supportedLangs[0];
+			userEntry.language = code;
+			await userEntry.save();
+			await message.util!.reply(
+				await this.client.t('COMMANDS.LANGUAGE.CHANGED_LANG', message, {
+					code,
+					oldCode
+				})
+			);
 		}
 	}
 }

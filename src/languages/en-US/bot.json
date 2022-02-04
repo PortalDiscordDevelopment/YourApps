@@ -203,7 +203,9 @@
 		"NO_SUBMISSIONS": "No applications have been submitted!",
 		"REVIEW_NO_PERMS": "I do not have permissions to manage roles, and this application has either remove roles or reward roles. Please give me this permission and then try again.",
 		"LANGUAGE": {
-			"YOUR_LANG": "Your set language is `{{lang}}`."
+			"YOUR_LANG": "Your set language is `{{lang}}`.",
+			"INVALID_LANG": "`{{code}}` is not a valid language code. Valid language codes are: {{langs}}.",
+			"CHANGED_LANG": "Your language has been changed from `{{oldCode}}` to `{{code}}`."
 		}
 	},
 	"BLOCKED": {
