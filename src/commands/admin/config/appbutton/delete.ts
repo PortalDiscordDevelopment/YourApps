@@ -41,7 +41,11 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			return;
 		}
 		await message.util!.reply(await this.client.t('GENERIC.DELETING', message));
-		for (const btn of appbuttons) await btn.destroy();
+		await AppButton.destroy({ 
+			where: {
+				message: appbuttons[0].message
+			}
+		});
 		try {
 			const channel = await this.client.channels.fetch(appbuttons[0].channel);
 			if (!(channel && channel instanceof TextChannel)) throw Error();
