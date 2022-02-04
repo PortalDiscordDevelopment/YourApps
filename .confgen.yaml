@@ -45,7 +45,7 @@ options:
     id: migrationToken
     description: The token for the bot to use for accessing v3's api
   - name: Migration api url
-    id: migrationToken
+    id: migrationApiUrl
     description: The api url for the bot to use for accessing v3's api
     default: api.yourapps.cyou
   - name: Owner IDs
