@@ -31,5 +31,25 @@
 		]
 	},
 	"i18n-ally.enabledFrameworks": ["custom"],
-	"editor.acceptSuggestionOnCommitCharacter": false
+	"editor.acceptSuggestionOnCommitCharacter": false,
+	"i18n-ally.keysInUse": [
+		"bot.LOGGING.PREFIX_ADDED",
+		"bot.LOGGING.PREFIX_REMOVED",
+		"bot.LOGGING.ADMIN_ROLE_ADD",
+		"bot.LOGGING.ADMIN_ROLE_REMOVED",
+		"bot.LOGGING.BLACKLIST_ROLE_ADD",
+		"bot.LOGGING.BLACKLIST_ROLE_REMOVED",
+		"bot.LOGGING.REVIEW_ROLE_ADD",
+		"bot.LOGGING.REVIEW_ROLE_REMOVED",
+		"bot.LOGGING.LOGPING_ROLE_ADD",
+		"bot.LOGGING.LOGPING_ROLE_REMOVED",
+		"bot.LOGGING.CLOSE",
+		"bot.LOGGING.OPEN",
+		"bot.LOGGING.LOG_CHANNEL",
+		"bot.LOGGING.ARCHIVE_CHANNEL",
+		"bot.LOGGING.SUBMISSION_APPROVED",
+		"bot.LOGGING.SUBMISSION_APPROVED_REASON",
+		"bot.LOGGING.SUBMISSION_DENIED",
+		"bot.LOGGING.APPLICATION_SUBMITTED"
+	]
 }
