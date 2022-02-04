@@ -338,8 +338,8 @@ export default class ReviewCommand extends BotCommand {
 				).sendPromptSingle(message, {
 					ids,
 					allowSkip: 'reason',
-					fieldName: this.client.t('GENERIC.REASON', message),
-					description: this.client.t('GENERIC.ENTER_REASON', message),
+					fieldName: await this.client.t('GENERIC.REASON', message),
+					description: await this.client.t('GENERIC.ENTER_REASON', message),
 					process: m => ({
 						processed: {
 							user: m.content,

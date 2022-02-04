@@ -111,9 +111,13 @@ export default class ApplyCommand extends BotCommand {
 		if (!interaction) await message.react('✅');
 		const confirmation = interaction
 			? await message.reply({
-					content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
-						application: app.name
-					}),
+					content: await client.t(
+						'COMMANDS.ARE_YOU_SURE_APPLICATION',
+						message,
+						{
+							application: app.name
+						}
+					),
 					components: [
 						new MessageActionRow().addComponents(
 							new MessageButton()
@@ -131,9 +135,13 @@ export default class ApplyCommand extends BotCommand {
 					ephemeral: true
 			  })
 			: await message.author.send({
-					content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
-						application: app.name
-					}),
+					content: await client.t(
+						'COMMANDS.ARE_YOU_SURE_APPLICATION',
+						message,
+						{
+							application: app.name
+						}
+					),
 					components: [
 						new MessageActionRow().addComponents(
 							new MessageButton()
