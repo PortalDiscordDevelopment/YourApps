@@ -8,8 +8,7 @@ export default class ConfigReviewCommand extends BotCommand {
 		super('config-review', {
 			aliases: ['config-review'],
 			description: {
-				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW'),
 				usage: 'config review',
 				examples: ['config review']
 			},
@@ -33,11 +32,13 @@ export default class ConfigReviewCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry || guildEntry.reviewroles.length < 1) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_REVIEW_ROLES'));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_REVIEW_ROLES', message)
+			);
 			return;
 		}
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.SERVER_REVIEW_ROLES', {
+			await this.client.t('CONFIG.SERVER_REVIEW_ROLES', message, {
 				roles: guildEntry.reviewroles.map(p => `<@&${p}>`).join(', ')
 			})
 		);

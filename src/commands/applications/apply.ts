@@ -21,7 +21,7 @@ export default class ApplyCommand extends BotCommand {
 			aliases: ['apply'],
 			channel: 'guild',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.APPLY'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.APPLY'),
 				usage: 'apply <position>',
 				examples: ['apply moderator']
 			},
@@ -37,7 +37,7 @@ export default class ApplyCommand extends BotCommand {
 	async exec(message: Message, { application }: { application: App | null }) {
 		if (!application) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
@@ -45,7 +45,9 @@ export default class ApplyCommand extends BotCommand {
 			(await message.author.send({}).catch(e => e.message)) ==
 			'Cannot send messages to this user'
 		) {
-			await message.util!.send(this.client.i18n.t('ERRORS.CANNOT_DM'));
+			await message.util!.send(
+				await this.client.t('ERRORS.CANNOT_DM', message)
+			);
 			return;
 		}
 		const submittedApps = await Submission.count({
@@ -55,12 +57,16 @@ export default class ApplyCommand extends BotCommand {
 			}
 		});
 		if (submittedApps > 0) {
-			await message.util!.send(this.client.i18n.t('ERRORS.ALREADY_APPLIED'));
+			await message.util!.send(
+				await this.client.t('ERRORS.ALREADY_APPLIED', message)
+			);
 			return;
 		}
 		const memberRoles = (await message.member!.fetch()).roles.cache;
 		if (!application.requiredroles.every(r => memberRoles.has(r))) {
-			await message.util!.send(this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES'));
+			await message.util!.send(
+				await this.client.t('ERRORS.NO_REQUIRED_ROLES', message)
+			);
 			return;
 		}
 		if (
@@ -70,7 +76,7 @@ export default class ApplyCommand extends BotCommand {
 				application.minjointime
 		) {
 			await message.util!.send(
-				this.client.i18n.t('ERRORS.NOT_JOINED_LONG_ENOUGH')
+				await this.client.t('ERRORS.NOT_JOINED_LONG_ENOUGH', message)
 			);
 			return;
 		}
@@ -89,19 +95,19 @@ export default class ApplyCommand extends BotCommand {
 		};
 		await message.react('✅');
 		const confirmation = await message.author.send({
-			content: client.i18n.t('COMMANDS.ARE_YOU_SURE_APPLICATION', {
+			content: await client.t('COMMANDS.ARE_YOU_SURE_APPLICATION', message, {
 				application: app.name
 			}),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageButton()
 						.setCustomId(buttonIds.continue)
-						.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+						.setLabel(await client.t('GENERIC.CONTINUE', message))
 						.setEmoji('✅')
 						.setStyle('SUCCESS'),
 					new MessageButton()
 						.setCustomId(buttonIds.cancel)
-						.setLabel(client.i18n.t('GENERIC.CANCEL'))
+						.setLabel(await client.t('GENERIC.CANCEL', message))
 						.setEmoji('✖')
 						.setStyle('DANGER')
 				)
@@ -118,14 +124,14 @@ export default class ApplyCommand extends BotCommand {
 			});
 		} catch {
 			await confirmation.edit({
-				content: client.i18n.t('GENERIC.TIMED_OUT'),
+				content: await client.t('GENERIC.TIMED_OUT', message),
 				components: []
 			});
 			return;
 		}
 		if (response.customId !== buttonIds.continue) {
 			await response.reply({
-				content: client.i18n.t('GENERIC.CANCELED')
+				content: await client.t('GENERIC.CANCELED', message)
 			});
 			return;
 		}
@@ -141,14 +147,14 @@ export default class ApplyCommand extends BotCommand {
 				client.util
 					.embed()
 					.setTitle(
-						client.i18n.t('COMMANDS.APPLICATION_FOR', {
+						await client.t('COMMANDS.APPLICATION_FOR', message, {
 							application: app.name
 						})
 					)
-					.setDescription(client.i18n.t('COMMANDS.APPLYING_INFO'))
+					.setDescription(await client.t('COMMANDS.APPLYING_INFO', message))
 					.addField(
 						app.questions[curQuestion].question,
-						client.i18n.t('COMMANDS.YOUR_ANSWER', {
+						await client.t('COMMANDS.YOUR_ANSWER', message, {
 							type: AppQuestionTypeNice[app.questions[curQuestion].type]
 						}),
 						true
@@ -158,7 +164,7 @@ export default class ApplyCommand extends BotCommand {
 				new MessageActionRow().addComponents(
 					new MessageButton()
 						.setCustomId(cancelButtonId)
-						.setLabel(client.i18n.t('GENERIC.CANCEL'))
+						.setLabel(await client.t('GENERIC.CANCEL', message))
 						.setEmoji('🗑')
 						.setStyle('DANGER')
 				)
@@ -207,7 +213,7 @@ export default class ApplyCommand extends BotCommand {
 			if (curQuestion !== app.questions.length)
 				newEmbed = newEmbed.addField(
 					app.questions[curQuestion].question,
-					client.i18n.t('COMMANDS.YOUR_ANSWER', {
+					await client.t('COMMANDS.YOUR_ANSWER', message, {
 						type: AppQuestionTypeNice[app.questions[curQuestion].type]
 					}),
 					true
@@ -225,7 +231,7 @@ export default class ApplyCommand extends BotCommand {
 		});
 		// Cancel if collecter ended because cancelled
 		if (endedReason === 'cancel') {
-			await message.author.send(client.i18n.t('GENERIC.CANCELED'));
+			await message.author.send(await client.t('GENERIC.CANCELED', message));
 			return;
 		}
 		// * Ask for confirmation to submit app
@@ -238,19 +244,19 @@ export default class ApplyCommand extends BotCommand {
 			}`
 		};
 		const submissionConfirmation = await applicationMessage.reply({
-			content: client.i18n.t('COMMANDS.ARE_YOU_SURE_SUBMIT', {
+			content: await client.t('COMMANDS.ARE_YOU_SURE_SUBMIT', message, {
 				application: app.name
 			}),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageButton()
 						.setCustomId(submissionButtonIds.continue)
-						.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+						.setLabel(await client.t('GENERIC.CONTINUE', message))
 						.setEmoji('✅')
 						.setStyle('SUCCESS'),
 					new MessageButton()
 						.setCustomId(submissionButtonIds.cancel)
-						.setLabel(client.i18n.t('GENERIC.CANCEL'))
+						.setLabel(await client.t('GENERIC.CANCEL', message))
 						.setEmoji('✖')
 						.setStyle('DANGER')
 				)
@@ -266,14 +272,14 @@ export default class ApplyCommand extends BotCommand {
 				});
 		} catch {
 			await submissionConfirmation.edit({
-				content: client.i18n.t('GENERIC.TIMED_OUT'),
+				content: await client.t('GENERIC.TIMED_OUT', message),
 				components: []
 			});
 			return;
 		}
 		if (submissionResponse.customId !== submissionButtonIds.continue) {
 			await submissionResponse.reply({
-				content: client.i18n.t('GENERIC.CANCELED')
+				content: await client.t('GENERIC.CANCELED', message)
 			});
 			return;
 		}
@@ -303,7 +309,7 @@ export default class ApplyCommand extends BotCommand {
 			}
 		);
 		await submissionResponse.editReply({
-			content: client.i18n.t('GENERIC.SUBMITTED')
+			content: await client.t('GENERIC.SUBMITTED', message)
 		});
 	}
 }

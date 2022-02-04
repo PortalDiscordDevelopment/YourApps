@@ -8,8 +8,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		super('config-logping', {
 			aliases: ['config-logping'],
 			description: {
-				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_LOGPING'),
 				usage: 'config logping',
 				examples: ['config logping']
 			},
@@ -33,11 +32,13 @@ export default class ConfigLogpingCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry || guildEntry.logpings.length < 1) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_LOGPING_ROLES'));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_LOGPING_ROLES', message)
+			);
 			return;
 		}
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.SERVER_LOGPING_ROLES', {
+			await this.client.t('CONFIG.SERVER_LOGPING_ROLES', message, {
 				roles: guildEntry.logpings.map(p => `<@&${p}>`).join(', ')
 			})
 		);

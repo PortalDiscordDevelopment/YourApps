@@ -9,8 +9,7 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		super('config-review-add', {
 			aliases: ['config-review-add'],
 			description: {
-				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_ADD'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_ADD'),
 				usage: 'config review add <role>',
 				examples: ['config review add Reviewer']
 			},
@@ -28,7 +27,7 @@ export default class ConfigReviewAddCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +41,7 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		});
 		if (guildEntry.reviewroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.REVIEW_ROLE_ALREADY_ADDED')
+				await this.client.t('CONFIG.REVIEW_ROLE_ALREADY_ADDED', message)
 			);
 			return;
 		}
@@ -50,7 +49,9 @@ export default class ConfigReviewAddCommand extends BotCommand {
 		guildEntry.changed('reviewroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.REVIEW_ROLE_ADDED', { roleID: role.id })
+			await this.client.t('CONFIG.REVIEW_ROLE_ADDED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

@@ -23,13 +23,15 @@ export default class MessageListener extends BotListener {
 				(await message.author.send({}).catch(e => e.message)) ==
 				'Cannot send messages to this user'
 			) {
-				await message.util!.send(this.client.i18n.t('ERRORS.CANNOT_DM'));
+				await message.util!.send(
+					await this.client.t('ERRORS.CANNOT_DM', message)
+				);
 				return;
 			}
 			const memberRoles = (await message.member!.fetch()).roles.cache;
 			if (!app.requiredroles.every(r => memberRoles.has(r))) {
 				await message.util!.send(
-					this.client.i18n.t('ERRORS.NO_REQUIRED_ROLES')
+					await this.client.t('ERRORS.NO_REQUIRED_ROLES', message)
 				);
 				return;
 			}
@@ -40,7 +42,7 @@ export default class MessageListener extends BotListener {
 					app.minjointime
 			) {
 				await message.util!.send(
-					this.client.i18n.t('ERRORS.NOT_JOINED_LONG_ENOUGH')
+					await this.client.t('ERRORS.NOT_JOINED_LONG_ENOUGH', message)
 				);
 				return;
 			}

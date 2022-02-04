@@ -3,7 +3,7 @@ import { BotClient } from './BotClient';
 
 interface BotCommandOptions extends CommandOptions {
 	description: {
-		content: () => string;
+		content: () => Promise<string>;
 		usage: string;
 		examples: string[];
 	};
@@ -14,7 +14,7 @@ interface BotCommandOptions extends CommandOptions {
 export class BotCommand extends Command {
 	declare client: BotClient;
 	declare description: {
-		content: () => string;
+		content: () => Promise<string>;
 		usage: string;
 		examples: string[];
 	};

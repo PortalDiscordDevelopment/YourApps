@@ -9,10 +9,21 @@ import { join } from 'path';
 import { Op, Sequelize } from 'sequelize';
 import { Util } from '@lib/ext/Util';
 import * as Models from '@lib/models';
-import { Intents, Message } from 'discord.js';
+import { Collection, Intents, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
-import { default as i18n } from 'i18next';
+import i18n, { TOptions } from 'i18next';
+import I18nBackend from 'i18next-fs-backend';
+import { User as ModelUser } from '@lib/models/User';
+
+// I love typescript fuckery I can just copy paste from stackoverflow
+export type RecursiveKeyOf<TObj extends object> = {
+	[TKey in keyof TObj & (string | number)]: TObj[TKey] extends unknown[]
+		? `${TKey}`
+		: TObj[TKey] extends object
+		? `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
+		: `${TKey}`;
+}[keyof TObj & (string | number)];
 
 export interface BotConfig {
 	token: string;
@@ -37,9 +48,18 @@ export class BotClient extends AkairoClient {
 	public listenerHandler!: ListenerHandler;
 	public inhibitorHandler!: InhibitorHandler;
 	public util: Util = new Util(this);
-	public db!: Sequelize;
+	public db: Sequelize;
+	public static dbConnected = false;
 	public errorChannel!: TextChannel;
-	public i18n!: typeof i18n;
+	public i18n: typeof i18n;
+	public languageCache: Collection<
+		Snowflake,
+		{
+			lang: string;
+			cachedAt: number;
+		}
+	>;
+	public supportedLangs = ['en-US', 'de'];
 
 	public constructor(config: BotConfig) {
 		super(
@@ -59,19 +79,38 @@ export class BotClient extends AkairoClient {
 			}
 		);
 		this.config = config;
+		this.languageCache = new Collection();
+		this.i18n = i18n;
+		this.db = new Sequelize(
+			'yourapps',
+			this.config.db.username,
+			this.config.db.password,
+			{
+				dialect: 'postgres',
+				host: this.config.db.host,
+				port: this.config.db.port,
+				logging: false
+			}
+		);
 	}
 	private async _init(): Promise<void> {
-		this.i18n = i18n;
-		await i18n.init({
-			lng: 'en-US',
-			fallbackLng: 'en-US',
-			ns: 'YourApps',
-			fallbackNS: 'YourApps',
+		await i18n.use(I18nBackend).init({
+			supportedLngs: this.supportedLangs,
+			fallbackLng: this.supportedLangs[0],
+			ns: ['bot'],
+			fallbackNS: 'bot',
 			interpolation: {
 				escapeValue: false
-			}
+			},
+			backend: {
+				loadPath: join(__dirname, '../../../src/languages/{{lng}}/{{ns}}.json'),
+				addPath: join(
+					__dirname,
+					'../../../src/languages/{{lng}}/{{ns}}.missing.json'
+				)
+			},
+			preload: this.supportedLangs
 		});
-		await this.util.loadLanguages();
 		this.commandHandler = new CommandHandler(this, {
 			prefix: async (message: Message) => {
 				if (!message.guild) return [this.config.defaultPrefix, 'ya-v4?'];
@@ -144,22 +183,12 @@ export class BotClient extends AkairoClient {
 			process
 		});
 		// Connects to DB
-		this.db = new Sequelize(
-			'yourapps',
-			this.config.db.username,
-			this.config.db.password,
-			{
-				dialect: 'postgres',
-				host: this.config.db.host,
-				port: this.config.db.port,
-				logging: false
-			}
-		);
 		await this.db.authenticate();
 		for (const model of Object.values(Models)) {
 			model.initModel(this.db, this.config.defaultPrefix);
 		}
 		await this.db.sync({ alter: true });
+		BotClient.dbConnected = true;
 		// loads all the stuff
 		const loaders: Record<string, AkairoHandler> = {
 			commands: this.commandHandler,
@@ -186,6 +215,24 @@ export class BotClient extends AkairoClient {
 		return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
 			if (+match === 0) return '';
 			return index === 0 ? match.toLowerCase() : match.toUpperCase();
+		});
+	}
+
+	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
+	public async t(
+		key: RecursiveKeyOf<typeof import('../../languages/en-US/bot.json')>,
+		message?: Message,
+		options: TOptions = {}
+	) {
+		if (!message) {
+			return this.i18n.t(key, options);
+		}
+		const lng = await ModelUser.findByPk(message.author.id).then(
+			u => u?.language ?? undefined
+		);
+		return this.i18n.t(key, {
+			lng,
+			...options
 		});
 	}
 }

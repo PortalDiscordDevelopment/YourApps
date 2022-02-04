@@ -57,8 +57,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		super('config-migrate', {
 			aliases: ['config-migrate'],
 			description: {
-				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_MIGRATE'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_MIGRATE'),
 				usage: 'config migratre',
 				examples: ['config migrate']
 			},
@@ -73,7 +72,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 				Authorization: `Bearer ${this.client.config.migrationToken}`
 			}
 		};
-		await message.util!.reply(this.client.i18n.t('GENERIC.MIGRATING'));
+		await message.util!.reply(
+			await this.client.t('GENERIC.MIGRATING', message)
+		);
 		const [guildEntry] = await Guild.findOrBuild({
 			where: {
 				id: message.guild!.id
@@ -96,7 +97,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		} catch (e) {
 			if (e instanceof HTTPError && e.response.statusCode == 404) {
 				await message.util!.reply(
-					this.client.i18n.t('ERROR.TRANSFER_GUILD_NOT_FOUND')
+					await this.client.t('ERROR.TRANSFER_GUILD_NOT_FOUND', message)
 				);
 			} else if (e instanceof HTTPError) {
 				await this.logError(message, e);
@@ -171,7 +172,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 			if (created) await app.save();
 			else
 				await message.channel.send(
-					this.client.i18n.t('CONFIG.IGNORING_APP', { app: app.name })
+					await this.client.t('CONFIG.IGNORING_APP', message, { app: app.name })
 				);
 			map[data.id] = app.id;
 		}
@@ -194,7 +195,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		for (const app of submittedApps) {
 			if (!Object.keys(map).includes(app.position_id)) {
 				await message.channel.send({
-					content: this.client.i18n.t('CONFIG.IGNORING_SUBMISSION'),
+					content: await this.client.t('CONFIG.IGNORING_SUBMISSION', message),
 					allowedMentions: {
 						parse: []
 					}
@@ -230,9 +231,11 @@ export default class ConfigLogpingCommand extends BotCommand {
 		const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 		const errorEmbed = this.client.util
 			.embed()
-			.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.TITLE', { errorNo }))
+			.setTitle(
+				await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo })
+			)
 			.setDescription(
-				this.client.i18n.t('ERROR_LOGGING.COMMAND.BODY', {
+				await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
 					userID: message.author.id,
 					userTag: message.author.tag,
 					command: 'config-migrate',
@@ -241,11 +244,11 @@ export default class ConfigLogpingCommand extends BotCommand {
 				})
 			)
 			.addField(
-				this.client.i18n.t('GENERIC.ERROR'),
+				await this.client.t('GENERIC.ERROR', message),
 				await this.client.util.codeblock(`${e.stack}`, 1024, 'js')
 			)
 			.addField(
-				this.client.i18n.t('GENERIC.HTTP_RESPONSE'),
+				await this.client.t('GENERIC.HTTP_RESPONSE', message),
 				await this.client.util.codeblock(
 					stripIndent`
 							Code: ${e.response.statusCode}
@@ -262,9 +265,11 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 		const errorUserEmbed = this.client.util
 			.embed()
-			.setTitle(this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED'))
+			.setTitle(
+				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message)
+			)
 			.setDescription(
-				this.client.i18n.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', {
+				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', message, {
 					command: message.util!.parsed!.alias,
 					errorNo
 				})

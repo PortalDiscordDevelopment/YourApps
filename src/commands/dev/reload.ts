@@ -6,7 +6,7 @@ export default class ReloadCommand extends BotCommand {
 		super('reload', {
 			aliases: ['reload'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.RELOAD'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.RELOAD'),
 				usage: 'reload',
 				examples: ['reload']
 			},
@@ -22,15 +22,15 @@ export default class ReloadCommand extends BotCommand {
 			this.client.commandHandler.reloadAll();
 			this.client.listenerHandler.reloadAll();
 			this.client.inhibitorHandler.reloadAll();
-			await this.client.util.loadLanguages();
+			await this.client.i18n.reloadResources();
 			return message.util!.send(
-				this.client.i18n.t('DEVELOPER.RELOADED', {
+				await this.client.t('DEVELOPER.RELOADED', message, {
 					milliseconds: new Date().getTime() - s.getTime()
 				})
 			);
 		} catch (e) {
 			return message.util!.send(
-				this.client.i18n.t('DEVELOPER.ERROR_RELOADING', {
+				await this.client.t('DEVELOPER.ERROR_RELOADING', message, {
 					link: await this.client.util.haste((e as Error).stack!)
 				})
 			);

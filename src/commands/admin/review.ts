@@ -18,7 +18,7 @@ export default class ReviewCommand extends BotCommand {
 		super('review', {
 			aliases: ['review'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.REVIEW_DESCRIPTION'),
+				content: () => this.client.t('COMMANDS.REVIEW_DESCRIPTION'),
 				usage: 'review',
 				examples: ['review']
 			},
@@ -34,7 +34,7 @@ export default class ReviewCommand extends BotCommand {
 			}
 		});
 		if (submissions.length < 1) {
-			await message.util!.send(this.client.i18n.t('NO_SUBMISSIONS'));
+			await message.util!.send(await this.client.t('NO_SUBMISSIONS', message));
 			return;
 		}
 		const positionsSubmitted = submissions.reduce((prev, cur) => {
@@ -58,21 +58,27 @@ export default class ReviewCommand extends BotCommand {
 			}`
 		};
 		const menu = await message.util!.send({
-			content: this.client.i18n.t('GENERIC.CHOOSE_POS'),
+			content: await this.client.t('GENERIC.CHOOSE_POS', message),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageSelectMenu()
 						.addOptions(
-							positions.map(app => ({
-								label: app.name,
-								value: app.id.toString(),
-								description: this.client.i18n.t('POSITION_CHOICE_DESC', {
-									n: submissions.filter(s => s.position == app.id).length
-								})
-							}))
+							await Promise.all(
+								positions.map(async app => ({
+									label: app.name,
+									value: app.id.toString(),
+									description: await this.client.t(
+										'POSITION_CHOICE_DESC',
+										message,
+										{
+											n: submissions.filter(s => s.position == app.id).length
+										}
+									)
+								}))
+							)
 						)
 						.setCustomId(ids.positionsId)
-						.setPlaceholder(this.client.i18n.t('GENERIC.CHOSE_POS'))
+						.setPlaceholder(await this.client.t('GENERIC.CHOSE_POS', message))
 				)
 			]
 		});
@@ -96,7 +102,7 @@ export default class ReviewCommand extends BotCommand {
 				}))
 		);
 		const menu2 = await message.util!.send({
-			content: this.client.i18n.t('GENERIC.CHOOSE_SUB'),
+			content: await this.client.t('GENERIC.CHOOSE_SUB', message),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageSelectMenu()
@@ -108,7 +114,9 @@ export default class ReviewCommand extends BotCommand {
 							}))
 						)
 						.setCustomId(ids.submissionId)
-						.setPlaceholder(this.client.i18n.t('GENERIC.CHOOSE_A_SUB'))
+						.setPlaceholder(
+							await this.client.t('GENERIC.CHOOSE_A_SUB', message)
+						)
 				)
 			]
 		});
@@ -159,13 +167,13 @@ export default class ReviewCommand extends BotCommand {
 				this.client.util
 					.embed()
 					.setTitle(
-						this.client.i18n.t('COMMANDS.REVIEW_TITLE', {
+						await this.client.t('COMMANDS.REVIEW_TITLE', message, {
 							user: user.tag,
 							application: application.name
 						})
 					)
 					.setDescription(
-						this.client.i18n.t('COMMANDS.REVIEW_EMBED_DESCRIPTION')
+						await this.client.t('COMMANDS.REVIEW_EMBED_DESCRIPTION', message)
 					)
 					.addFields(
 						Object.entries(submission.answers).map(e => ({
@@ -180,24 +188,26 @@ export default class ReviewCommand extends BotCommand {
 					new MessageButton()
 						.setCustomId(approveButtonId)
 						.setEmoji('✅')
-						.setLabel(this.client.i18n.t('GENERIC.APPROVE'))
+						.setLabel(await this.client.t('GENERIC.APPROVE', message))
 						.setStyle('SUCCESS'),
 					new MessageButton()
 						.setCustomId(approveWithReasonId)
 						.setEmoji('✅')
-						.setLabel(this.client.i18n.t('GENERIC.APPROVE_WITH_REASON'))
+						.setLabel(
+							await this.client.t('GENERIC.APPROVE_WITH_REASON', message)
+						)
 						.setStyle('SUCCESS'),
 					new MessageButton()
 						.setCustomId(denyButtonId)
 						.setEmoji('✖')
-						.setLabel(this.client.i18n.t('GENERIC.DENY'))
+						.setLabel(await this.client.t('GENERIC.DENY', message))
 						.setStyle('DANGER')
 				),
 				new MessageActionRow().addComponents(
 					new MessageButton()
 						.setCustomId(cancelButtonId)
 						.setEmoji('🗑')
-						.setLabel(this.client.i18n.t('GENERIC.CANCEL'))
+						.setLabel(await this.client.t('GENERIC.CANCEL', message))
 						.setStyle('DANGER')
 				)
 			]
@@ -219,7 +229,7 @@ export default class ReviewCommand extends BotCommand {
 				// Check for role perms
 				if (!me.permissions.has('MANAGE_ROLES')) {
 					await reviewMessage.edit(
-						this.client.i18n.t('COMMANDS.REVIEW_NO_PERMS')
+						await this.client.t('COMMANDS.REVIEW_NO_PERMS', message)
 					);
 					return;
 				}
@@ -228,7 +238,7 @@ export default class ReviewCommand extends BotCommand {
 				} catch (e) {
 					if (e instanceof DiscordAPIError) {
 						await reviewMessage.edit({
-							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							content: await this.client.t('ERRORS.UNABLE_TO_FETCH', message),
 							components: [],
 							embeds: []
 						});
@@ -238,7 +248,10 @@ export default class ReviewCommand extends BotCommand {
 					throw e;
 				}
 				await reviewMessage.edit({
-					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
+					content: await this.client.t(
+						'GENERIC.SUCCESSFULLY_APPROVED',
+						message
+					),
 					components: [],
 					embeds: []
 				});
@@ -249,7 +262,7 @@ export default class ReviewCommand extends BotCommand {
 				// Check for role perms
 				if (!me.permissions.has('MANAGE_ROLES')) {
 					await reviewMessage.edit(
-						this.client.i18n.t('COMMANDS.REVIEW_NO_PERMS')
+						await this.client.t('COMMANDS.REVIEW_NO_PERMS', message)
 					);
 					return;
 				}
@@ -266,8 +279,8 @@ export default class ReviewCommand extends BotCommand {
 				).sendPromptSingle(message, {
 					ids,
 					allowSkip: false,
-					fieldName: this.client.i18n.t('GENERIC.REASON'),
-					description: this.client.i18n.t('GENERIC.ENTER_REASON'),
+					fieldName: await this.client.t('GENERIC.REASON', message),
+					description: await this.client.t('GENERIC.ENTER_REASON', message),
 					process: m => ({
 						processed: {
 							user: m.content,
@@ -275,10 +288,12 @@ export default class ReviewCommand extends BotCommand {
 						},
 						success: true
 					}),
-					title: this.client.i18n.t('GENERIC.APPROVE_REASON')
+					title: await this.client.t('GENERIC.APPROVE_REASON', message)
 				});
 				if (reason.cancelled) {
-					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
+					await response.editReply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 					return;
 				}
 				try {
@@ -290,7 +305,7 @@ export default class ReviewCommand extends BotCommand {
 				} catch (e) {
 					if (e instanceof DiscordAPIError) {
 						await reviewMessage.edit({
-							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							content: await this.client.t('ERRORS.UNABLE_TO_FETCH', message),
 							components: [],
 							embeds: []
 						});
@@ -300,7 +315,10 @@ export default class ReviewCommand extends BotCommand {
 					throw e;
 				}
 				await reviewMessage.edit({
-					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_APPROVED'),
+					content: await this.client.t(
+						'GENERIC.SUCCESSFULLY_APPROVED',
+						message
+					),
 					components: [],
 					embeds: []
 				});
@@ -320,8 +338,8 @@ export default class ReviewCommand extends BotCommand {
 				).sendPromptSingle(message, {
 					ids,
 					allowSkip: false,
-					fieldName: this.client.i18n.t('GENERIC.REASON'),
-					description: this.client.i18n.t('GENERIC.ENTER_REASON'),
+					fieldName: await this.client.t('GENERIC.REASON', message),
+					description: await this.client.t('GENERIC.ENTER_REASON', message),
 					process: m => ({
 						processed: {
 							user: m.content,
@@ -329,10 +347,12 @@ export default class ReviewCommand extends BotCommand {
 						},
 						success: true
 					}),
-					title: this.client.i18n.t('GENERIC.DENY')
+					title: await this.client.t('GENERIC.DENY', message)
 				});
 				if (reason.cancelled) {
-					await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
+					await response.editReply(
+						await this.client.t('GENERIC.CANCELED', message)
+					);
 					return;
 				}
 				try {
@@ -344,7 +364,7 @@ export default class ReviewCommand extends BotCommand {
 				} catch (e) {
 					if (e instanceof DiscordAPIError) {
 						await reviewMessage.edit({
-							content: this.client.i18n.t('ERRORS.UNABLE_TO_FETCH'),
+							content: await this.client.t('ERRORS.UNABLE_TO_FETCH', message),
 							components: [],
 							embeds: []
 						});
@@ -354,14 +374,16 @@ export default class ReviewCommand extends BotCommand {
 					throw e;
 				}
 				await reviewMessage.edit({
-					content: this.client.i18n.t('GENERIC.SUCCESSFULLY_DENIED'),
+					content: await this.client.t('GENERIC.SUCCESSFULLY_DENIED', message),
 					components: [],
 					embeds: []
 				});
 				break;
 			}
 			case cancelButtonId:
-				await response.editReply(this.client.i18n.t('GENERIC.CANCELED'));
+				await response.editReply(
+					await this.client.t('GENERIC.CANCELED', message)
+				);
 				break;
 		}
 	}

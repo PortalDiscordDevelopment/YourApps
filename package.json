@@ -8,12 +8,14 @@
 		"build": "yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
-		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js -r module-alias/register"
+		"format:check": "yarn prettier --check .",
+		"start": "yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
 	},
 	"author": "Tyman",
 	"license": "NPOSL-3.0",
 	"devDependencies": {
 		"@types/common-tags": "^1.8.1",
+		"@types/i18next-fs-backend": "^1.1.2",
 		"@types/node": "^17.0.8",
 		"@types/pg": "^8.6.3",
 		"@types/prettier": "^2.4.2",
@@ -36,6 +38,7 @@
 		"discord.js": "^13.5.1",
 		"got": "^11.8.3",
 		"i18next": "^21.6.5",
+		"i18next-fs-backend": "^1.1.4",
 		"pg": "^8.7.1",
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.12.5"

@@ -8,8 +8,7 @@ export default class ConfigDeleteCommand extends BotCommand {
 		super('config-delete', {
 			aliases: ['config-delete'],
 			description: {
-				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_DELETE'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_DELETE'),
 				usage: 'config delete <application> [--force]',
 				examples: ['config delete moderator', 'config delete moderator --force']
 			},
@@ -33,7 +32,7 @@ export default class ConfigDeleteCommand extends BotCommand {
 	async exec(message: Message, { app, force }: { app: App; force: boolean }) {
 		if (!app) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
@@ -43,13 +42,17 @@ export default class ConfigDeleteCommand extends BotCommand {
 			}
 		});
 		if (submissions.length >= 1 && !force) {
-			await message.util?.reply(this.client.i18n.t('CONFIG.DELETE_EXISTING'));
+			await message.util?.reply(
+				await this.client.t('CONFIG.DELETE_EXISTING', message)
+			);
 			return;
 		}
 		await Promise.all(submissions.map(s => s.destroy()));
 		await app.destroy();
 		await message.util!.reply(
-			this.client.i18n.t('CONFIG.APPLICATION_DELETED', { app: app.name })
+			await this.client.t('CONFIG.APPLICATION_DELETED', message, {
+				app: app.name
+			})
 		);
 	}
 }

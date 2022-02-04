@@ -8,7 +8,7 @@ export default class ConfigAdminCommand extends BotCommand {
 		super('config-admin', {
 			aliases: ['config-admin'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN'),
 				usage: 'config admin',
 				examples: ['config admin']
 			},
@@ -32,11 +32,13 @@ export default class ConfigAdminCommand extends BotCommand {
 	async exec(message: Message) {
 		const guildEntry = await Guild.findByPk(message.guild!.id);
 		if (!guildEntry || guildEntry.adminroles.length < 1) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_ADMIN_ROLES'));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_ADMIN_ROLES', message)
+			);
 			return;
 		}
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.SERVER_ADMIN_ROLES', {
+			await this.client.t('CONFIG.SERVER_ADMIN_ROLES', message, {
 				roles: guildEntry.adminroles.map(p => `<@&${p}>`).join(', ')
 			})
 		);

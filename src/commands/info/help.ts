@@ -7,7 +7,7 @@ export default class HelpCommand extends BotCommand {
 			aliases: ['help'],
 			category: 'info',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.HELP_DESCRIPTION'),
+				content: () => this.client.t('COMMANDS.HELP_DESCRIPTION'),
 				usage: 'help [command]',
 				examples: ['help prefix add']
 			},
@@ -47,16 +47,18 @@ export default class HelpCommand extends BotCommand {
 				const categoryNice = category.id
 					.replace(/(\b\w)/gi, lc => lc.toUpperCase())
 					.replace(/'(S)/g, letter => letter.toLowerCase());
-				const categoryCommands = categoryFilter
-					.filter(cmd => cmd.aliases.length > 0)
-					.map(
-						cmd =>
-							`\`${cmd.aliases[0]}${
-								(cmd as BotCommand).children.length > 0
-									? ` ${this.client.i18n.t('GENERIC.PARENT')}`
-									: ''
-							}\``
-					);
+				const categoryCommands = await Promise.all(
+					categoryFilter
+						.filter(cmd => cmd.aliases.length > 0)
+						.map(
+							async cmd =>
+								`\`${cmd.aliases[0]}${
+									(cmd as BotCommand).children.length > 0
+										? ` ${await this.client.t('GENERIC.PARENT', message)}`
+										: ''
+								}\``
+						)
+				);
 				if (categoryCommands.length > 0) {
 					embed.addField(`${categoryNice}`, `${categoryCommands.join(' ')}`);
 				}
@@ -68,7 +70,7 @@ export default class HelpCommand extends BotCommand {
 				.setTitle(`\`${command.description.usage}\``)
 				.addField(
 					'Description',
-					`${command.description.content()} ${
+					`${await command.description.content()} ${
 						command.ownerOnly ? '\n__Developer Only__' : ''
 					}`
 				);
@@ -85,17 +87,17 @@ export default class HelpCommand extends BotCommand {
 			if (command.children.length > 0) {
 				embed.addField(
 					'Subcommands',
-					command.children
-						.map(id => {
+					await Promise.all(
+						command.children.map(async id => {
 							const cmd = this.handler.modules.get(id) as BotCommand;
 							if (!cmd) return;
 							return `\`${cmd.aliases[0].replace(/-/g, ' ')}${
 								cmd.children.length > 0
-									? ` ${this.client.i18n.t('GENERIC.PARENT')}`
+									? ` ${await this.client.t('GENERIC.PARENT', message)}`
 									: ''
 							}\``;
 						})
-						.join('\n')
+					).then(c => c.join('\n'))
 				);
 			}
 

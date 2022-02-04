@@ -10,7 +10,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 			aliases: ['config-review-remove'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_REMOVE'),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_REVIEW_REMOVE'),
 				usage: 'config review remove <role>',
 				examples: ['config review remove Moderator']
 			},
@@ -28,7 +28,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +42,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 		});
 		if (!guildEntry.reviewroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.REVIEW_ROLE_NOT_ADDED')
+				await this.client.t('CONFIG.REVIEW_ROLE_NOT_ADDED', message)
 			);
 			return;
 		}
@@ -50,7 +50,9 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 		guildEntry.changed('reviewroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.REVIEW_ROLE_REMOVED', { roleID: role.id })
+			await this.client.t('CONFIG.REVIEW_ROLE_REMOVED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,

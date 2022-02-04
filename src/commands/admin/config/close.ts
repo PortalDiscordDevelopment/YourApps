@@ -8,7 +8,7 @@ export default class CloseCommand extends BotCommand {
 		super('config-close', {
 			aliases: ['config-close'],
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_CLOSE'),
 				usage: 'config close <application>',
 				examples: ['config close moderator']
 			},
@@ -27,20 +27,20 @@ export default class CloseCommand extends BotCommand {
 	async exec(message: Message, { application }: { application?: App }) {
 		if (!application) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.INVALID', { type: 'application' })
+				await this.client.t('ARGS.INVALID', message, { type: 'application' })
 			);
 			return;
 		}
 		if (application.closed) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.APPLICATION_NOT_OPEN')
+				await this.client.t('CONFIG.APPLICATION_NOT_OPEN', message)
 			);
 			return;
 		}
 		application.closed = true;
 		application.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.APPLICATION_CLOSED', {
+			await this.client.t('CONFIG.APPLICATION_CLOSED', message, {
 				application: application.name
 			})
 		);

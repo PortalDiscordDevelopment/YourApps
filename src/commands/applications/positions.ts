@@ -8,7 +8,7 @@ export default class PositionsCommand extends BotCommand {
 			aliases: ['positions', 'pos', 'apps', 'applications'],
 			channel: 'guild',
 			description: {
-				content: () => this.client.i18n.t('COMMANDS.DESCRIPTIONS.POSITIONS'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.POSITIONS'),
 				usage: 'positions',
 				examples: ['positions']
 			}
@@ -21,7 +21,9 @@ export default class PositionsCommand extends BotCommand {
 			}
 		});
 		if (applications.length < 1) {
-			await message.util!.send(this.client.i18n.t('COMMANDS.NO_APPLICATIONS'));
+			await message.util!.send(
+				await this.client.t('COMMANDS.NO_APPLICATIONS', message)
+			);
 			return;
 		}
 		await message.util!.send({
@@ -29,7 +31,7 @@ export default class PositionsCommand extends BotCommand {
 				this.client.util
 					.embed()
 					.setTitle(
-						this.client.i18n.t('COMMANDS.POSITIONS_TITLE', {
+						await this.client.t('COMMANDS.POSITIONS_TITLE', message, {
 							guild: message.guild!.name
 						})
 					)

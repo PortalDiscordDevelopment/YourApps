@@ -10,7 +10,7 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 			aliases: ['config-admin-remove'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE'),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_ADMIN_REMOVE'),
 				usage: 'config admin remove <role>',
 				examples: ['config admin remove Moderator']
 			},
@@ -28,7 +28,7 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 	async exec(message: Message, { role }: { role?: Role }) {
 		if (!role) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'role' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
 			);
 			return;
 		}
@@ -42,7 +42,7 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 		});
 		if (!guildEntry.adminroles.includes(role.id)) {
 			await message.util!.send(
-				this.client.i18n.t('CONFIG.ADMIN_ROLE_NOT_ADDED')
+				await this.client.t('CONFIG.ADMIN_ROLE_NOT_ADDED', message)
 			);
 			return;
 		}
@@ -50,7 +50,9 @@ export default class ConfigAdminRemoveCommand extends BotCommand {
 		guildEntry.changed('adminroles', true);
 		await guildEntry.save();
 		await message.util!.send(
-			this.client.i18n.t('CONFIG.ADMIN_ROLE_REMOVED', { roleID: role.id })
+			await this.client.t('CONFIG.ADMIN_ROLE_REMOVED', message, {
+				roleID: role.id
+			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
