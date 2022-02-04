@@ -10,7 +10,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 			aliases: ['config-appbutton'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
 				usage: 'config appbutton',
 				examples: ['config appbutton']
 			},
@@ -38,7 +38,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 			}
 		});
 		if (appbuttons.length < 1) {
-			await message.util!.send(this.client.i18n.t('CONFIG.NO_APPBUTTONS'));
+			await message.util!.send(await this.client.t('CONFIG.NO_APPBUTTONS', message));
 			return;
 		}
 		const apps = await App.findAll({
@@ -75,7 +75,7 @@ export default class ConfigBlacklistCommand extends BotCommand {
 				this.client.util
 					.embed()
 					.setTitle(
-						this.client.i18n.t('CONFIG.APPBUTTONS', {
+						await this.client.t('CONFIG.APPBUTTONS', message, {
 							guild: message.guild!.name
 						})
 					)

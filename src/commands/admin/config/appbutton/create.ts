@@ -16,7 +16,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			aliases: ['config-appbutton-create'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_CREATE_APPBUTTON'),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_CREATE_APPBUTTON'),
 				usage: 'config appbutton create <role>',
 				examples: ['config appbutton create']
 			},
@@ -34,7 +34,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 	async exec(message: Message, { channel }: { channel?: TextChannel }) {
 		if (!channel) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'text channel' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'text channel' })
 			);
 			return;
 		}
@@ -50,9 +50,9 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				}`
 			},
 			allowSkip: 'message content',
-			description: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.GIVE_MESSAGE'),
-			fieldName: this.client.i18n.t('GENERIC.CONTENT'),
-			title: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.NEW'),
+			description: await this.client.t('COMMANDS.APPBUTTON_CREATE.GIVE_MESSAGE', message),
+			fieldName: await this.client.t('GENERIC.CONTENT', message),
+			title: await this.client.t('COMMANDS.APPBUTTON_CREATE.NEW', message),
 			process: m => ({
 				success: true,
 				processed: {
@@ -81,7 +81,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			}
 		});
 		const appMessage = await message.util!.send({
-			content: this.client.i18n.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP'),
+			content: await this.client.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP', message),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageSelectMenu()
@@ -98,12 +98,12 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				),
 				new MessageActionRow().addComponents(
 					new MessageButton()
-						.setLabel(this.client.i18n.t('GENERIC.CONTINUE'))
+						.setLabel(await this.client.t('GENERIC.CONTINUE', message))
 						.setCustomId(ids.continueButtonId)
 						.setStyle('SUCCESS')
 						.setEmoji('✅'),
 					new MessageButton()
-						.setLabel(this.client.i18n.t('GENERIC.CANCEL'))
+						.setLabel(await this.client.t('GENERIC.CANCEL', message))
 						.setCustomId(ids.cancelButtonId)
 						.setStyle('DANGER')
 						.setEmoji('❌')
@@ -131,7 +131,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			});
 			if (buttonInteraction.customId === ids.cancelButtonId) {
 				await buttonInteraction.deferUpdate();
-				await message.util!.reply(this.client.i18n.t('GENERIC.CANCELED'));
+				await message.util!.reply(await this.client.t('GENERIC.CANCELED', message));
 				return;
 			}
 			if (
@@ -139,7 +139,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				selectedApps === null
 			) {
 				await buttonInteraction.reply({
-					content: this.client.i18n.t('ERRORS.NO_APP_SELECTED'),
+					content: await this.client.t('ERRORS.NO_APP_SELECTED', message),
 					ephemeral: true
 				});
 				continue;

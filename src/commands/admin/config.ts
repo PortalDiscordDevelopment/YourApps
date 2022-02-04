@@ -47,7 +47,7 @@ export default class ConfigCommand extends BotCommand {
 				['config-new', 'new'],
 				['config-migrate', 'migrate'],
 				['config-delete', 'delete'],
-				['config-appbutton', 'appbutton'],
+				['config-appbutton', 'appbutton', 'ab', 'appbuttons'],
 				['config-edit', 'edit']
 			]
 		};

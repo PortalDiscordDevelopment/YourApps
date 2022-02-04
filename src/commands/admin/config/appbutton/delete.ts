@@ -9,7 +9,7 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			aliases: ['config-appbutton-delete'],
 			description: {
 				content: () =>
-					this.client.i18n.t('COMMANDS.DESCRIPTIONS.CONFIG_APPBUTTON_DELETE'),
+					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_APPBUTTON_DELETE'),
 				usage: 'config appbutton delete',
 				examples: ['config appbutton delete']
 			},
@@ -30,17 +30,17 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 	) {
 		if (appbuttons instanceof InvalidArgError) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE_VALID', { type: 'appbutton' })
+				await this.client.t('ARGS.PLEASE_GIVE_VALID', message, { type: 'appbutton' })
 			);
 			return;
 		}
 		if (appbuttons === null) {
 			await message.util!.send(
-				this.client.i18n.t('ARGS.PLEASE_GIVE', { type: 'appbutton' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'appbutton' })
 			);
 			return;
 		}
-		await message.util!.reply(this.client.i18n.t('GENERIC.DELETING'));
+		await message.util!.reply(await this.client.t('GENERIC.DELETING', message));
 		for (const btn of appbuttons) await btn.destroy();
 		try {
 			const channel = await this.client.channels.fetch(appbuttons[0].channel);
@@ -50,12 +50,12 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			await message.delete();
 		} catch (e) {
 			await message.util!.reply(
-				this.client.i18n.t('COMMANDS.APPBUTTON_DELETE.DELETED_NO_MESSAGE')
+				await this.client.t('COMMANDS.APPBUTTON_DELETE.DELETED_NO_MESSAGE', message)
 			);
 			return;
 		}
 		await message.util!.reply(
-			this.client.i18n.t('COMMANDS.APPBUTTON_DELETE.DELETED')
+			await this.client.t('COMMANDS.APPBUTTON_DELETE.DELETED', message)
 		);
 	}
 }
