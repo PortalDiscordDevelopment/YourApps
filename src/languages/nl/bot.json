@@ -1,6 +1,5 @@
 {
 	"GENERIC": {
-		"ERROR": "Error",
 		"YES": "Ja",
 		"NO": "Nee",
 		"CONTINUE": "Doorgaan",
@@ -18,8 +17,6 @@
 		"DENIED": "Je bent geweigerd voor {{application}} in server {{guild}} met als reden: \"{{reason}}\".",
 		"SUCCESSFULLY_APPROVED": "Formulier goed gekeurd",
 		"SUCCESSFULLY_DENIED": "Formulier geweigerd",
-		"PARENT": "(command group)",
-		"HTTP_RESPONSE": "Http response",
 		"APPROVE_WITH_REASON": "Goed keuren (met reden)",
 		"REASON": "Reden",
 		"ENTER_REASON": "Stuur de reden hieronder en druk dan op doorgaan",
@@ -33,21 +30,14 @@
 		"MIGRATING": "Migreren..."
 	},
 	"ERROR_LOGGING": {
-		"INHIBITOR": {
-			"TITLE": "Inhibitor error",
-			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{ messageUrl}})"
-		},
 		"COMMAND": {
-			"TITLE": "Command error #{{errorNo}}",
-			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Command:** {{command}}\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{ messageUrl}})",
 			"ERROR_OCCURRED": "Een command is ge-errored",
 			"ERROR_MESSAGE": "Oh nee! Tijdens  het gebruiken van `{{command}}`, heeft er een error plaats gevonden. Om deze te melden geef de developers de volgende code: `{{errorNo}}`."
 		}
 	},
 	"CONFIG": {
-		"NO_CONFIG": "This guild does not appear to have any config options changed. Het ziet ernaar uit dat deze server geen veranderde instellingen heeft",
+		"NO_CONFIG": "Het ziet ernaar uit dat deze server geen veranderde instellingen heeft.",
 		"NONE_SET": "Geen",
-		"GUILD_CONFIG": "Server config",
 		"PREFIXES": "Prefixen",
 		"OR_MENTION": "{{prefixes}} (of vermelding)",
 		"REVIEW_ROLES": "Beoordeel rollen",
@@ -86,8 +76,6 @@
 		"LOGPING_ROLE_NOT_ADDED": "Deze log ping rol is nog niet toegevoegd",
 		"REVIEW_ROLE_ALREADY_ADDED": "Deze beoordelings rol is al toegevoegd!",
 		"REVIEW_ROLE_ADDED": "<@&{{roleID}}> is toegevoegd aan de beoordelings rollen. Gebruik `config review` command om alle beoordelings rollen te zien.",
-		"NO_REVIEW_ROLES": "This server has no review roles.",
-		"SERVER_REVIEW_ROLES": "The review role(s) for this server are {{ roles}}.",
 		"REVIEW_ROLE_REMOVED": "<@&{{roleID}}> is verwijderd van de beoordelings rollen op deze server. Gebruik `config review` command om alle beoordelings rollen te zien.",
 		"REVIEW_ROLE_NOT_ADDED": "Deze rol is nog niet toegevoegd aan de beoordelings rollen.",
 		"LOG_CHANNEL_SET": "<#{{channelID}}> als log kanaal ingestelt.",
@@ -115,7 +103,125 @@
 			"REMOVE_ROLES_BODY": "Wil je graag dat de bot automatisch rollen verwijderd als je iemand goedkeurt? Zo ja, stuur ze dan nu in eender welke vorm (id, naam, vermelding), daarna druk je op doorgaan. Als je dit niet wilt druk je gewoon op doorgan, als je wilt annuleren druk je op annuleren.",
 			"REQUIRED_ROLES_BODY": "Wil je graag dat de gebruikers een bepaalde rol moeten hebben om dit formulier in te vullen? Zo ja, stuur ze dan nu in eender welke vorm (id, naam, vermelding), daarna druk je op doorgaan. Als je dit niet wilt druk je gewoon op doorgan, als je wilt annuleren druk je op annuleren.",
 			"NONE_GIVEN_MULTI": "Je kan niet doorgaan, je hebt nog niks gegeven van {{type}}",
-			"NONE_GIVEN_SINGLE": "Je kan niet doorgaan, je hebt nog niks gegeven van {{type}}"
+			"NONE_GIVEN_SINGLE": "Je kan niet doorgaan, je hebt nog niks gegeven van {{type}}",
+			"CUSTOM_COMMAND_BODY": "Wil je graag een aangepaste command voor dit formulier? Zo ja, stuur deze dan nu (zonder prefix) en druk daarna dan op doorgaan. Als je nog een bericht erna stuurt veranderd dit je vorige bericht. Als je geen aangepaste command wilt druk je gewoon op doorgaan. Als je wilt annuleren druk je op annuleren.",
+			"COOLDOWN_BODY": "Wil je graag een cooldown voor je formulier? Zo ja, stuur deze dan nu hier (in milli seconden, zonder comma's of punten) druk daarna dan op doorgaan. Als je nog een bericht stuurt daarna veranderd dit je vorige antwoord. Als je geen cooldown wilt druk je gewoon op doorgaan. Als je wilt annuleren druk je op annuleren.",
+			"MIN_JOIN_TIME_BODY": "Wil je graag dat een gebruiker een minimum tijd in de server zit voordat hij/zij kan dit formulier kan invullen? Zo ja, stuur deze dan nu hier (in milli seconden, zonder comma's of punten) druk daarna dan op doorgaan. Als je nog een bericht stuurt daarna veranderd dit je vorige antwoord. Als je geen cooldown wilt druk je gewoon op doorgaan. Als je wilt annuleren druk je op annuleren.",
+			"PLEASE_VERIFY": "Verifiëer dat dit de instellingen zijn van dit formulier.",
+			"SUCCESS": "Formulier gemaakt!"
+		},
+		"APPLICATION_MIN_JOIN_TIME": "Minimum lid tijd",
+		"APPLICATION_DELETED": "Formulier {{app}} verwijderd!",
+		"IGNORING_APP": "Negeren van {{app}} want formulier bestaat al op deze versie van de bot.",
+		"DELETE_EXISTING": "Er zijn nog steeds open inzendingen. Als je deze wil verwijderen gebruik dan `--force` op het einde van de command.",
+		"SUCCESSFULLY_EDITED": "{{part}} aangepast voor {{app}}.",
+		"CHOOSE_PART": "Kies een optie om aan te passen.",
+		"IGNORING_SUBMISSION": "Kan niet migreren van formulier van <@{{user}}> want ik kon de optie niet vinden waar het van was.",
+		"NO_LANGUAGE": "Je hebt geen taal gezet."
+	},
+	"HASTEBIN": {
+		"TOO_LARGE": "Too large to display. Hastebin: {{ link}}",
+		"UNABLE_TO_POST": "Unable to post"
+	},
+	"COMMANDS": {
+		"DESCRIPTIONS": {
+			"CONFIG_ADMIN_ADD": "Voegt een admin rol toe aan de server.",
+			"CONFIG_ADMIN_REMOVE": "Verwijderd een admin rol van de server.",
+			"CONFIG_PREFIX_ADD": "Voegt een prefix toe aan de server.",
+			"CONFIG_PREFIX_REMOVE": "Verwijderd een prefix van de server.",
+			"CONFIG_ADMIN": "Geeft de admin rol(len) van de server.",
+			"CONFIG_CLOSE": "Sluit een formulier.",
+			"CONFIG_OPEN": "Opend een formulier.",
+			"CONFIG_PREFIX": "Geeft de server prefix(en)",
+			"EVAL": "Evalueert code.",
+			"RELOAD": "Herlaad de bot.",
+			"PING": "Geeft de latentie van de bot.",
+			"CONFIG_BLACKLIST_ADD": "Voegt een rol toe aan de zwarte lijst.",
+			"CONFIG_BLACKLIST_REMOVE": "Verwijderd een rol van de zwarte lijst.",
+			"CONFIG_REVIEW_REMOVE": "Verwijderd een beoordelings rol van de server.",
+			"CONFIG_REVIEW_ADD": "Voegt een beoordelings rol toe aan de server.",
+			"CONFIG_REVIEW": "Geeft de beoordelings rol(len) van de server.",
+			"CONFIG_BLACKLIST": "Geeft de zwarte lijst rol(len) van de server.",
+			"CONFIG_LOG": "Zet of geeft het log kanaal van de server.",
+			"CONFIG_LOGPING_REMOVE": "Verwijderd log ping rol(len) van de server.",
+			"CONFIG_LOGPING_ADD": "Voegt log ping rol toe aan de server.",
+			"CONFIG_LOGPING": "Geeft de log ping rol(len) van de server.",
+			"CONFIG_ARCHIVE": "Zet or geeft het archief kanaal van de server.",
+			"POSITIONS": "Geeft alle opties van de server.",
+			"POSITION": "Geeft details van een specifieke optie.",
+			"CONFIG_NEW": "Creërt een niewe optie, interactief.",
+			"APPLY": "Start een optie voor een specifieke optie, in DMs.",
+			"CONFIG_MIGRATE": "Migreert alle data van de v3 versie van YourApps naar de huidige versie.",
+			"UPDATE": "Git pulls en dan herstart door middel van pm2.",
+			"CONFIG_DELETE": "Verwijderd een optie, KAN NIET ONGEDAAN GEMAAKT WORDEN",
+			"CONFIG_EDIT": "Past een bestaande optie aan",
+			"LANGUAGE": "Geeft of zet je taal."
+		},
+		"PING_MESSAGE": "Shard: {{shard}}\nVertraging: {{delay}}ms\nAPI: {{api}}ms",
+		"PING_CALCULATING": "Berekening...",
+		"NO_APPLICATIONS": "Deze server heeft geen opties!",
+		"POSITIONS_TITLE": "{{ guild}}'s opties",
+		"ARE_YOU_SURE_APPLICATION": "Ben je zeker dat je wilt verder gaan met {{application}}? Zo ja, druk dan op doorgaan. Zo niet druk dan op annuleren. Doorgaan zal je een DM sturen, heb dus je DMs open voor de bot.",
+		"APPLICATION_FOR": "Formulier voor \"{{application}}\"",
+		"APPLYING_INFO": "Om dit formulier in te vullen, stuur gewoon een bericht en het zal ingevuld worden als een leeg antwoord en de volgende vraag zal gegeven worden. Als je iets fout doet kan je altijd annuleren door op annuleren te drukken. Voordat je dit formulier in zendt wordt je nog gevraagd of je zeker bent dat je het wilt dooorsturen.",
+		"YOUR_ANSWER": "Jouw antwoordt hier ({{type}})",
+		"ARE_YOU_SURE_SUBMIT": "Weet je zeker dat je dit formulier wilt inzenden naar \"{{application}}\"? Bekijk je antwoorden als je het zeker weet druk je op doorgaan, anders druk je op annuleren.",
+		"REVIEW_DESCRIPTION": "Begin het beoordelen van een inzending. Goedkeuren, goedkeuren met reden of weigeren.",
+		"REVIEW_NOT_APPLIED": "Deze gebruiker heeft niets ingezonden voor deze optie!",
+		"REVIEW_TITLE": "{{user}}'s formulier voor {{application}}",
+		"REVIEW_EMBED_DESCRIPTION": "Beoordeel de vragen en antwoorden beneden. Druk dan op goedkeuren, goedkeuren met reden of weigeren. Eens de gebruiker is goed gekeurd krijgt hij automatisch alle belonings rol(len) en worden de verwijder rol(len) verwijderd.",
+		"HELP_DESCRIPTION": "Geeft een lijst van commands of info op een specifieke command.",
+		"NO_SUBMISSIONS": "Geen inzendingen!",
+		"REVIEW_NO_PERMS": "Ik heb geen permissie om rollen te geven. Als je wilt dat ik reward rollen geef en verwijder rollen afneem, geef mij dan de juiste permissie voor dit.",
+		"LANGUAGE": {
+			"YOUR_LANG": "Je taal is `{{lang}}`.",
+			"INVALID_LANG": "`{{code}}` is niet een geldige taal code, codes zijn: {{langs}}.",
+			"CHANGED_LANG": "Je taal is van `{{oldCode}}` naar `{{code}}` veranderd."
 		}
-	}
+	},
+	"BLOCKED": {
+		"OWNER_ONLY": "Je kan deze command niet gebruiken aangezien je geen eigenaar van de bot bent.",
+		"DM_ONLY": "Deze command kan alleen in DMs gebruikt worden.",
+		"GUILD_ONLY": "Deze command kan alleen in servers gebruikt worden.",
+		"ADMIN_ONLY": "Allen admins (mensen met `Admin` permissie of met een admin rol) kunnen deze command gebruiken.",
+		"REVIEWER_ONLY": "Alleen beoordelers kunnen deze command gebruiken."
+	},
+	"LOGGING": {
+		"LOG_CHANNEL": "Server log kanaal veranderd naar <#{{channelID}}>.",
+		"ARCHIVE_CHANNEL": "Server archief kanaal veranderd naar <#{{channelID}}>.",
+		"PREFIX_ADDED": "`{{ prefix}}` is toegevoegd als prefix.",
+		"PREFIX_REMOVED": "`{{ prefix}}` is verwijderd als prefix.",
+		"ADMIN_ROLE_ADD": "<@&{{roleID}}> is toegvoegd als admin rol.",
+		"ADMIN_ROLE_REMOVED": "<@&{{roleID}}> is verwijderd als admin rol.",
+		"REVIEW_ROLE_ADD": "<@&{{roleID}> is toegevoegd als beoordelings rol.",
+		"REVIEW_ROLE_REMOVED": "<@&{{roleID}}> is verwijderd als beoordelings rol.",
+		"BLACKLIST_ROLE_ADD": "<@&{{roleID}}> is toegevoegd aan de zwarte lijst.",
+		"BLACKLIST_ROLE_REMOVED": "<@&{{roleID}}> is verwijderd van de zwarte lijst.",
+		"LOGPING_ROLE_ADD": "<@&{{roleID}}> is toegevoegd als log ping rol.",
+		"LOGPING_ROLE_REMOVED": "<@&{{roleID}}> is verwijderd als log ping rol.",
+		"CLOSE": "{{application}} is gesloten.",
+		"OPEN": "{{application}} is geopend.",
+		"SUBMISSION_APPROVED": "{{user}} is goed gekeurd voor {{application}}.",
+		"SUBMISSION_APPROVED_REASON": "{{user}} is goed gekeurd voor {{application}} met als reden: \"{{reason}}\".",
+		"SUBMISSION_DENIED": "{{user}} is geweigerd {{application}} met als reden: \"{{reason}}\".",
+		"APPLICATION_SUBMITTED": "{{user}} nieuwe inzending voor {{application}}.",
+		"APPLICATION_APPROVED": "Inzending goed gekeurd",
+		"APPLICATION_APPROVED_REASON": "Inzending goed gekeurd met reden.",
+		"APPLICATION_DENIED": "Inzending geweigerd"
+	},
+	"ERROR": {
+		"TRANSFER_GUILD_NOT_FOUND": "Geen data op YourApps v3 gevonden, dit betekent dat je deze versie niet hebt gebruikt, en deze command niet nodig is.",
+		"UNKNOWN_TRANSFER_ERROR": "Er heeft een ongekende error plaats gevonden. Laat dit aan een developer weten a.u.b.",
+		"CONCURRENT": "Je bent deze command al aan het gebruiken. Eindig de andere eerst!"
+	},
+	"ERRORS": {
+		"CANNOT_DM": "Ik kan je geen DM sturen. Weet je zeker dat je DMs open zijn? Als je deze niet open zet kan je dit formulier niet invullen.",
+		"NO_REQUIRED_ROLES": "Je hebt geen vereiste rollen. Je kan dus dit foemulier niet invullen.",
+		"PREFIX_EXISTS_V3": "Deze prefix bestaat al op YourApps v3, verwijder deze eerst van v3 voordat je hem in v4 kan gebruiken.",
+		"UNABLE_TO_FETCH": "Ik kon dit lid niet vinden. Dit is waarschijnlijk omdat hij/zij niet meer in de server zit. Naar aanleiding van dit zal ik de inzending ook ineens verwijderen.",
+		"NOT_JOINED_LONG_ENOUGH": "Je zit nog niet lang genoeg in deze server!",
+		"ALREADY_APPLIED": "Je hebt dit formulier al ingezonden! Wacht tot een beoordeler je beoordeelt."
+	},
+	"POSITION_CHOICE_DESC": "{{n}} formulieren ingezonden!",
+	"NO_SUBMISSIONS": "Er zijn geen inzendingen!"
 }
