@@ -111,7 +111,7 @@ export class Util extends ClientUtil {
 				continue;
 			}
 		}
-		return await this.client.t('HASTEBIN.UNABLE_TO_POST', undefined);
+		return 'Unable to post';
 	}
 
 	/**
@@ -130,9 +130,7 @@ export class Util extends ClientUtil {
 		const formattingLength =
 			2 * tildes.length + language.length + 2 * '\n'.length;
 		if (code.length + formattingLength > length)
-			hasteOut = await this.client.t('HASTEBIN.TOO_LARGE', undefined, {
-				link: await this.haste(code)
-			});
+			hasteOut = `Too large to display. Hastebin: ${await this.haste(code)}`;
 
 		const code2 =
 			code.length > length

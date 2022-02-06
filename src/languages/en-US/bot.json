@@ -1,16 +1,13 @@
 {
 	"GENERIC": {
-		"ERROR": "Error",
 		"YES": "Yes",
 		"NO": "No",
 		"CONTINUE": "Continue",
-		"SKIP": "Skip",
 		"CANCEL": "Cancel",
 		"CANCELED": "Canceled",
 		"QUESTIONS": "Questions",
 		"NONE_YET": "None yet!",
 		"TIMED_OUT": "Timed out",
-		"SUBMITTING": "Submitting...",
 		"SUBMITTED": "Sucessfully submitted your application.",
 		"APPROVE": "Approve",
 		"DENY": "Deny",
@@ -19,7 +16,6 @@
 		"SUCCESSFULLY_APPROVED": "Successfully approved application!",
 		"SUCCESSFULLY_DENIED": "Successfully denied application",
 		"PARENT": "(command group)",
-		"HTTP_RESPONSE": "Http response",
 		"APPROVE_WITH_REASON": "Approve (with reason)",
 		"REASON": "Reason",
 		"ENTER_REASON": "Send the reason to give to the user below this message, and then press continue.",
@@ -31,18 +27,6 @@
 		"CHOOSE_SUB": "Choose one of the submissions below for your chosen application.",
 		"CHOOSE_A_SUB": "Choose a submission",
 		"MIGRATING": "Migrating..."
-	},
-	"ERROR_LOGGING": {
-		"INHIBITOR": {
-			"TITLE": "Inhibitor error",
-			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{ messageUrl}})"
-		},
-		"COMMAND": {
-			"TITLE": "Command error #{{errorNo}}",
-			"BODY": "**User:** <@{{userID}}> ({{userTag}})\n**Command:** {{command}}\n**Channel:** <#{{channelID}}> ({{channelID}})\n**Message:** [link]({{ messageUrl}})",
-			"ERROR_OCCURRED": "A command error occurred",
-			"ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`."
-		}
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
@@ -129,23 +113,7 @@
 		"DELETE_EXISTING": "There are still existing submissions! If you would like to delete them all first, run this command again with `--force` at the end.",
 		"SUCCESSFULLY_EDITED": "Successfully edited the {{part}} for {{app}}.",
 		"CHOOSE_PART": "Choose which application option to edit",
-		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for.",
-		"NO_LANGUAGE": "You have not set a language."
-	},
-	"HASTEBIN": {
-		"TOO_LARGE": "Too large to display. Hastebin: {{ link}}",
-		"UNABLE_TO_POST": "Unable to post"
-	},
-	"DEVELOPER": {
-		"TOKEN_OMMITTED": "[Token omitted]",
-		"EVALED_CODE": "Evaled code successfully",
-		"EVAL_ERROR": "Code was not able to be evaled.",
-		"INPUT_TYPESCRIPT": "📥 Input (typescript)",
-		"INPUT_JAVASCRIPT": "📥 Input (transpiled javascript)",
-		"INPUT": "📥 Input",
-		"OUTPUT": "📤 Output",
-		"RELOADED": "🔁 Successfully reloaded! ({{milliseconds}}ms)",
-		"ERROR_RELOADING": "An error occurred while reloading:\n{{ link}}"
+		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for."
 	},
 	"ARGS": {
 		"INVALID": "That is not a valid {{type}}!",
@@ -196,7 +164,6 @@
 		"YOUR_ANSWER": "Your answer here ({{type}})",
 		"ARE_YOU_SURE_SUBMIT": "Are you sure you want to submit this application to \"{{application}}\"? Please review your answers, and then press continue. Or, press cancel and nothing will be submitted.",
 		"REVIEW_DESCRIPTION": "Starts reviewing a submitted application, allows you to approve, approve with reason, or deny.",
-		"REVIEW_NOT_APPLIED": "That user has not applied for that position!",
 		"REVIEW_TITLE": "{{user}}'s application for {{application}}",
 		"REVIEW_EMBED_DESCRIPTION": "Review the questions and answers below, then press one of the buttons to either approve this person, deny this person, or cancel reviewing. Once approved, the user will be given all reward roles and removed all remove roles.",
 		"HELP_DESCRIPTION": "Displays a list of commands, or detailed information for a specific command.",
@@ -238,18 +205,16 @@
 		"APPLICATION_APPROVED_REASON": "Application approved with reason",
 		"APPLICATION_DENIED": "Application denied"
 	},
-	"ERROR": {
-		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
-		"UNKNOWN_TRANSFER_ERROR": "An unknown error occured while fetching transfer data. Please report this to the developer.",
-		"CONCURRENT": "You are already running this command in this server. Please finish the other one first."
-	},
 	"ERRORS": {
 		"CANNOT_DM": "I cannot send messages to you, so you cannot apply for any applications. Please make sure direct messages are on in your settings for this server.",
 		"NO_REQUIRED_ROLES": "You do not have any of the required roles set for this application, so you cannot apply to it.",
 		"PREFIX_EXISTS_V3": "That prefix is already used by the v3 version of the bot. To prevent conflicts between the versions, please remove this prefix from the v3 version by running (replace <prefixhere> with the preifx, without the <>) `<prefixhere>config prefix remove <prefixhere>`",
 		"UNABLE_TO_FETCH": "The bot was unable to find the member. The most likley cause of this is the member leaving the server. Since the member left, I will delete the submission.",
 		"NOT_JOINED_LONG_ENOUGH": "You have not been in this server for long enough!",
-		"ALREADY_APPLIED": "You have already applied for this application, please wait for it to be approved or denied before submitting another."
+		"ALREADY_APPLIED": "You have already applied for this application, please wait for it to be approved or denied before submitting another.",
+		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
+		"COMMAND_ERROR_OCCURRED": "A command error occurred",
+		"COMMAND_ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`."
 	},
 	"POSITION_CHOICE_DESC": "{{n}} submitted applications",
 	"NO_SUBMISSIONS": "There does not appear to be any submissions to review!"

@@ -3,13 +3,11 @@
 		"YES": "Ja",
 		"NO": "Nee",
 		"CONTINUE": "Doorgaan",
-		"SKIP": "Overslaan",
 		"CANCEL": "Annuleren",
 		"CANCELED": "Geannuleerd",
 		"QUESTIONS": "Vragen",
 		"NONE_YET": "Nog geen!",
 		"TIMED_OUT": "Time-out",
-		"SUBMITTING": "Indienen...",
 		"SUBMITTED": "Uw aanvraag is ingediend.",
 		"APPROVE": "Goedkeuren",
 		"DENY": "Weigeren",
@@ -28,12 +26,6 @@
 		"CHOOSE_SUB": "Kies een inzending om te beoordelen.",
 		"CHOOSE_A_SUB": "Kies een inzending",
 		"MIGRATING": "Migreren..."
-	},
-	"ERROR_LOGGING": {
-		"COMMAND": {
-			"ERROR_OCCURRED": "Een command is ge-errored",
-			"ERROR_MESSAGE": "Oh nee! Tijdens  het gebruiken van `{{command}}`, heeft er een error plaats gevonden. Om deze te melden geef de developers de volgende code: `{{errorNo}}`."
-		}
 	},
 	"CONFIG": {
 		"NO_CONFIG": "Het ziet ernaar uit dat deze server geen veranderde instellingen heeft.",
@@ -116,12 +108,7 @@
 		"DELETE_EXISTING": "Er zijn nog steeds open inzendingen. Als je deze wil verwijderen gebruik dan `--force` op het einde van de command.",
 		"SUCCESSFULLY_EDITED": "{{part}} aangepast voor {{app}}.",
 		"CHOOSE_PART": "Kies een optie om aan te passen.",
-		"IGNORING_SUBMISSION": "Kan niet migreren van formulier van <@{{user}}> want ik kon de optie niet vinden waar het van was.",
-		"NO_LANGUAGE": "Je hebt geen taal gezet."
-	},
-	"HASTEBIN": {
-		"TOO_LARGE": "Too large to display. Hastebin: {{ link}}",
-		"UNABLE_TO_POST": "Unable to post"
+		"IGNORING_SUBMISSION": "Kan niet migreren van formulier van <@{{user}}> want ik kon de optie niet vinden waar het van was."
 	},
 	"COMMANDS": {
 		"DESCRIPTIONS": {
@@ -167,7 +154,6 @@
 		"YOUR_ANSWER": "Jouw antwoordt hier ({{type}})",
 		"ARE_YOU_SURE_SUBMIT": "Weet je zeker dat je dit formulier wilt inzenden naar \"{{application}}\"? Bekijk je antwoorden als je het zeker weet druk je op doorgaan, anders druk je op annuleren.",
 		"REVIEW_DESCRIPTION": "Begin het beoordelen van een inzending. Goedkeuren, goedkeuren met reden of weigeren.",
-		"REVIEW_NOT_APPLIED": "Deze gebruiker heeft niets ingezonden voor deze optie!",
 		"REVIEW_TITLE": "{{user}}'s formulier voor {{application}}",
 		"REVIEW_EMBED_DESCRIPTION": "Beoordeel de vragen en antwoorden beneden. Druk dan op goedkeuren, goedkeuren met reden of weigeren. Eens de gebruiker is goed gekeurd krijgt hij automatisch alle belonings rol(len) en worden de verwijder rol(len) verwijderd.",
 		"HELP_DESCRIPTION": "Geeft een lijst van commands of info op een specifieke command.",
@@ -209,18 +195,16 @@
 		"APPLICATION_APPROVED_REASON": "Inzending goed gekeurd met reden.",
 		"APPLICATION_DENIED": "Inzending geweigerd"
 	},
-	"ERROR": {
-		"TRANSFER_GUILD_NOT_FOUND": "Geen data op YourApps v3 gevonden, dit betekent dat je deze versie niet hebt gebruikt, en deze command niet nodig is.",
-		"UNKNOWN_TRANSFER_ERROR": "Er heeft een ongekende error plaats gevonden. Laat dit aan een developer weten a.u.b.",
-		"CONCURRENT": "Je bent deze command al aan het gebruiken. Eindig de andere eerst!"
-	},
 	"ERRORS": {
 		"CANNOT_DM": "Ik kan je geen DM sturen. Weet je zeker dat je DMs open zijn? Als je deze niet open zet kan je dit formulier niet invullen.",
 		"NO_REQUIRED_ROLES": "Je hebt geen vereiste rollen. Je kan dus dit foemulier niet invullen.",
 		"PREFIX_EXISTS_V3": "Deze prefix bestaat al op YourApps v3, verwijder deze eerst van v3 voordat je hem in v4 kan gebruiken.",
 		"UNABLE_TO_FETCH": "Ik kon dit lid niet vinden. Dit is waarschijnlijk omdat hij/zij niet meer in de server zit. Naar aanleiding van dit zal ik de inzending ook ineens verwijderen.",
 		"NOT_JOINED_LONG_ENOUGH": "Je zit nog niet lang genoeg in deze server!",
-		"ALREADY_APPLIED": "Je hebt dit formulier al ingezonden! Wacht tot een beoordeler je beoordeelt."
+		"ALREADY_APPLIED": "Je hebt dit formulier al ingezonden! Wacht tot een beoordeler je beoordeelt.",
+		"TRANSFER_GUILD_NOT_FOUND": "Geen data op YourApps v3 gevonden, dit betekent dat je deze versie niet hebt gebruikt, en deze command niet nodig is.",
+		"COMMAND_ERROR_OCCURRED": "Een command is ge-errored",
+		"COMMAND_ERROR_MESSAGE": "Oh nee! Tijdens  het gebruiken van `{{command}}`, heeft er een error plaats gevonden. Om deze te melden geef de developers de volgende code: `{{errorNo}}`."
 	},
 	"POSITION_CHOICE_DESC": "{{n}} formulieren ingezonden!",
 	"NO_SUBMISSIONS": "Er zijn geen inzendingen!"

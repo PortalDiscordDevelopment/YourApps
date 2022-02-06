@@ -96,9 +96,9 @@ export default class UpdateCommand extends BotCommand {
 			}
 		} catch (e) {
 			return message.util!.send(
-				await this.client.t('DEVELOPER.ERROR_RELOADING', message, {
-					link: await this.client.util.haste((e as Error).stack!)
-				})
+				`An error occurred while reloading:\n${await this.client.util.haste(
+					(e as Error).stack!
+				)}`
 			);
 		}
 	}

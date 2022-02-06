@@ -1,6 +1,7 @@
 import { Command } from 'discord-akairo';
 import { BotListener } from '@lib/ext/BotListener';
 import { Message } from 'discord.js';
+import { stripIndent } from 'common-tags';
 
 export default class CommandErrorListener extends BotListener {
 	public constructor() {
@@ -18,17 +19,16 @@ export default class CommandErrorListener extends BotListener {
 		if (!command && this.client.errorChannel) {
 			const errorEmbed = this.client.util
 				.embed()
-				.setTitle(await this.client.t('ERROR_LOGGING.INHIBITOR.TITLE', message))
+				.setTitle('Inhibitor error')
 				.setDescription(
-					await this.client.t('ERROR_LOGGING.INHIBITOR.BODY', message, {
-						userID: message.author.id,
-						userTag: message.author.tag,
-						channelID: message.channel.id,
-						messageUrl: message.url
-					})
+					stripIndent`
+					**User:** <@${message.author.id}> (${message.author.tag})
+					**Channel:** <#${message.channel.id}}> (${message.channel.id})
+					**Message:** [link](${message.url})
+				`
 				)
 				.addField(
-					await this.client.t('GENERIC.ERROR', message),
+					'Error',
 					await this.client.util.codeblock(
 						`${error?.stack ?? error}`,
 						1024,
@@ -50,22 +50,17 @@ export default class CommandErrorListener extends BotListener {
 			if (this.client.errorChannel) {
 				const errorEmbed = this.client.util
 					.embed()
-					.setTitle(
-						await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, {
-							errorNo
-						})
-					)
+					.setTitle(`Command error #${errorNo}`)
 					.setDescription(
-						await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
-							userID: message.author.id,
-							userTag: message.author.tag,
-							command: command.id,
-							channelID: message.channel.id,
-							messageUrl: message.url
-						})
+						stripIndent`
+						**User:** <@${message.author.id}> (${message.author.tag})
+						**Command:** ${command.id}
+						**Channel:** <#${message.channel.id}> (${message.channel.id})
+						**Message:** [link](${message.url})
+					`
 					)
 					.addField(
-						await this.client.t('GENERIC.ERROR', message),
+						'Error',
 						await this.client.util.codeblock(
 							`${error?.stack ?? error}`,
 							1024,
@@ -81,17 +76,13 @@ export default class CommandErrorListener extends BotListener {
 				const errorUserEmbed = this.client.util
 					.embed()
 					.setTitle(
-						await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message)
+						await this.client.t('ERRORS.COMMAND_ERROR_OCCURRED', message)
 					)
 					.setDescription(
-						await this.client.t(
-							'ERROR_LOGGING.COMMAND.ERROR_MESSAGE',
-							message,
-							{
-								command: message.util!.parsed!.alias,
-								errorNo
-							}
-						)
+						await this.client.t('ERRORS.COMMAND_ERROR_MESSAGE', message, {
+							command: message.util!.parsed!.alias,
+							errorNo
+						})
 					);
 				await message.util!.send({
 					embeds: [errorUserEmbed]

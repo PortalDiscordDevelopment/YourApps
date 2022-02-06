@@ -51,5 +51,6 @@
 		"bot.LOGGING.SUBMISSION_APPROVED_REASON",
 		"bot.LOGGING.SUBMISSION_DENIED",
 		"bot.LOGGING.APPLICATION_SUBMITTED"
-	]
+	],
+	"i18n-ally.sourceLanguage": "en-US"
 }

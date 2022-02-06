@@ -94,65 +94,61 @@ export default class EvalCommand extends BotCommand {
 					this.client.token!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
 					'g'
 				),
-				await this.client.t('DEVELOPER.TOKEN_OMMITTED', message)
+				'[token ommitted]'
 			);
 
 			const inputJS = Util.cleanCodeBlockContent(code.js);
 
-			embed
-				.setTitle(await this.client.t('DEVELOPER.EVALED_CODE', message))
-				.setFooter({
-					text: message.author.tag,
-					iconURL: message.author.displayAvatarURL({ dynamic: true })
-				});
+			embed.setTitle('Evaled code successfully').setFooter({
+				text: message.author.tag,
+				iconURL: message.author.displayAvatarURL({ dynamic: true })
+			});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
-						await this.client.t('DEVELOPER.INPUT_TYPESCRIPT', message),
+						'📥 Input (typescript)',
 						await this.client.util.codeblock(inputTS, 1024, 'ts')
 					)
 					.addField(
-						await this.client.t('DEVELOPER.INPUT_JAVASCRIPT', message),
+						'📥 Input (transpiled javascript)',
 						await this.client.util.codeblock(inputJS, 1024, 'js')
 					);
 			} else {
 				embed.addField(
-					await this.client.t('DEVELOPER.INPUT', message),
+					'📥 Input',
 					await this.client.util.codeblock(inputJS, 1024, 'js')
 				);
 			}
 			embed.addField(
-				await this.client.t('DEVELOPER.OUTPUT', message),
+				'📥 Output',
 				await this.client.util.codeblock(output, 1024, 'js')
 			);
 		} catch (e) {
 			const inputJS = Util.cleanCodeBlockContent(code.js);
-			embed
-				.setTitle(await this.client.t('DEVELOPER.EVAL_ERROR', message))
-				.setFooter({
-					text: message.author.tag,
-					iconURL: message.author.displayAvatarURL({ dynamic: true })
-				});
+			embed.setTitle('Code was not able to be evaled.').setFooter({
+				text: message.author.tag,
+				iconURL: message.author.displayAvatarURL({ dynamic: true })
+			});
 			if (code.lang === 'ts') {
 				const inputTS = Util.cleanCodeBlockContent(code.ts!);
 				embed
 					.addField(
-						await this.client.t('DEVELOPER.INPUT_TYPESCRIPT', message),
+						'📥 Input (typescript)',
 						await this.client.util.codeblock(inputTS, 1024, 'ts')
 					)
 					.addField(
-						await this.client.t('DEVELOPER.INPUT_JAVASCRIPT', message),
+						'📥 Input (transpiled javascript)',
 						await this.client.util.codeblock(inputJS, 1024, 'js')
 					);
 			} else {
 				embed.addField(
-					await this.client.t('DEVELOPER.INPUT', message),
+					'📥 Input',
 					await this.client.util.codeblock(inputJS, 1024, 'js')
 				);
 			}
 			embed.addField(
-				await this.client.t('DEVELOPER.OUTPUT', message),
+				'📥 Output',
 				await this.client.util.codeblock((e as Error).stack!, 1024, 'js')
 			);
 		}

@@ -24,15 +24,13 @@ export default class ReloadCommand extends BotCommand {
 			this.client.inhibitorHandler.reloadAll();
 			await this.client.i18n.reloadResources();
 			return message.util!.send(
-				await this.client.t('DEVELOPER.RELOADED', message, {
-					milliseconds: new Date().getTime() - s.getTime()
-				})
+				`🔁 Successfully reloaded! (${new Date().getTime() - s.getTime()}ms)`
 			);
 		} catch (e) {
 			return message.util!.send(
-				await this.client.t('DEVELOPER.ERROR_RELOADING', message, {
-					link: await this.client.util.haste((e as Error).stack!)
-				})
+				`An error occurred while reloading:\n${await this.client.util.haste(
+					(e as Error).stack!
+				)}`
 			);
 		}
 	}

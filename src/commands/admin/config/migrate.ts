@@ -97,7 +97,7 @@ export default class ConfigLogpingCommand extends BotCommand {
 		} catch (e) {
 			if (e instanceof HTTPError && e.response.statusCode == 404) {
 				await message.util!.reply(
-					await this.client.t('ERROR.TRANSFER_GUILD_NOT_FOUND', message)
+					await this.client.t('ERRORS.TRANSFER_GUILD_NOT_FOUND', message)
 				);
 			} else if (e instanceof HTTPError) {
 				await this.logError(message, e);
@@ -231,24 +231,21 @@ export default class ConfigLogpingCommand extends BotCommand {
 		const errorNo = Math.floor(Math.random() * 6969696969) + 69; // hehe funny number
 		const errorEmbed = this.client.util
 			.embed()
-			.setTitle(
-				await this.client.t('ERROR_LOGGING.COMMAND.TITLE', message, { errorNo })
-			)
+			.setTitle(`Command error #${errorNo}`)
 			.setDescription(
-				await this.client.t('ERROR_LOGGING.COMMAND.BODY', message, {
-					userID: message.author.id,
-					userTag: message.author.tag,
-					command: 'config-migrate',
-					channelID: message.channel.id,
-					messageUrl: message.url
-				})
+				stripIndent`
+				**User:** <@${message.author.id}> (${message.author.tag})
+				**Command:** config-migrate
+				**Channel:** <#${message.channel.id}> (${message.channel.id})
+				**Message:** [link](${message.url})
+			`
 			)
 			.addField(
-				await this.client.t('GENERIC.ERROR', message),
+				'Error',
 				await this.client.util.codeblock(`${e.stack}`, 1024, 'js')
 			)
 			.addField(
-				await this.client.t('GENERIC.HTTP_RESPONSE', message),
+				'Http response',
 				await this.client.util.codeblock(
 					stripIndent`
 							Code: ${e.response.statusCode}
@@ -265,11 +262,9 @@ export default class ConfigLogpingCommand extends BotCommand {
 		});
 		const errorUserEmbed = this.client.util
 			.embed()
-			.setTitle(
-				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_OCCURRED', message)
-			)
+			.setTitle(await this.client.t('ERRORS.COMMAND_ERROR_OCCURRED', message))
 			.setDescription(
-				await this.client.t('ERROR_LOGGING.COMMAND.ERROR_MESSAGE', message, {
+				await this.client.t('ERRORS.COMMAND_ERROR_MESSAGE', message, {
 					command: message.util!.parsed!.alias,
 					errorNo
 				})
