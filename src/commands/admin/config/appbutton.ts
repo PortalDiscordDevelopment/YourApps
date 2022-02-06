@@ -4,13 +4,12 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { AppButton, App } from '@lib/models';
 import { Op } from 'sequelize';
 
-export default class ConfigBlacklistCommand extends BotCommand {
+export default class ConfigAppbuttonCommand extends BotCommand {
 	public constructor() {
 		super('config-appbutton', {
 			aliases: ['config-appbutton'],
 			description: {
-				content: () =>
-					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
 				usage: 'config appbutton',
 				examples: ['config appbutton']
 			},
@@ -38,7 +37,9 @@ export default class ConfigBlacklistCommand extends BotCommand {
 			}
 		});
 		if (appbuttons.length < 1) {
-			await message.util!.send(await this.client.t('CONFIG.NO_APPBUTTONS', message));
+			await message.util!.send(
+				await this.client.t('CONFIG.NO_APPBUTTONS', message)
+			);
 			return;
 		}
 		const apps = await App.findAll({

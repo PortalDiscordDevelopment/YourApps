@@ -34,7 +34,9 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 	async exec(message: Message, { channel }: { channel?: TextChannel }) {
 		if (!channel) {
 			await message.util!.send(
-				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'text channel' })
+				await this.client.t('ARGS.PLEASE_GIVE', message, {
+					type: 'text channel'
+				})
 			);
 			return;
 		}
@@ -50,7 +52,10 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				}`
 			},
 			allowSkip: 'message content',
-			description: await this.client.t('COMMANDS.APPBUTTON_CREATE.GIVE_MESSAGE', message),
+			description: await this.client.t(
+				'COMMANDS.APPBUTTON_CREATE.GIVE_MESSAGE',
+				message
+			),
 			fieldName: await this.client.t('GENERIC.CONTENT', message),
 			title: await this.client.t('COMMANDS.APPBUTTON_CREATE.NEW', message),
 			process: m => ({
@@ -81,7 +86,10 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			}
 		});
 		const appMessage = await message.util!.send({
-			content: await this.client.t('COMMANDS.APPBUTTON_CREATE.SELECT_APP', message),
+			content: await this.client.t(
+				'COMMANDS.APPBUTTON_CREATE.SELECT_APP',
+				message
+			),
 			components: [
 				new MessageActionRow().addComponents(
 					new MessageSelectMenu()
@@ -131,7 +139,9 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			});
 			if (buttonInteraction.customId === ids.cancelButtonId) {
 				await buttonInteraction.deferUpdate();
-				await message.util!.reply(await this.client.t('GENERIC.CANCELED', message));
+				await message.util!.reply(
+					await this.client.t('GENERIC.CANCELED', message)
+				);
 				return;
 			}
 			if (

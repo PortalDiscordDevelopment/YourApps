@@ -28,7 +28,6 @@
 		"CHOOSE_A_SUB": "Choose a submission",
 		"MIGRATING": "Migrating...",
 		"CONTENT": "Message content",
-		"APPBUTTON_MESSAGE": "Select one of the buttons below to start applying for their respective positions.",
 		"DELETING": "Deleting..."
 	},
 	"CONFIG": {
@@ -116,7 +115,9 @@
 		"DELETE_EXISTING": "There are still existing submissions! If you would like to delete them all first, run this command again with `--force` at the end.",
 		"SUCCESSFULLY_EDITED": "Successfully edited the {{part}} for {{app}}.",
 		"CHOOSE_PART": "Choose which application option to edit",
-		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for."
+		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for.",
+		"NO_APPBUTTONS": "You have not created any appbuttons.",
+		"APPBUTTONS": "Created appbuttons"
 	},
 	"ARGS": {
 		"INVALID": "That is not a valid {{type}}!",
@@ -182,7 +183,6 @@
 		},
 		"APPBUTTON_CREATE": {
 			"GIVE_MESSAGE": "Please give the content of the message to send in the provided channel.",
-			"GIVE_APP": "Please give the application for the appbutton to start when pressed.",
 			"NEW": "New appbutton",
 			"SELECT_APP": "Please select the application that this appbutton will use below."
 		},

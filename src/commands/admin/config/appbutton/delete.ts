@@ -30,7 +30,9 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 	) {
 		if (appbuttons instanceof InvalidArgError) {
 			await message.util!.send(
-				await this.client.t('ARGS.PLEASE_GIVE_VALID', message, { type: 'appbutton' })
+				await this.client.t('ARGS.PLEASE_GIVE_VALID', message, {
+					type: 'appbutton'
+				})
 			);
 			return;
 		}
@@ -41,7 +43,7 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			return;
 		}
 		await message.util!.reply(await this.client.t('GENERIC.DELETING', message));
-		await AppButton.destroy({ 
+		await AppButton.destroy({
 			where: {
 				message: appbuttons[0].message
 			}
@@ -54,7 +56,10 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			await message.delete();
 		} catch (e) {
 			await message.util!.reply(
-				await this.client.t('COMMANDS.APPBUTTON_DELETE.DELETED_NO_MESSAGE', message)
+				await this.client.t(
+					'COMMANDS.APPBUTTON_DELETE.DELETED_NO_MESSAGE',
+					message
+				)
 			);
 			return;
 		}
