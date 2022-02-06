@@ -214,7 +214,8 @@
 		"ALREADY_APPLIED": "You have already applied for this application, please wait for it to be approved or denied before submitting another.",
 		"TRANSFER_GUILD_NOT_FOUND": "No guild data was found from the v3 version of the bot. You likely never used the old version of the bot, and that means this command is useless for you.",
 		"COMMAND_ERROR_OCCURRED": "A command error occurred",
-		"COMMAND_ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`."
+		"COMMAND_ERROR_MESSAGE": "Oh no! While running the command `{{command}}`, an error occurred. Please give the developers code `{{errorNo}}`.",
+		"APP_CLOSED": "This application is closed!"
 	},
 	"POSITION_CHOICE_DESC": "{{n}} submitted applications",
 	"NO_SUBMISSIONS": "There does not appear to be any submissions to review!"

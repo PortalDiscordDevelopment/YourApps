@@ -46,6 +46,12 @@ export default class MessageListener extends BotListener {
 				);
 				return;
 			}
+			if (app.closed) {
+				await message.util!.send(
+					await this.client.t('ERRORS.APP_CLOSED', message)
+				);
+				return;
+			}
 			await ApplyCommand.startApplication(message, app);
 			break;
 		}

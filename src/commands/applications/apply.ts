@@ -80,6 +80,12 @@ export default class ApplyCommand extends BotCommand {
 			);
 			return;
 		}
+		if (application.closed) {
+			await message.util!.send(
+				await this.client.t('ERRORS.APP_CLOSED', message)
+			);
+			return;
+		}
 		await ApplyCommand.startApplication(message, application);
 	}
 
