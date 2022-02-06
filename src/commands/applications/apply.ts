@@ -122,12 +122,12 @@ export default class ApplyCommand extends BotCommand {
 						new MessageActionRow().addComponents(
 							new MessageButton()
 								.setCustomId(buttonIds.continue)
-								.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+								.setLabel(await client.t('GENERIC.CONTINUE', message))
 								.setEmoji('✅')
 								.setStyle('SUCCESS'),
 							new MessageButton()
 								.setCustomId(buttonIds.cancel)
-								.setLabel(client.i18n.t('GENERIC.CANCEL'))
+								.setLabel(await client.t('GENERIC.CANCEL', message))
 								.setEmoji('✖')
 								.setStyle('DANGER')
 						)
@@ -146,12 +146,12 @@ export default class ApplyCommand extends BotCommand {
 						new MessageActionRow().addComponents(
 							new MessageButton()
 								.setCustomId(buttonIds.continue)
-								.setLabel(client.i18n.t('GENERIC.CONTINUE'))
+								.setLabel(await client.t('GENERIC.CONTINUE', message))
 								.setEmoji('✅')
 								.setStyle('SUCCESS'),
 							new MessageButton()
 								.setCustomId(buttonIds.cancel)
-								.setLabel(client.i18n.t('GENERIC.CANCEL'))
+								.setLabel(await client.t('GENERIC.CANCEL', message))
 								.setEmoji('✖')
 								.setStyle('DANGER')
 						)
