@@ -26,7 +26,7 @@ export default class ConfigLogpingRemoveCommand extends BotCommand {
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { role }: { role?: Role|number }) {
+	async exec(message: Message, { role }: { role?: Role | number }) {
 		if (!role) {
 			await message.util!.send(
 				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
@@ -41,7 +41,7 @@ export default class ConfigLogpingRemoveCommand extends BotCommand {
 				id: message.guild!.id
 			}
 		});
-                const roleId = role instanceof Role ? role.id : role.toString();
+		const roleId = role instanceof Role ? role.id : role.toString();
 		if (!guildEntry.logpings.includes(roleId)) {
 			await message.util!.send(
 				await this.client.t('CONFIG.LOGPING_ROLE_NOT_ADDED', message)
