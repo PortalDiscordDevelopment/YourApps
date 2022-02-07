@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,node,yarn
 
 ### Node ###
+package-lock.json
 # Logs
 logs
 *.log
