@@ -183,18 +183,19 @@ export default class ApplyCommand extends BotCommand {
 			}
 			return;
 		}
+		await response.deferUpdate();
 		if (response.customId !== buttonIds.continue) {
 			interaction
-				? await response.reply({
+				? await message.editReply({
 						content: await client.t('GENERIC.CANCELED', message),
-						ephemeral: true
+						components: []
 				  })
-				: await response.reply({
-						content: await client.t('GENERIC.CANCELED', message)
+				: await (confirmation as Message).edit({
+						content: await client.t('GENERIC.CANCELED', message),
+						components: []
 				  });
 			return;
 		}
-		await response.deferUpdate();
 		// * Actually start the DM application
 		const answers: Record<string, AnswerType> = {};
 		const cancelButtonId = `cancelApplication|1|${message.id}|${

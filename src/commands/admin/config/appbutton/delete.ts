@@ -10,8 +10,8 @@ export default class ConfigAppbuttonDeleteCommand extends BotCommand {
 			description: {
 				content: () =>
 					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_APPBUTTON_DELETE'),
-				usage: 'config appbutton delete',
-				examples: ['config appbutton delete']
+				usage: 'config appbutton delete <ID>',
+				examples: ['config appbutton delete 939983044088045610']
 			},
 			category: 'admin',
 			args: [

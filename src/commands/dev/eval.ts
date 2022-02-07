@@ -2,7 +2,7 @@
 import { exec } from 'child_process';
 import { Message } from 'discord.js';
 import { Util } from 'discord.js';
-import { transpile } from 'typescript';
+import { ModuleKind, ScriptTarget, transpile } from 'typescript';
 import { inspect, promisify } from 'util';
 import { BotCommand } from '@lib/ext/BotCommand';
 
@@ -59,7 +59,10 @@ export default class EvalCommand extends BotCommand {
 		args.code = args.code.replace(/[“”]/g, '"');
 		if (args.typescript) {
 			code.ts = args.code;
-			code.js = transpile(args.code);
+			code.js = transpile(args.code, {
+				module: ModuleKind.CommonJS,
+				target: ScriptTarget.ES2020
+			});
 			code.lang = 'ts';
 		} else {
 			code.ts = null;

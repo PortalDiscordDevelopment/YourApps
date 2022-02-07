@@ -23,7 +23,8 @@ export default class ConfigAppbuttonCommand extends BotCommand {
 		const subcommand = yield {
 			type: [
 				['config-appbutton-create', 'add', 'create', 'new'],
-				['config-appbutton-delete', 'remove', 'delete']
+				['config-appbutton-delete', 'remove', 'delete'],
+				['config-appbutton-edit', 'edit', 'modify']
 			]
 		};
 		if (subcommand !== null) {

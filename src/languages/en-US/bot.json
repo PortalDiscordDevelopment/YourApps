@@ -28,7 +28,8 @@
 		"CHOOSE_A_SUB": "Choose a submission",
 		"MIGRATING": "Migrating...",
 		"CONTENT": "Message content",
-		"DELETING": "Deleting..."
+		"DELETING": "Deleting...",
+		"APPS": "Applications"
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
@@ -159,7 +160,8 @@
 			"CONFIG_EDIT": "Edits an already created application.",
 			"LANGUAGE": "Gets/sets your user language.",
 			"CONFIG_CREATE_APPBUTTON": "Creates a new appbutton",
-			"CONFIG_APPBUTTON_DELETE": "Deletes an appbutton"
+			"CONFIG_APPBUTTON_DELETE": "Deletes an appbutton",
+			"CONFIG_APPBUTTON_EDIT": "Edits an already existing appbutton"
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
@@ -184,11 +186,18 @@
 		"APPBUTTON_CREATE": {
 			"GIVE_MESSAGE": "Please give the content of the message to send in the provided channel.",
 			"NEW": "New appbutton",
-			"SELECT_APP": "Please select the application that this appbutton will use below."
+			"SELECT_APP": "Please select the applications that this appbutton will have below."
 		},
 		"APPBUTTON_DELETE": {
 			"DELETED_NO_MESSAGE": "The appbutton was deleted, but I was unable to delete the actual message for some reason.",
 			"DELETED": "Deleted appbutton!"
+		},
+		"APPBUTTON_EDIT": {
+			"PART": "What about this appbutton would you like to edit?",
+			"CONTENT_DESCRIPTION": "Please send the content to edit the appbutton to below, and then press continue. Or, press cancel to cancel editing this appbutton.",
+			"CONTENT_TITLE": "Edit appbutton message content",
+			"CONTENT_SUCCESS": "Successfully edited appbutton content.",
+			"APPS_SUCCESS": "Successfully appbutton applications."
 		}
 	},
 	"BLOCKED": {

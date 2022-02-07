@@ -731,7 +731,8 @@ export default class ConfigNewCommand extends BotCommand {
 						.setStyle('DANGER')
 						.setEmoji('🗑')
 				])
-			]
+			],
+			content: null
 		});
 		const messageCollector = newAppMessage.channel.createMessageCollector({
 			filter: m => m.author.id == message.author.id,
