@@ -29,7 +29,8 @@
 		"MIGRATING": "Migrating...",
 		"CONTENT": "Message content",
 		"DELETING": "Deleting...",
-		"APPS": "Applications"
+		"APPS": "Applications",
+		"SKIP": "Skip"
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",
@@ -188,7 +189,9 @@
 			"GIVE_MESSAGE": "Please give the content of the message to send in the provided channel.",
 			"NEW": "New appbutton",
 			"SELECT_APP": "Please select the applications that this appbutton will have below.",
-			"SUCCESS": "Successfully created appbutton."
+			"SUCCESS": "Successfully created appbutton.",
+			"REACT": "Either react with an emoji to use for the {{app}} part of the appbutton (shown next to the application name), or press skip for no emoji.",
+			"INVALID_EMOJI": "You cannot use a guild-specific emoji for appbuttons. Please use a default discord emoji and try again."
 		},
 		"APPBUTTON_DELETE": {
 			"DELETED_NO_MESSAGE": "The appbutton was deleted, but I was unable to delete the actual message for some reason.",

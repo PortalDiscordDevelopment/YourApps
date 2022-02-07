@@ -1,7 +1,11 @@
 import {
+	ButtonInteraction,
+	Collection,
+	GuildEmoji,
 	Message,
 	MessageActionRow,
 	MessageButton,
+	MessageReaction,
 	MessageSelectMenu,
 	SelectMenuInteraction,
 	TextChannel
@@ -163,6 +167,69 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 			}
 			return;
 		}
+		const reactions: Record<number, string> = {};
+		for (const [i, app] of Object.entries(selectedApps as App[])) {
+			const skipId = `selectAppCreateAppbuttonMessage|${i + 2}|${message.id}|${
+				message.editedTimestamp ?? message.createdTimestamp
+			}`;
+			const m = await message.util!.send({
+				content: await this.client.t(
+					'COMMANDS.APPBUTTON_CREATE.REACT',
+					message,
+					{
+						app: app.name
+					}
+				),
+				components: [
+					new MessageActionRow().addComponents(
+						new MessageButton()
+							.setCustomId(skipId)
+							.setEmoji('❌')
+							.setLabel(await this.client.t('GENERIC.SKIP', message))
+							.setStyle('DANGER')
+					)
+				]
+			});
+			for (;;) {
+				let result: ButtonInteraction | Collection<string, MessageReaction>;
+				try {
+					result = await Promise.any([
+						m.awaitMessageComponent({
+							filter: i =>
+								i.customId === skipId && i.user.id === message.author.id,
+							time: 60000,
+							componentType: 'BUTTON'
+						}),
+						m.awaitReactions({
+							filter: (r, u) => u.id === message.author.id,
+							time: 60000,
+							max: 1
+						})
+					]);
+				} catch {
+					await message.util!.reply(
+						await this.client.t('GENERIC.TIMED_OUT', message)
+					);
+					return;
+				}
+				if (result instanceof ButtonInteraction) {
+					await result.deferUpdate();
+					break;
+				} else {
+					const reaction = result.first()!;
+					if (reaction.emoji instanceof GuildEmoji) {
+						await message.util!.reply(
+							await this.client.t(
+								'COMMANDS.APPBUTTON_CREATE.INVALID_EMOJI',
+								message
+							)
+						);
+						continue;
+					}
+					reactions[app.id] = reaction.emoji.name!;
+				}
+			}
+		}
 		const { id: appbuttonId } = await channel.send({
 			content,
 			components: [
@@ -172,6 +239,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 							.setCustomId(`startAppButton|${app.id}`)
 							.setLabel(app.name)
 							.setStyle('PRIMARY')
+							.setEmoji(reactions[app.id])
 					)
 				)
 			]
