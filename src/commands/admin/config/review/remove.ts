@@ -25,7 +25,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 			permissionCheck: 'admin'
 		});
 	}
-	async exec(message: Message, { role }: { role?: Role }) {
+	async exec(message: Message, { role }: { role?: Role | number }) {
 		if (!role) {
 			await message.util!.send(
 				await this.client.t('ARGS.PLEASE_GIVE', message, { type: 'role' })
@@ -40,25 +40,26 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 				id: message.guild!.id
 			}
 		});
-		if (!guildEntry.reviewroles.includes(role.id)) {
+		const roleId = role instanceof Role ? role.id : role.toString();
+		if (!guildEntry.reviewroles.includes(roleId)) {
 			await message.util!.send(
 				await this.client.t('CONFIG.REVIEW_ROLE_NOT_ADDED', message)
 			);
 			return;
 		}
-		guildEntry.reviewroles.splice(guildEntry.reviewroles.indexOf(role.id), 1);
+		guildEntry.reviewroles.splice(guildEntry.reviewroles.indexOf(roleId), 1);
 		guildEntry.changed('reviewroles', true);
 		await guildEntry.save();
 		await message.util!.send(
 			await this.client.t('CONFIG.REVIEW_ROLE_REMOVED', message, {
-				roleID: role.id
+				roleID: roleId
 			})
 		);
 		await this.client.util.logEvent(
 			message.guild!.id,
 			message.author,
 			LogEvent.REVIEW_ROLE_REMOVE,
-			{ roleID: role.id }
+			{ roleID: roleId }
 		);
 	}
 }
