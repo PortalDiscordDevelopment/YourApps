@@ -3,6 +3,7 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { Guild } from '@lib/models';
 import { Role } from 'discord.js';
 import { LogEvent } from '@lib/ext/Util';
+import { Argument } from 'discord-akairo';
 
 export default class ConfigReviewRemoveCommand extends BotCommand {
 	public constructor() {
@@ -18,7 +19,7 @@ export default class ConfigReviewRemoveCommand extends BotCommand {
 			args: [
 				{
 					id: 'role',
-					type: 'role'
+					type: Argument.union('role', 'number')
 				}
 			],
 			channel: 'guild',
