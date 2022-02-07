@@ -61,7 +61,16 @@ export default class ConfigCommand extends BotCommand {
 			);
 			return;
 		}
-                const roleFmt = async (rs) => rs.map(r => await message.guild.roles.fetch(r) ? `<@&${r}>` : `\`${r} (deleted)\``).join(', ');
+		const roleFmt = async (rs: Array<string>) =>
+			(
+				await Promise.all(
+					rs.map(async r =>
+						(await message.guild.roles.fetch(r))
+							? `<@&${r}>`
+							: `\`${r} (deleted)\``
+					)
+				)
+			).join(', ');
 		await message.util!.send({
 			embeds: [
 				this.client.util
