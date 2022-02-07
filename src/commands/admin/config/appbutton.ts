@@ -9,12 +9,16 @@ export default class ConfigAppbuttonCommand extends BotCommand {
 		super('config-appbutton', {
 			aliases: ['config-appbutton'],
 			description: {
-				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_BLACKLIST'),
+				content: () => this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_APPBUTTON'),
 				usage: 'config appbutton',
 				examples: ['config appbutton']
 			},
 			channel: 'guild',
-			children: ['config-appbutton-create', 'config-appbutton-delete'],
+			children: [
+				'config-appbutton-create',
+				'config-appbutton-delete',
+				'config-appbutton-edit'
+			],
 			category: 'admin',
 			permissionCheck: 'admin'
 		});
@@ -85,11 +89,9 @@ export default class ConfigAppbuttonCommand extends BotCommand {
 						combinedAppbuttons
 							.map(
 								ab =>
-									`${ab.message}: ${ab.apps.join(
-										', '
-									)} ([message link](https://discord.com/channels/${ab.guild}/${
+									`[${ab.message}](https://discord.com/channels/${ab.guild}/${
 										ab.channel
-									}/${ab.message}))`
+									}/${ab.message}): ${ab.apps.map(a => `\`${a}\``).join(', ')}`
 							)
 							.join('\n')
 					)

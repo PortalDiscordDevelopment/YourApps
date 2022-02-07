@@ -243,9 +243,13 @@ export default class ConfigAppbuttonEditCommand extends BotCommand {
 						)
 					]
 				});
-				await message.util!.send(
-					await this.client.t('COMMANDS.APPBUTTON_EDIT.APPS_SUCCESS', message)
-				);
+				await message.util!.send({
+					content: await this.client.t(
+						'COMMANDS.APPBUTTON_EDIT.APPS_SUCCESS',
+						message
+					),
+					components: []
+				});
 				break;
 			}
 			default:

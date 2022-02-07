@@ -184,5 +184,8 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				message: appbuttonId
 			});
 		}
+		await message.util!.send(
+			await this.client.t('COMMANDS.APPBUTTON_CREATE.SUCCESS', message)
+		);
 	}
 }
