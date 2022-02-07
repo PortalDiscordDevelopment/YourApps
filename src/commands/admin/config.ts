@@ -61,6 +61,7 @@ export default class ConfigCommand extends BotCommand {
 			);
 			return;
 		}
+                const roleFmt = async (rs) => rs.map(r => await message.guild.roles.fetch(r) ? `<@&${r}>` : `\`${r} (deleted)\``).join(', ');
 		await message.util!.send({
 			embeds: [
 				this.client.util
@@ -76,28 +77,28 @@ export default class ConfigCommand extends BotCommand {
 					.addField(
 						await this.client.t('CONFIG.REVIEW_ROLES', message),
 						guildEntry.reviewroles.length > 0
-							? guildEntry.reviewroles.map(r => `<@&${r}>`).join(', ')
+							? await roleFmt(guildEntry.reviewroles)
 							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
 						await this.client.t('CONFIG.ADMIN_ROLES', message),
 						guildEntry.adminroles.length > 0
-							? guildEntry.adminroles.map(r => `<@&${r}>`).join(', ')
+							? await roleFmt(guildEntry.adminroles)
 							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
 						await this.client.t('CONFIG.BLACKLIST_ROLES', message),
 						guildEntry.blacklistroles.length > 0
-							? guildEntry.blacklistroles.map(r => `<@&${r}>`).join(', ')
+							? await roleFmt(guildEntry.blacklistroles)
 							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
 					.addField(
 						await this.client.t('CONFIG.LOG_PING_ROLES', message),
 						guildEntry.logpings.length > 0
-							? guildEntry.logpings.map(r => `<@&${r}>`).join(', ')
+							? await roleFmt(guildEntry.logpings)
 							: await this.client.t('CONFIG.NONE_SET', message),
 						true
 					)
