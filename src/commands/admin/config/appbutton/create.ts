@@ -1,4 +1,5 @@
 import {
+	ButtonInteraction,
 	GuildEmoji,
 	Message,
 	MessageActionRow,
@@ -166,9 +167,6 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 		}
 		const reactions: Record<number, string> = {};
 		for (const [i, app] of Object.entries(selectedApps as App[])) {
-			const continueId = `continueEmojiCreateAppbutton|${i + 2}|${message.id}|${
-				message.editedTimestamp ?? message.createdTimestamp
-			}`;
 			const skipId = `skipEmojiCreateAppbutton|${i + 2}|${message.id}|${
 				message.editedTimestamp ?? message.createdTimestamp
 			}`;
@@ -183,11 +181,6 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				components: [
 					new MessageActionRow().addComponents(
 						new MessageButton()
-							.setCustomId(continueId)
-							.setEmoji('✅')
-							.setLabel(await this.client.t('GENERIC.CONTINUE', message))
-							.setStyle('SUCCESS'),
-						new MessageButton()
 							.setCustomId(skipId)
 							.setEmoji('❌')
 							.setLabel(await this.client.t('GENERIC.SKIP', message))
@@ -196,30 +189,23 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				]
 			});
 			for (;;) {
-				const i = await m.awaitMessageComponent({
-					filter: i =>
-						i.user.id === message.author.id &&
-						[continueId, skipId].includes(i.customId),
+				const messageCollector = m.awaitMessageComponent({
+					filter: i => i.user.id === message.author.id && skipId === i.customId,
 					componentType: 'BUTTON',
 					time: 60000
 				});
-				if (i.customId === skipId) {
-					await i.deferUpdate();
+				const reactionCollector = m.awaitReactions({
+					filter: (_, u) => u.id === message.author.id,
+					time: 60000,
+					max: 1
+				});
+				const result = await Promise.any([messageCollector, reactionCollector]);
+				if (result instanceof ButtonInteraction) {
+					await result.deferUpdate();
 					break;
 				}
-				const reactionCache = await m.fetch().then(mm => mm.reactions.cache);
-				if (reactionCache.size !== 1) {
-					await i.reply({
-						content: await this.client.t(
-							'COMMANDS.APPBUTTON_CREATE.NO_REACTION',
-							message
-						),
-						ephemeral: true
-					});
-					continue;
-				}
-				const result = reactionCache.first()!;
-				if (result.emoji instanceof GuildEmoji) {
+				const reaction = result.first()!;
+				if (reaction.emoji instanceof GuildEmoji) {
 					await message.util!.reply(
 						await this.client.t(
 							'COMMANDS.APPBUTTON_CREATE.INVALID_EMOJI',
@@ -228,8 +214,8 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 					);
 					continue;
 				}
-				reactions[app.id] = result.emoji.name!;
-				await result.remove().catch(() => undefined);
+				reactions[app.id] = reaction.emoji.name!;
+				await reaction.remove().catch(() => undefined);
 				break;
 			}
 		}
@@ -255,8 +241,12 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				message: appbuttonId
 			});
 		}
-		await message.util!.send(
-			await this.client.t('COMMANDS.APPBUTTON_CREATE.SUCCESS', message)
-		);
+		await message.util!.send({
+			content: await this.client.t(
+				'COMMANDS.APPBUTTON_CREATE.SUCCESS',
+				message
+			),
+			components: []
+		});
 	}
 }

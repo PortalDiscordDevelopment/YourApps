@@ -11,7 +11,8 @@
 			"runtimeExecutable": "yarn",
 			"runtimeArgs": ["start"],
 			"cwd": "${workspaceFolder}",
-			"console": "internalConsole"
+			"console": "internalConsole",
+			"runtimeVersion": "17"
 		}
 	]
 }
