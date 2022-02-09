@@ -20,7 +20,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 				content: () =>
 					this.client.t('COMMANDS.DESCRIPTIONS.CONFIG_CREATE_APPBUTTON'),
 				usage: 'config appbutton create <role>',
-				examples: ['config appbutton create']
+				examples: ['config appbutton create #roles']
 			},
 			category: 'admin',
 			args: [
