@@ -1,4 +1,6 @@
 import {
+	ButtonInteraction,
+	GuildEmoji,
 	Message,
 	MessageActionRow,
 	MessageButton,
@@ -231,6 +233,64 @@ export default class ConfigAppbuttonEditCommand extends BotCommand {
 					}
 					return;
 				}
+				const reactions: Record<number, string> = {};
+				for (const [i, app] of Object.entries(selectedApps as App[])) {
+					const skipId = `skipEmojiEditAppbutton|${i + 2}|${message.id}|${
+						message.editedTimestamp ?? message.createdTimestamp
+					}`;
+					const m = await message.util!.send({
+						content: await this.client.t(
+							'COMMANDS.APPBUTTON_CREATE.REACT',
+							message,
+							{
+								app: app.name
+							}
+						),
+						components: [
+							new MessageActionRow().addComponents(
+								new MessageButton()
+									.setCustomId(skipId)
+									.setEmoji('❌')
+									.setLabel(await this.client.t('GENERIC.SKIP', message))
+									.setStyle('DANGER')
+							)
+						]
+					});
+					for (;;) {
+						const messageCollector = m.awaitMessageComponent({
+							filter: i =>
+								i.user.id === message.author.id && skipId === i.customId,
+							componentType: 'BUTTON',
+							time: 60000
+						});
+						const reactionCollector = m.awaitReactions({
+							filter: (_, u) => u.id === message.author.id,
+							time: 60000,
+							max: 1
+						});
+						const result = await Promise.any([
+							messageCollector,
+							reactionCollector
+						]);
+						if (result instanceof ButtonInteraction) {
+							await result.deferUpdate();
+							break;
+						}
+						const reaction = result.first()!;
+						if (reaction.emoji instanceof GuildEmoji) {
+							await message.util!.reply(
+								await this.client.t(
+									'COMMANDS.APPBUTTON_CREATE.INVALID_EMOJI',
+									message
+								)
+							);
+							continue;
+						}
+						reactions[app.id] = reaction.emoji.name!;
+						await reaction.remove().catch(() => undefined);
+						break;
+					}
+				}
 				await m.edit({
 					components: [
 						new MessageActionRow().addComponents(
@@ -239,6 +299,7 @@ export default class ConfigAppbuttonEditCommand extends BotCommand {
 									.setCustomId(`startAppButton|${app.id}`)
 									.setLabel(app.name)
 									.setStyle('PRIMARY')
+									.setEmoji(reactions[app.id])
 							)
 						)
 					]
