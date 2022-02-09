@@ -9,7 +9,7 @@ import { join } from 'path';
 import { Op, Sequelize } from 'sequelize';
 import { Util } from '@lib/ext/Util';
 import * as Models from '@lib/models';
-import { Collection, Intents, Message } from 'discord.js';
+import { Collection, Intents, Interaction, Message } from 'discord.js';
 import { Snowflake } from 'discord.js';
 import { TextChannel } from 'discord.js';
 import i18n, { TOptions } from 'i18next';
@@ -41,6 +41,9 @@ export interface BotConfig {
 	migrationToken: string;
 	migrationApiUrl: string;
 }
+
+export class InvalidArgError extends Error {}
+export type CustomArgType<T> = T | InvalidArgError;
 
 export class BotClient extends AkairoClient {
 	public config: BotConfig;
@@ -74,6 +77,7 @@ export class BotClient extends AkairoClient {
 					Intents.FLAGS.GUILDS,
 					Intents.FLAGS.GUILD_MEMBERS,
 					Intents.FLAGS.GUILD_MESSAGES,
+					Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 					Intents.FLAGS.DIRECT_MESSAGES
 				]
 			}
@@ -160,6 +164,19 @@ export class BotClient extends AkairoClient {
 			}
 		);
 		this.commandHandler.resolver.addType(
+			'appbutton',
+			async (message: Message, phrase: string) => {
+				if (!phrase) return null;
+				const btns = await Models.AppButton.findAll({
+					where: {
+						message: phrase
+					}
+				});
+				if (btns.length < 1) return new InvalidArgError();
+				else return btns;
+			}
+		);
+		this.commandHandler.resolver.addType(
 			'commandAliasImproved',
 			(message, phrase) => {
 				return this.commandHandler.resolver.type('commandAlias')(
@@ -221,15 +238,15 @@ export class BotClient extends AkairoClient {
 	// Just a wrapper for client.i18n.t that uses message to determine language (and more strict typing)
 	public async t(
 		key: RecursiveKeyOf<typeof import('../../languages/en-US/bot.json')>,
-		message?: Message,
+		message?: Message | Interaction,
 		options: TOptions = {}
 	) {
 		if (!message) {
 			return this.i18n.t(key, options);
 		}
-		const lng = await ModelUser.findByPk(message.author.id).then(
-			u => u?.language ?? undefined
-		);
+		const lng = await ModelUser.findByPk(
+			(message instanceof Message ? message.author : message.user).id
+		).then(u => u?.language ?? undefined);
 		return this.i18n.t(key, {
 			lng,
 			...options

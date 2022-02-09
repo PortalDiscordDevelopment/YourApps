@@ -278,7 +278,7 @@ export default class ReviewCommand extends BotCommand {
 					this.handler.modules.get('config-new') as ConfigNewCommand
 				).sendPromptSingle(message, {
 					ids,
-					allowSkip: false,
+					allowSkip: 'reason',
 					fieldName: await this.client.t('GENERIC.REASON', message),
 					description: await this.client.t('GENERIC.ENTER_REASON', message),
 					process: m => ({
@@ -337,7 +337,7 @@ export default class ReviewCommand extends BotCommand {
 					this.handler.modules.get('config-new') as ConfigNewCommand
 				).sendPromptSingle(message, {
 					ids,
-					allowSkip: false,
+					allowSkip: 'reason',
 					fieldName: await this.client.t('GENERIC.REASON', message),
 					description: await this.client.t('GENERIC.ENTER_REASON', message),
 					process: m => ({

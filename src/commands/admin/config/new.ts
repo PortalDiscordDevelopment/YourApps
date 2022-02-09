@@ -576,7 +576,7 @@ export default class ConfigNewCommand extends BotCommand {
 		endedReason: 'cancel' | 'continue';
 	}> {
 		const collected: T[] = [];
-		const newAppMessage = await message.reply({
+		const newAppMessage = await message.util!.reply({
 			embeds: [
 				this.client.util
 					.embed()
@@ -687,7 +687,7 @@ export default class ConfigNewCommand extends BotCommand {
 			title: string;
 			description: string;
 			fieldName: string;
-			allowSkip: boolean;
+			allowSkip: true | string;
 			process: (m: Message) =>
 				| {
 						success: true;
@@ -706,7 +706,7 @@ export default class ConfigNewCommand extends BotCommand {
 		cancelled: boolean;
 	}> {
 		let collected: T | null = null;
-		const newAppMessage = await message.reply({
+		const newAppMessage = await message.util!.reply({
 			embeds: [
 				this.client.util
 					.embed()
@@ -731,14 +731,13 @@ export default class ConfigNewCommand extends BotCommand {
 						.setStyle('DANGER')
 						.setEmoji('🗑')
 				])
-			]
+			],
+			content: null
 		});
-		const messageCollector = await newAppMessage.channel.createMessageCollector(
-			{
-				filter: m => m.author.id == message.author.id,
-				idle: 600_000
-			}
-		);
+		const messageCollector = newAppMessage.channel.createMessageCollector({
+			filter: m => m.author.id == message.author.id,
+			idle: 600_000
+		});
 		messageCollector.on('collect', async m => {
 			if (m.deletable) m.delete();
 			const validate = options.process(m);
