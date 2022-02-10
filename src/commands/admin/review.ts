@@ -34,7 +34,7 @@ export default class ReviewCommand extends BotCommand {
 			}
 		});
 		if (submissions.length < 1) {
-			await message.util!.send(await this.client.t('NO_SUBMISSIONS', message));
+			await message.util!.reply(await this.client.t('NO_SUBMISSIONS', message));
 			return;
 		}
 		const positionsSubmitted = submissions.reduce((prev, cur) => {
@@ -57,7 +57,7 @@ export default class ReviewCommand extends BotCommand {
 				message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
-		const menu = await message.util!.send({
+		const menu = await message.util!.reply({
 			content: await this.client.t('GENERIC.CHOOSE_POS', message),
 			components: [
 				new MessageActionRow().addComponents(
@@ -101,7 +101,7 @@ export default class ReviewCommand extends BotCommand {
 					submission: s
 				}))
 		);
-		const menu2 = await message.util!.send({
+		const menu2 = await message.util!.reply({
 			content: await this.client.t('GENERIC.CHOOSE_SUB', message),
 			components: [
 				new MessageActionRow().addComponents(
@@ -162,7 +162,7 @@ export default class ReviewCommand extends BotCommand {
 				message.editedTimestamp ?? message.createdTimestamp
 			}`
 		};
-		const reviewMessage = await message.reply({
+		const reviewMessage = await message.util!.reply({
 			embeds: [
 				this.client.util
 					.embed()
