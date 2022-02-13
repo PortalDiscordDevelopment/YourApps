@@ -164,7 +164,8 @@
 			"CONFIG_CREATE_APPBUTTON": "Creates a new appbutton",
 			"CONFIG_APPBUTTON_DELETE": "Deletes an appbutton",
 			"CONFIG_APPBUTTON_EDIT": "Edits an already existing appbutton",
-			"CONFIG_APPBUTTON": "Lists all of the appbuttons set up for this server"
+			"CONFIG_APPBUTTON": "Lists all of the appbuttons set up for this server",
+			"QUESTIONS": "Lists the questions of an application"
 		},
 		"PING_MESSAGE": "Shard: {{shard}}\nDelay: {{delay}}ms\nAPI: {{api}}ms",
 		"PING_CALCULATING": "Calculating...",
@@ -204,7 +205,8 @@
 			"CONTENT_TITLE": "Edit appbutton message content",
 			"CONTENT_SUCCESS": "Successfully edited appbutton content.",
 			"APPS_SUCCESS": "Successfully edited appbutton applications."
-		}
+		},
+		"QUESTIONS_TITLE": "{{app}}'s questions"
 	},
 	"BLOCKED": {
 		"OWNER_ONLY": "You cannot run this command, as you are not an owner of the bot.",
