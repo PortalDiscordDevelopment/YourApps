@@ -119,7 +119,8 @@
 		"CHOOSE_PART": "Choose which application option to edit",
 		"IGNORING_SUBMISSION": "Not migrating a submitted application by <@{{user}}> because I could not find the position it is for.",
 		"NO_APPBUTTONS": "You have not created any appbuttons.",
-		"APPBUTTONS": "Created appbuttons for \"{{guild}}\""
+		"APPBUTTONS": "Created appbuttons for \"{{guild}}\"",
+		"PREVIOUS_VALUE": "Previous value"
 	},
 	"ARGS": {
 		"INVALID": "That is not a valid {{type}}!",

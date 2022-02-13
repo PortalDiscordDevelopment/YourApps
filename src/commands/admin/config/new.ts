@@ -558,6 +558,7 @@ export default class ConfigNewCommand extends BotCommand {
 			description: string;
 			fieldName: string;
 			allowZero: string | true;
+			previousValues?: T[];
 			process: (m: Message) =>
 				| {
 						success: true;
@@ -582,6 +583,16 @@ export default class ConfigNewCommand extends BotCommand {
 					.embed()
 					.setTitle(options.title)
 					.setDescription(options.description)
+					.addFields(
+						options.previousValues?.length
+							? [
+									{
+										name: await this.client.t('CONFIG.PREVIOUS_VALUE', message),
+										value: options.previousValues.map(v => `- ${v}`).join('\n')
+									}
+							  ]
+							: []
+					)
 					.addField(
 						options.fieldName,
 						await this.client.t('GENERIC.NONE_YET', message),
@@ -603,12 +614,10 @@ export default class ConfigNewCommand extends BotCommand {
 				])
 			]
 		});
-		const messageCollector = await newAppMessage.channel.createMessageCollector(
-			{
-				filter: m => m.author.id == message.author.id,
-				idle: 600_000
-			}
-		);
+		const messageCollector = newAppMessage.channel.createMessageCollector({
+			filter: m => m.author.id == message.author.id,
+			idle: 600_000
+		});
 		messageCollector.on('collect', async m => {
 			if (m.deletable) m.delete();
 			const validate = options.process(m);
@@ -623,18 +632,35 @@ export default class ConfigNewCommand extends BotCommand {
 					});
 				return;
 			}
-			await newAppMessage.edit({
-				embeds: [
-					newAppMessage.embeds[0].fields[0].value != 'None yet!'
-						? newAppMessage.embeds[0].setFields({
+			const fields = [];
+			if (options.previousValues?.length) {
+				fields.push(newAppMessage.embeds[0].fields[0]);
+				fields.push(
+					newAppMessage.embeds[0].fields[1].value != 'None yet!'
+						? {
 								name: options.fieldName,
-								value: `${newAppMessage.embeds[0].fields[0].value}\n- ${validate.processed.user}`
-						  })
-						: newAppMessage.embeds[0].setFields({
+								value: `${newAppMessage.embeds[0].fields[1].value}\n- ${validate.processed.user}`
+						  }
+						: {
 								name: options.fieldName,
 								value: `- ${validate.processed.user}`
-						  })
-				]
+						  }
+				);
+			} else {
+				fields.push(
+					newAppMessage.embeds[0].fields[0].value != 'None yet!'
+						? {
+								name: options.fieldName,
+								value: `${newAppMessage.embeds[0].fields[0].value}\n- ${validate.processed.user}`
+						  }
+						: {
+								name: options.fieldName,
+								value: `- ${validate.processed.user}`
+						  }
+				);
+			}
+			await newAppMessage.edit({
+				embeds: [newAppMessage.embeds[0].setFields(fields)]
 			});
 			collected.push(validate.processed.data);
 		});
@@ -700,6 +726,7 @@ export default class ConfigNewCommand extends BotCommand {
 						success: false;
 						error: string;
 				  };
+			previousValue?: T;
 		}
 	): Promise<{
 		result: T | null;
@@ -712,6 +739,16 @@ export default class ConfigNewCommand extends BotCommand {
 					.embed()
 					.setTitle(options.title)
 					.setDescription(options.description)
+					.addFields(
+						options.previousValue
+							? [
+									{
+										name: await this.client.t('CONFIG.PREVIOUS_VALUE', message),
+										value: `${options.previousValue}`
+									}
+							  ]
+							: []
+					)
 					.addField(
 						options.fieldName,
 						await this.client.t('GENERIC.NONE_YET', message),
@@ -752,13 +789,19 @@ export default class ConfigNewCommand extends BotCommand {
 					});
 				return;
 			}
+			const fields = [];
+			if (options.previousValue) {
+				fields.push({
+					name: await this.client.t('CONFIG.PREVIOUS_VALUE', message),
+					value: `${options.previousValue}`
+				});
+			}
+			fields.push({
+				name: options.fieldName,
+				value: validate.processed.user
+			});
 			await newAppMessage.edit({
-				embeds: [
-					newAppMessage.embeds[0].setFields({
-						name: options.fieldName,
-						value: validate.processed.user
-					})
-				]
+				embeds: [newAppMessage.embeds[0].setFields(fields)]
 			});
 			collected = validate.processed.data;
 		});

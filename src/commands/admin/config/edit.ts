@@ -3,6 +3,7 @@ import { BotCommand } from '@lib/ext/BotCommand';
 import { App } from '@lib/models';
 import ConfigNewCommand from './new';
 import { BotClient } from '@lib/ext/BotClient';
+import { AppQuestionType } from '@lib/models/types';
 
 interface Props {
 	[prop: string]: {
@@ -20,6 +21,7 @@ interface Props {
 					success: false;
 					error: string;
 			  };
+		get?: (app: App) => unknown;
 	};
 }
 
@@ -46,6 +48,21 @@ const props: Props = {
 			}
 		})
 	},
+	'Questions': {
+		skippable: 'questions',
+		multi: true,
+		process: (m: Message) => ({
+			success: true,
+			processed: {
+				user: m.content,
+				data: {
+					question: m.content,
+					type: AppQuestionType.STRING
+				}
+			}
+		}),
+		get: app => app.questions.map(q => q.question)
+	},
 	'Reward roles': {
 		skippable: true,
 		multi: true,
@@ -69,7 +86,8 @@ const props: Props = {
 						data: role.id
 					}
 				};
-		}
+		},
+		get: app => app.rewardroles.map(r => `<@&${r}>`)
 	},
 	'Required roles': {
 		skippable: true,
@@ -94,7 +112,8 @@ const props: Props = {
 						data: role.id
 					}
 				};
-		}
+		},
+		get: app => app.requiredroles.map(r => `<@&${r}>`)
 	},
 	'Remove roles': {
 		skippable: true,
@@ -119,7 +138,8 @@ const props: Props = {
 						data: role.id
 					}
 				};
-		}
+		},
+		get: app => app.removeroles.map(r => `<@&${r}>`)
 	},
 	'Custom command': {
 		skippable: true,
@@ -219,13 +239,13 @@ export default class EditCommand extends BotCommand {
 			content: await this.client.t('CONFIG.CHOOSE_PART', message),
 			components: [
 				new MessageActionRow().addComponents(
-					btns.slice(0, 2).map(b => b.setStyle('PRIMARY'))
+					btns.slice(0, 3).map(b => b.setStyle('PRIMARY'))
 				),
 				new MessageActionRow().addComponents(
-					btns.slice(2, 5).map(b => b.setStyle('SECONDARY'))
+					btns.slice(3, 6).map(b => b.setStyle('SECONDARY'))
 				),
 				new MessageActionRow().addComponents(
-					btns.slice(5).map(b => b.setStyle('SUCCESS'))
+					btns.slice(6).map(b => b.setStyle('SUCCESS'))
 				)
 			]
 		});
@@ -233,6 +253,7 @@ export default class EditCommand extends BotCommand {
 			componentType: 'BUTTON',
 			filter: i => i.user.id == message.author.id
 		});
+		await btnInteraction.deferUpdate();
 		const parsed = btnInteraction.customId.split('|');
 		const ids = {
 			continueButtonId: `chooseEditPartSave|${parsed[1]}|${parsed[2]}|${parsed[3]}`,
@@ -243,13 +264,18 @@ export default class EditCommand extends BotCommand {
 				ids,
 				title: `Change ${parsed[1]}`,
 				description: `Please set a ${parsed[1].toLowerCase()}${
-					props[parsed[1]].skippable
+					props[parsed[1]].skippable === true
 						? ' or press continue to delete the existing value.'
 						: ''
 				}`,
 				allowZero: props[parsed[1]].skippable as string,
 				fieldName: parsed[1],
-				process: props[parsed[1]].process
+				process: props[parsed[1]].process,
+				previousValues: props[parsed[1]].get
+					? // @ts-expect-error I hate this code it works but types are fucky
+					  props[parsed[1]].get(application)
+					: // @ts-expect-error Same as above because typescript doesn't have blocked ignores
+					  application[this.client.util.dbcase(parsed[1])]
 			});
 			if (response.endedReason == 'cancel') {
 				await message.util!.send(
@@ -264,13 +290,18 @@ export default class EditCommand extends BotCommand {
 				ids,
 				title: `Change ${parsed[1]}`,
 				description: `Please set a ${parsed[1].toLowerCase()}${
-					props[parsed[1]].skippable
+					props[parsed[1]].skippable === true
 						? ' or press continue to delete the existing value.'
 						: ''
 				}`,
 				allowSkip: props[parsed[1]].skippable,
 				fieldName: parsed[1],
-				process: props[parsed[1]].process
+				process: props[parsed[1]].process,
+				previousValue: props[parsed[1]].get
+					? // @ts-expect-error I hate this code it works but types are fucky
+					  props[parsed[1]].get(application)
+					: // @ts-expect-error Same as above because typescript doesn't have blocked ignores
+					  application[this.client.util.dbcase(parsed[1])]
 			});
 			if (response.cancelled) {
 				await message.util!.send(
@@ -282,7 +313,7 @@ export default class EditCommand extends BotCommand {
 			application[this.client.util.dbcase(parsed[1])] = response.result;
 		}
 		await application.save();
-		await message.channel.send(
+		await message.util!.send(
 			await this.client.t('CONFIG.SUCCESSFULLY_EDITED', message, {
 				app: application.name,
 				part: parsed[1].toLowerCase()
