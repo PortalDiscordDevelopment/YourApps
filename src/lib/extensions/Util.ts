@@ -99,6 +99,8 @@ export class Util extends ClientUtil {
 	 * Posts text to hastebin
 	 * @param content The text to post
 	 * @returns The url of the posted text
+	 * @author Tyman
+	 * @see https://github.com/NotEnoughUpdates/bush-bot
 	 */
 	public async haste(content: string) {
 		for (const url of this.hasteURLs) {
@@ -119,6 +121,8 @@ export class Util extends ClientUtil {
 	 *
 	 * * Embed Description Limit = 4096 characters
 	 * * Embed Field Limit = 1024 characters
+	 * @author IRONM00N
+	 * @see https://github.com/NotEnoughUpdates/bush-bot
 	 */
 	public async codeblock(
 		code: string,
