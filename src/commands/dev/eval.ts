@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { exec } from 'child_process';
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import {
 	ts,
 	Project,
@@ -72,17 +72,33 @@ export default class EvalCommand extends BotCommand {
 
 		const embed = this.client.util.embed();
 		args.code = args.code.replace(/[“”]/g, '"'); // Replace fancy quotes with normal ones
-		args.code = format(args.code, {
-			// Format input code with prettier
-			useTabs: false,
-			tabWidth: 4,
-			quoteProps: 'consistent',
-			singleQuote: true,
-			trailingComma: 'none',
-			endOfLine: 'lf',
-			arrowParens: 'avoid',
-			parser: 'typescript'
-		});
+		try {
+			args.code = format(args.code, {
+				// Format input code with prettier
+				useTabs: false,
+				tabWidth: 4,
+				quoteProps: 'consistent',
+				singleQuote: true,
+				trailingComma: 'none',
+				endOfLine: 'lf',
+				arrowParens: 'avoid',
+				parser: 'typescript'
+			});
+		} catch (e) {
+			if (e instanceof SyntaxError) {
+				await message.util!.reply({
+					embeds: [
+						await this.getEmbed(
+							message,
+							args.code,
+							args.depth,
+							result.err(new PrettierSyntaxError(e))
+						)
+					]
+				})
+				return
+			} else throw e;
+		}
 		const transpiledCode = this.transpileAsync(args.code); // Transpile the input code to javascript, and wrap it in an async function (that returns the last statement)
 
 		const me = message.member, // Define some aliases for the evaled code
@@ -95,54 +111,17 @@ export default class EvalCommand extends BotCommand {
 			roles = message.guild?.roles;
 		const output = await result.fromAsync(eval(transpiledCode)); // Eval transpiled code, awaiting the output if needed
 
-		let stringifiedOutput: string;
-		if (output.success && typeof output.value === 'string')
-			// Eval was successful, and the output is a string, so wrap it in quotes
-			stringifiedOutput = `'${output.value}'`;
-		else if (output.success)
-			// Eval was successful, but the output is not a string, so inspect it
-			stringifiedOutput = inspect(output.value, {
-				depth: args.depth,
-				getters: true,
-				showProxy: true,
-				showHidden: true
-			});
-		else if (output.error instanceof Error)
-			// Eval failed, and the error is an error, so get the stack (or message if stack doesn't exist for some reason)
-			stringifiedOutput = output.error.stack ?? output.error.message;
-		// Eval failed, and the error is not an error (for some reason), so inspect it
-		else
-			stringifiedOutput = inspect(output.error, {
-				depth: args.depth,
-				getters: true,
-				showProxy: true,
-				showHidden: true
-			});
-
-		embed.setTitle(`${output.success ? 'S' : 'Uns'}uccessfully evaluated code`);
-		embed.setAuthor({
-			name: message.author.tag,
-			iconURL: message.author.displayAvatarURL()
-		});
-		embed.addField(
-			'TypeScript code',
-			await this.client.util.codeblock(args.code, 1024, 'ts')
-		);
-		if (args.out)
-			embed.addField(
-				'Transpiled code',
-				await this.client.util.haste(transpiledCode)
-			); // Add the transpiled code to the embed if the --out flag was given
-		embed.addField(
-			`${output.success ? 'O' : 'Error o'}utput${
-				output.success || output.error instanceof Error
-					? ''
-					: ' (non-error output)' // Mention if the error is not an actual error
-			}`,
-			await this.client.util.codeblock(stringifiedOutput, 1024, 'js')
-		);
 		await message.reply({
-			embeds: [embed]
+			embeds: [
+				await this.getEmbed(
+					message,
+					args.code,
+					args.depth,
+					output,
+					transpiledCode,
+					args.out
+				)
+			]
 		});
 	}
 
@@ -180,5 +159,76 @@ export default class EvalCommand extends BotCommand {
 			// Transpile the modified code
 			...this.project.compilerOptions.get()
 		});
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	private async getEmbed(message: Message, originalCode: string, depth: number, output: result.Result<any, unknown>, transpiledCode?: string, showTranspiled?: boolean): Promise<MessageEmbed> {
+		const embed = this.client.util.embed();
+		embed.setTitle(`${output.success ? 'S' : 'Uns'}uccessfully evaluated code`);
+		embed.setAuthor({
+			name: message.author.tag,
+			iconURL: message.author.displayAvatarURL()
+		});
+		embed.addField(
+			'TypeScript code',
+			await this.client.util.codeblock(originalCode, 1024, 'ts')
+		);
+		if (showTranspiled && transpiledCode)
+			embed.addField(
+				'Transpiled code',
+				await this.client.util.haste(transpiledCode)
+			); // Add the transpiled code to the embed if the --out flag was given
+		embed.addField(
+			`${output.success ? 'O' : 'Error o'}utput${
+				output.success || output.error instanceof Error
+					? ''
+					: ' (non-error output)' // Mention if the error is not an actual error
+			}`,
+			await this.client.util.codeblock(
+				this.stringifyOutput(output, depth), 1024, 'js')
+		);
+		return embed
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	private stringifyOutput(output: result.Result<any, unknown>, depth: number): string {
+		let stringifiedOutput: string;
+		if (output.success && typeof output.value === 'string')
+			// Eval was successful, and the output is a string, so wrap it in quotes
+			stringifiedOutput = `'${output.value}'`;
+		else if (output.success)
+			// Eval was successful, but the output is not a string, so inspect it
+			stringifiedOutput = inspect(output.value, {
+				depth: depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
+			});
+		else if (output.error instanceof PrettierSyntaxError)
+			// Eval failed because of a syntax error while formatting, so show the error message with ansi stripped
+			// eslint-disable-next-line no-control-regex
+			stringifiedOutput = output.error.message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+		else if (output.error instanceof Error)
+			// Eval failed, and the error is an error, so get the stack (or message if stack doesn't exist for some reason)
+			stringifiedOutput = output.error.stack ?? output.error.message;
+		// Eval failed, and the error is not an error (for some reason), so inspect it
+		else
+			stringifiedOutput = inspect(output.error, {
+				depth: depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
+			});
+		return stringifiedOutput
+	}
+}
+
+/**
+ * A wrapper around SyntaxError to show that it came from prettier
+ */
+class PrettierSyntaxError extends SyntaxError {
+	public constructor(e: SyntaxError) {
+		super(e.message);
+		this.name = 'PrettierSyntaxError';
 	}
 }
