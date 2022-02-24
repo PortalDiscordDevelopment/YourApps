@@ -2,13 +2,28 @@
 import { exec } from 'child_process';
 import { Message } from 'discord.js';
 import { Util } from 'discord.js';
-import { ModuleKind, ScriptTarget, transpile } from 'typescript';
+import {
+	ts,
+	Project,
+	ExpressionStatement,
+	ArrowFunction,
+	CallExpression,
+	ParenthesizedExpression,
+	Block,
+	Writers
+} from 'ts-morph';
 import { inspect, promisify } from 'util';
 import { BotCommand } from '@lib/ext/BotCommand';
+import { join } from 'path';
 
 const sh = promisify(exec);
 
 export default class EvalCommand extends BotCommand {
+	private project = new Project({
+		tsConfigFilePath: join(__dirname, '../../..', 'tsconfig.json'),
+		skipAddingFilesFromTsConfig: true
+	});
+
 	public constructor() {
 		super('eval', {
 			aliases: ['eval', 'ev'],
@@ -26,13 +41,13 @@ export default class EvalCommand extends BotCommand {
 					default: 0
 				},
 				{
-					id: 'typescript',
-					match: 'flag',
-					flag: '--ts'
-				},
-				{
 					id: 'code',
 					match: 'rest'
+				},
+				{
+					id: 'async',
+					match: 'flag',
+					flag: '--async'
 				}
 			],
 			ownerOnly: true
@@ -44,7 +59,7 @@ export default class EvalCommand extends BotCommand {
 		args: {
 			code?: string;
 			depth: number;
-			typescript: boolean;
+			async: boolean;
 		}
 	) {
 		if (!args.code) {
@@ -53,108 +68,66 @@ export default class EvalCommand extends BotCommand {
 			);
 			return;
 		}
-		const code: { js?: string | null; ts?: string | null; lang?: 'js' | 'ts' } =
-			{};
+		let newCode: string;
 		const embed = this.client.util.embed();
 		args.code = args.code.replace(/[“”]/g, '"');
-		if (args.typescript) {
-			code.ts = args.code;
-			code.js = transpile(args.code, {
-				module: ModuleKind.CommonJS,
-				target: ScriptTarget.ES2020
-			});
-			code.lang = 'ts';
+		if (args.async) {
+			newCode = this.transpileAsync(args.code)			
 		} else {
-			code.ts = null;
-			code.js = args.code;
-			code.lang = 'js';
+			newCode = ts.transpile(args.code, {
+				...this.project.compilerOptions.get()
+			});
 		}
 
-		try {
-			let output;
-			const me = message.member,
-				member = message.member,
-				bot = this.client,
-				guild = message.guild,
-				channel = message.channel,
-				config = this.client.config,
-				members = message.guild?.members,
-				roles = message.guild?.roles;
+		const me = message.member,
+			member = message.member,
+			bot = this.client,
+			guild = message.guild,
+			channel = message.channel,
+			config = this.client.config,
+			members = message.guild?.members,
+			roles = message.guild?.roles;
+		const output = await eval(newCode); // Eval transpiled code, awaiting the output if needed
 
-			output = eval(code.js);
-			output = await output;
+		let stringifiedOutput: string
+		if (typeof output === 'string') stringifiedOutput = `'${output}'`;
+		else stringifiedOutput = inspect(output, {
+			depth: args.depth,
+			getters: true,
+			showProxy: true,
+			showHidden: true
+		});
 
-			if (typeof output !== 'string')
-				output = inspect(output, {
-					depth: args.depth || 0,
-					getters: true,
-					showProxy: true,
-					showHidden: true
-				});
+		await message.reply(await this.client.util.codeblock(stringifiedOutput, 2000, 'js'))
+	}
 
-			output = output.replace(
-				new RegExp(
-					this.client.token!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
-					'g'
-				),
-				'[token ommitted]'
-			);
+	public stringToEnum<T>(str: string, object: Record<string, unknown>): T {
+		const entries = Object.entries(object);
+		const entry = entries.find(e => e[0].toLowerCase() === str.toLowerCase());
+		return (entry?.[1] ?? null) as T;
+	}
 
-			const inputJS = Util.cleanCodeBlockContent(code.js);
-
-			embed.setTitle('Evaled code successfully').setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
-			});
-			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts!);
-				embed
-					.addField(
-						'📥 Input (typescript)',
-						await this.client.util.codeblock(inputTS, 1024, 'ts')
-					)
-					.addField(
-						'📥 Input (transpiled javascript)',
-						await this.client.util.codeblock(inputJS, 1024, 'js')
-					);
-			} else {
-				embed.addField(
-					'📥 Input',
-					await this.client.util.codeblock(inputJS, 1024, 'js')
-				);
-			}
-			embed.addField(
-				'📥 Output',
-				await this.client.util.codeblock(output, 1024, 'js')
-			);
-		} catch (e) {
-			const inputJS = Util.cleanCodeBlockContent(code.js);
-			embed.setTitle('Code was not able to be evaled.').setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
-			});
-			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts!);
-				embed
-					.addField(
-						'📥 Input (typescript)',
-						await this.client.util.codeblock(inputTS, 1024, 'ts')
-					)
-					.addField(
-						'📥 Input (transpiled javascript)',
-						await this.client.util.codeblock(inputJS, 1024, 'js')
-					);
-			} else {
-				embed.addField(
-					'📥 Input',
-					await this.client.util.codeblock(inputJS, 1024, 'js')
-				);
-			}
-			embed.addField(
-				'📥 Output',
-				await this.client.util.codeblock((e as Error).stack!, 1024, 'js')
-			);
+	public transpileAsync(code: string) {
+		code = `(async () => { ${code} })()`;
+		const sourceFile = this.project.createSourceFile('eval', code, {
+			scriptKind: ts.ScriptKind.TS,
+			overwrite: true
+		});
+		const iife = (
+			(
+				(
+					sourceFile.getStatements()[0] as ExpressionStatement
+				).getExpression() as CallExpression
+			).getExpression() as ParenthesizedExpression
+		).getExpression() as ArrowFunction;
+		const statements = (iife.getBody() as Block).getStatements();
+		const lastStatement = statements[statements.length - 1];
+		if (lastStatement.getKind() === ts.SyntaxKind.ExpressionStatement) {
+			iife.insertStatements(0, writer => Writers.returnStatement((lastStatement as ExpressionStatement).print())(writer))
+			lastStatement.remove();
 		}
-		await message.util!.send({ embeds: [embed] });
+		return ts.transpile(sourceFile.print(), {
+			...this.project.compilerOptions.get()
+		});
 	}
 }
