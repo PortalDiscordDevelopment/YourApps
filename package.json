@@ -32,6 +32,7 @@
 		"@lib/ext": "link:./dist/lib/extensions",
 		"@lib/i18n": "link:./dist/languages",
 		"@lib/models": "link:./dist/lib/models",
+		"@sapphire/result": "^1.0.0",
 		"common-tags": "^1.8.2",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
 		"discord.js": "^13.6.0",
@@ -40,7 +41,8 @@
 		"i18next-fs-backend": "^1.1.4",
 		"pg": "^8.7.3",
 		"pg-hstore": "^2.3.4",
-		"sequelize": "^6.16.2"
+		"sequelize": "^6.16.2",
+		"ts-morph": "^13.0.3"
 	},
 	"prettier": {
 		"useTabs": true,

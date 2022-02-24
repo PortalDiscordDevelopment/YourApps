@@ -10,8 +10,7 @@
 			"ESNext.Array",
 			"ESNext.AsyncIterable",
 			"ESNext.Intl",
-			"ESNext.Symbol",
-			"DOM"
+			"ESNext.Symbol"
 		],
 		"sourceMap": false,
 		"inlineSourceMap": true,

@@ -1,14 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { exec } from 'child_process';
 import { Message } from 'discord.js';
-import { Util } from 'discord.js';
-import { ModuleKind, ScriptTarget, transpile } from 'typescript';
+import {
+	ts,
+	Project,
+	ExpressionStatement,
+	ArrowFunction,
+	CallExpression,
+	ParenthesizedExpression,
+	Block,
+	Writers
+} from 'ts-morph';
 import { inspect, promisify } from 'util';
 import { BotCommand } from '@lib/ext/BotCommand';
+import { join } from 'path';
+import * as result from '@sapphire/result';
+import { format } from 'prettier';
 
 const sh = promisify(exec);
 
 export default class EvalCommand extends BotCommand {
+	private project = new Project({
+		tsConfigFilePath: join(__dirname, '../../..', 'tsconfig.json'),
+		skipAddingFilesFromTsConfig: true
+	});
+
 	public constructor() {
 		super('eval', {
 			aliases: ['eval', 'ev'],
@@ -26,13 +42,13 @@ export default class EvalCommand extends BotCommand {
 					default: 0
 				},
 				{
-					id: 'typescript',
-					match: 'flag',
-					flag: '--ts'
-				},
-				{
 					id: 'code',
 					match: 'rest'
+				},
+				{
+					id: 'out',
+					match: 'flag',
+					flag: '--out'
 				}
 			],
 			ownerOnly: true
@@ -44,7 +60,7 @@ export default class EvalCommand extends BotCommand {
 		args: {
 			code?: string;
 			depth: number;
-			typescript: boolean;
+			out: boolean;
 		}
 	) {
 		if (!args.code) {
@@ -53,108 +69,116 @@ export default class EvalCommand extends BotCommand {
 			);
 			return;
 		}
-		const code: { js?: string | null; ts?: string | null; lang?: 'js' | 'ts' } =
-			{};
+
 		const embed = this.client.util.embed();
-		args.code = args.code.replace(/[“”]/g, '"');
-		if (args.typescript) {
-			code.ts = args.code;
-			code.js = transpile(args.code, {
-				module: ModuleKind.CommonJS,
-				target: ScriptTarget.ES2020
+		args.code = args.code.replace(/[“”]/g, '"'); // Replace fancy quotes with normal ones
+		args.code = format(args.code, {
+			// Format input code with prettier
+			useTabs: false,
+			tabWidth: 4,
+			quoteProps: 'consistent',
+			singleQuote: true,
+			trailingComma: 'none',
+			endOfLine: 'lf',
+			arrowParens: 'avoid',
+			parser: 'typescript'
+		});
+		const transpiledCode = this.transpileAsync(args.code); // Transpile the input code to javascript, and wrap it in an async function (that returns the last statement)
+
+		const me = message.member, // Define some aliases for the evaled code
+			member = message.member,
+			bot = this.client,
+			guild = message.guild,
+			channel = message.channel,
+			config = this.client.config,
+			members = message.guild?.members,
+			roles = message.guild?.roles;
+		const output = await result.fromAsync(eval(transpiledCode)); // Eval transpiled code, awaiting the output if needed
+
+		let stringifiedOutput: string;
+		if (output.success && typeof output.value === 'string')
+			// Eval was successful, and the output is a string, so wrap it in quotes
+			stringifiedOutput = `'${output.value}'`;
+		else if (output.success)
+			// Eval was successful, but the output is not a string, so inspect it
+			stringifiedOutput = inspect(output.value, {
+				depth: args.depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
 			});
-			code.lang = 'ts';
-		} else {
-			code.ts = null;
-			code.js = args.code;
-			code.lang = 'js';
-		}
-
-		try {
-			let output;
-			const me = message.member,
-				member = message.member,
-				bot = this.client,
-				guild = message.guild,
-				channel = message.channel,
-				config = this.client.config,
-				members = message.guild?.members,
-				roles = message.guild?.roles;
-
-			output = eval(code.js);
-			output = await output;
-
-			if (typeof output !== 'string')
-				output = inspect(output, {
-					depth: args.depth || 0,
-					getters: true,
-					showProxy: true,
-					showHidden: true
-				});
-
-			output = output.replace(
-				new RegExp(
-					this.client.token!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
-					'g'
-				),
-				'[token ommitted]'
-			);
-
-			const inputJS = Util.cleanCodeBlockContent(code.js);
-
-			embed.setTitle('Evaled code successfully').setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
+		else if (output.error instanceof Error)
+			// Eval failed, and the error is an error, so get the stack (or message if stack doesn't exist for some reason)
+			stringifiedOutput = output.error.stack ?? output.error.message;
+		// Eval failed, and the error is not an error (for some reason), so inspect it
+		else
+			stringifiedOutput = inspect(output.error, {
+				depth: args.depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
 			});
-			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts!);
-				embed
-					.addField(
-						'📥 Input (typescript)',
-						await this.client.util.codeblock(inputTS, 1024, 'ts')
-					)
-					.addField(
-						'📥 Input (transpiled javascript)',
-						await this.client.util.codeblock(inputJS, 1024, 'js')
-					);
-			} else {
-				embed.addField(
-					'📥 Input',
-					await this.client.util.codeblock(inputJS, 1024, 'js')
-				);
-			}
+
+		embed.setTitle(`${output.success ? 'S' : 'Uns'}uccessfully evaluated code`);
+		embed.setAuthor({
+			name: message.author.tag,
+			iconURL: message.author.displayAvatarURL()
+		});
+		embed.addField(
+			'TypeScript code',
+			await this.client.util.codeblock(args.code, 1024, 'ts')
+		);
+		if (args.out)
 			embed.addField(
-				'📥 Output',
-				await this.client.util.codeblock(output, 1024, 'js')
-			);
-		} catch (e) {
-			const inputJS = Util.cleanCodeBlockContent(code.js);
-			embed.setTitle('Code was not able to be evaled.').setFooter({
-				text: message.author.tag,
-				iconURL: message.author.displayAvatarURL({ dynamic: true })
-			});
-			if (code.lang === 'ts') {
-				const inputTS = Util.cleanCodeBlockContent(code.ts!);
-				embed
-					.addField(
-						'📥 Input (typescript)',
-						await this.client.util.codeblock(inputTS, 1024, 'ts')
-					)
-					.addField(
-						'📥 Input (transpiled javascript)',
-						await this.client.util.codeblock(inputJS, 1024, 'js')
-					);
-			} else {
-				embed.addField(
-					'📥 Input',
-					await this.client.util.codeblock(inputJS, 1024, 'js')
-				);
-			}
-			embed.addField(
-				'📥 Output',
-				await this.client.util.codeblock((e as Error).stack!, 1024, 'js')
-			);
+				'Transpiled code',
+				await this.client.util.haste(transpiledCode)
+			); // Add the transpiled code to the embed if the --out flag was given
+		embed.addField(
+			`${output.success ? 'O' : 'Error o'}utput${
+				output.success || output.error instanceof Error
+					? ''
+					: ' (non-error output)' // Mention if the error is not an actual error
+			}`,
+			await this.client.util.codeblock(stringifiedOutput, 1024, 'js')
+		);
+		await message.reply({
+			embeds: [embed]
+		});
+	}
+
+	/**
+	 * Tranpiles typescript code to an async javascript function that returns the last statement
+	 * @param code The typescript code to transpile
+	 * @returns The transpiled javascript code, wrapped in an async function that returns the last statement
+	 */
+	private transpileAsync(code: string) {
+		code = `(async () => { ${code} })()`; // Wrap code in an async function
+		const sourceFile = this.project.createSourceFile('eval', code, {
+			// Load wrapped typescript code into a source file
+			scriptKind: ts.ScriptKind.TS,
+			overwrite: true
+		});
+		const iife = (
+			(
+				(
+					sourceFile.getStatements()[0] as ExpressionStatement
+				).getExpression() as CallExpression
+			).getExpression() as ParenthesizedExpression
+		).getExpression() as ArrowFunction; // Get the arrow function from the sourceFile
+		const statements = (iife.getBody() as Block).getStatements(); // Get all statements in the arrow function
+		const lastStatement = statements[statements.length - 1]; // Get the last statement in the arrow function
+		if (lastStatement.getKind() === ts.SyntaxKind.ExpressionStatement) {
+			// If it is an expression statement, make it return
+			iife.insertStatements(statements.length, writer =>
+				Writers.returnStatement((lastStatement as ExpressionStatement).print())(
+					writer
+				)
+			); // Insert the last stament except with return keyword into the arrow function
+			lastStatement.remove(); // Remove the original statement
 		}
-		await message.util!.send({ embeds: [embed] });
+		return ts.transpile(sourceFile.print(), {
+			// Transpile the modified code
+			...this.project.compilerOptions.get()
+		});
 	}
 }
