@@ -95,8 +95,8 @@ export default class EvalCommand extends BotCommand {
 							result.err(new PrettierSyntaxError(e))
 						)
 					]
-				})
-				return
+				});
+				return;
 			} else throw e;
 		}
 		const transpiledCode = this.transpileAsync(args.code); // Transpile the input code to javascript, and wrap it in an async function (that returns the last statement)
@@ -161,8 +161,15 @@ export default class EvalCommand extends BotCommand {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private async getEmbed(message: Message, originalCode: string, depth: number, output: result.Result<any, unknown>, transpiledCode?: string, showTranspiled?: boolean): Promise<MessageEmbed> {
+	private async getEmbed(
+		message: Message,
+		originalCode: string,
+		depth: number,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		output: result.Result<any, unknown>,
+		transpiledCode?: string,
+		showTranspiled?: boolean
+	): Promise<MessageEmbed> {
 		const embed = this.client.util.embed();
 		embed.setTitle(`${output.success ? 'S' : 'Uns'}uccessfully evaluated code`);
 		embed.setAuthor({
@@ -185,13 +192,19 @@ export default class EvalCommand extends BotCommand {
 					: ' (non-error output)' // Mention if the error is not an actual error
 			}`,
 			await this.client.util.codeblock(
-				this.stringifyOutput(output, depth), 1024, 'js')
+				this.stringifyOutput(output, depth),
+				1024,
+				'js'
+			)
 		);
-		return embed
+		return embed;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private stringifyOutput(output: result.Result<any, unknown>, depth: number): string {
+	private stringifyOutput(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		output: result.Result<any, unknown>,
+		depth: number
+	): string {
 		let stringifiedOutput: string;
 		if (output.success && typeof output.value === 'string')
 			// Eval was successful, and the output is a string, so wrap it in quotes
@@ -206,8 +219,11 @@ export default class EvalCommand extends BotCommand {
 			});
 		else if (output.error instanceof PrettierSyntaxError)
 			// Eval failed because of a syntax error while formatting, so show the error message with ansi stripped
-			// eslint-disable-next-line no-control-regex
-			stringifiedOutput = output.error.message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+			stringifiedOutput = output.error.message.replace(
+				// eslint-disable-next-line no-control-regex
+				/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+				''
+			);
 		else if (output.error instanceof Error)
 			// Eval failed, and the error is an error, so get the stack (or message if stack doesn't exist for some reason)
 			stringifiedOutput = output.error.stack ?? output.error.message;
@@ -219,7 +235,7 @@ export default class EvalCommand extends BotCommand {
 				showProxy: true,
 				showHidden: true
 			});
-		return stringifiedOutput
+		return stringifiedOutput;
 	}
 }
 
