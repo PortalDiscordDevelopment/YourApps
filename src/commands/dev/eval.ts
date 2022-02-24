@@ -155,10 +155,14 @@ export default class EvalCommand extends BotCommand {
 			); // Insert the last stament except with return keyword into the arrow function
 			lastStatement.remove(); // Remove the original statement
 		}
-		return ts.transpile(sourceFile.print(), {
-			// Transpile the modified code
-			...this.project.compilerOptions.get()
-		});
+		// Get all ImportDeclarations from the iife
+		const imports = iife.getStatements().filter(s => s.getKind() === ts.SyntaxKind.ImportDeclaration);
+		for (const importDeclaration of imports) {
+			sourceFile.insertStatements(0, writer => writer.write(importDeclaration.print())); // Add the ImportDeclaration to the outer sourceFile
+			importDeclaration.remove(); // Remove original ImportDeclaration
+		}
+		// Transpile the modified code
+		return ts.transpile(sourceFile.print(), this.project.compilerOptions.get());
 	}
 
 	private async getEmbed(
