@@ -44,6 +44,11 @@ export default class EvalCommand extends BotCommand {
 				{
 					id: 'code',
 					match: 'rest'
+				},
+				{
+					id: 'out',
+					match: 'flag',
+					flag: '--out'
 				}
 			],
 			ownerOnly: true
@@ -55,6 +60,7 @@ export default class EvalCommand extends BotCommand {
 		args: {
 			code?: string;
 			depth: number;
+			out: boolean;
 		}
 	) {
 		if (!args.code) {
@@ -63,11 +69,23 @@ export default class EvalCommand extends BotCommand {
 			);
 			return;
 		}
-		const embed = this.client.util.embed();
-		args.code = args.code.replace(/[“”]/g, '"');
-		const transpiledCode = this.transpileAsync(args.code);
 
-		const me = message.member,
+		const embed = this.client.util.embed();
+		args.code = args.code.replace(/[“”]/g, '"'); // Replace fancy quotes with normal ones
+		args.code = format(args.code, {
+			// Format input code with prettier
+			useTabs: false,
+			tabWidth: 4,
+			quoteProps: 'consistent',
+			singleQuote: true,
+			trailingComma: 'none',
+			endOfLine: 'lf',
+			arrowParens: 'avoid',
+			parser: 'typescript'
+		});
+		const transpiledCode = this.transpileAsync(args.code); // Transpile the input code to javascript, and wrap it in an async function (that returns the last statement)
+
+		const me = message.member, // Define some aliases for the evaled code
 			member = message.member,
 			bot = this.client,
 			guild = message.guild,
@@ -79,8 +97,10 @@ export default class EvalCommand extends BotCommand {
 
 		let stringifiedOutput: string;
 		if (output.success && typeof output.value === 'string')
+			// Eval was successful, and the output is a string, so wrap it in quotes
 			stringifiedOutput = `'${output.value}'`;
 		else if (output.success)
+			// Eval was successful, but the output is not a string, so inspect it
 			stringifiedOutput = inspect(output.value, {
 				depth: args.depth,
 				getters: true,
@@ -88,7 +108,9 @@ export default class EvalCommand extends BotCommand {
 				showHidden: true
 			});
 		else if (output.error instanceof Error)
+			// Eval failed, and the error is an error, so get the stack (or message if stack doesn't exist for some reason)
 			stringifiedOutput = output.error.stack ?? output.error.message;
+		// Eval failed, and the error is not an error (for some reason), so inspect it
 		else
 			stringifiedOutput = inspect(output.error, {
 				depth: args.depth,
@@ -104,27 +126,18 @@ export default class EvalCommand extends BotCommand {
 		});
 		embed.addField(
 			'TypeScript code',
-			await this.client.util.codeblock(
-				format(args.code, {
-					useTabs: true,
-					quoteProps: 'consistent',
-					singleQuote: true,
-					trailingComma: 'none',
-					endOfLine: 'lf',
-					arrowParens: 'avoid',
-					parser: 'typescript'
-				}),
-				1024,
-				'ts'
-			)
+			await this.client.util.codeblock(args.code, 1024, 'ts')
 		);
-		embed.addField(
-			'Transpiled code',
-			await this.client.util.haste(transpiledCode)
-		);
+		if (args.out)
+			embed.addField(
+				'Transpiled code',
+				await this.client.util.haste(transpiledCode)
+			); // Add the transpiled code to the embed if the --out flag was given
 		embed.addField(
 			`${output.success ? 'O' : 'Error o'}utput${
-				output.error instanceof Error ? '' : ' (non-error output)'
+				output.success || output.error instanceof Error
+					? ''
+					: ' (non-error output)' // Mention if the error is not an actual error
 			}`,
 			await this.client.util.codeblock(stringifiedOutput, 1024, 'js')
 		);
@@ -133,15 +146,15 @@ export default class EvalCommand extends BotCommand {
 		});
 	}
 
-	public stringToEnum<T>(str: string, object: Record<string, unknown>): T {
-		const entries = Object.entries(object);
-		const entry = entries.find(e => e[0].toLowerCase() === str.toLowerCase());
-		return (entry?.[1] ?? null) as T;
-	}
-
-	public transpileAsync(code: string) {
-		code = `(async () => { ${code} })()`;
+	/**
+	 * Tranpiles typescript code to an async javascript function that returns the last statement
+	 * @param code The typescript code to transpile
+	 * @returns The transpiled javascript code, wrapped in an async function that returns the last statement
+	 */
+	private transpileAsync(code: string) {
+		code = `(async () => { ${code} })()`; // Wrap code in an async function
 		const sourceFile = this.project.createSourceFile('eval', code, {
+			// Load wrapped typescript code into a source file
 			scriptKind: ts.ScriptKind.TS,
 			overwrite: true
 		});
@@ -151,18 +164,20 @@ export default class EvalCommand extends BotCommand {
 					sourceFile.getStatements()[0] as ExpressionStatement
 				).getExpression() as CallExpression
 			).getExpression() as ParenthesizedExpression
-		).getExpression() as ArrowFunction;
-		const statements = (iife.getBody() as Block).getStatements();
-		const lastStatement = statements[statements.length - 1];
+		).getExpression() as ArrowFunction; // Get the arrow function from the sourceFile
+		const statements = (iife.getBody() as Block).getStatements(); // Get all statements in the arrow function
+		const lastStatement = statements[statements.length - 1]; // Get the last statement in the arrow function
 		if (lastStatement.getKind() === ts.SyntaxKind.ExpressionStatement) {
+			// If it is an expression statement, make it return
 			iife.insertStatements(statements.length, writer =>
 				Writers.returnStatement((lastStatement as ExpressionStatement).print())(
 					writer
 				)
-			);
-			lastStatement.remove();
+			); // Insert the last stament except with return keyword into the arrow function
+			lastStatement.remove(); // Remove the original statement
 		}
 		return ts.transpile(sourceFile.print(), {
+			// Transpile the modified code
 			...this.project.compilerOptions.get()
 		});
 	}
