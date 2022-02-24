@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { exec } from 'child_process';
 import { Message } from 'discord.js';
-import { Util } from 'discord.js';
 import {
 	ts,
 	Project,
@@ -15,6 +14,8 @@ import {
 import { inspect, promisify } from 'util';
 import { BotCommand } from '@lib/ext/BotCommand';
 import { join } from 'path';
+import * as result from '@sapphire/result';
+import { format } from 'prettier';
 
 const sh = promisify(exec);
 
@@ -43,11 +44,6 @@ export default class EvalCommand extends BotCommand {
 				{
 					id: 'code',
 					match: 'rest'
-				},
-				{
-					id: 'async',
-					match: 'flag',
-					flag: '--async'
 				}
 			],
 			ownerOnly: true
@@ -59,7 +55,6 @@ export default class EvalCommand extends BotCommand {
 		args: {
 			code?: string;
 			depth: number;
-			async: boolean;
 		}
 	) {
 		if (!args.code) {
@@ -68,16 +63,9 @@ export default class EvalCommand extends BotCommand {
 			);
 			return;
 		}
-		let newCode: string;
 		const embed = this.client.util.embed();
 		args.code = args.code.replace(/[“”]/g, '"');
-		if (args.async) {
-			newCode = this.transpileAsync(args.code)			
-		} else {
-			newCode = ts.transpile(args.code, {
-				...this.project.compilerOptions.get()
-			});
-		}
+		const transpiledCode = this.transpileAsync(args.code);
 
 		const me = message.member,
 			member = message.member,
@@ -87,18 +75,62 @@ export default class EvalCommand extends BotCommand {
 			config = this.client.config,
 			members = message.guild?.members,
 			roles = message.guild?.roles;
-		const output = await eval(newCode); // Eval transpiled code, awaiting the output if needed
+		const output = await result.fromAsync(eval(transpiledCode)); // Eval transpiled code, awaiting the output if needed
 
-		let stringifiedOutput: string
-		if (typeof output === 'string') stringifiedOutput = `'${output}'`;
-		else stringifiedOutput = inspect(output, {
-			depth: args.depth,
-			getters: true,
-			showProxy: true,
-			showHidden: true
+		let stringifiedOutput: string;
+		if (output.success && typeof output.value === 'string')
+			stringifiedOutput = `'${output.value}'`;
+		else if (output.success)
+			stringifiedOutput = inspect(output.value, {
+				depth: args.depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
+			});
+		else if (output.error instanceof Error)
+			stringifiedOutput = output.error.stack ?? output.error.message;
+		else
+			stringifiedOutput = inspect(output.error, {
+				depth: args.depth,
+				getters: true,
+				showProxy: true,
+				showHidden: true
+			});
+
+		embed.setTitle(`${output.success ? 'S' : 'Uns'}uccessfully evaluated code`);
+		embed.setAuthor({
+			name: message.author.tag,
+			iconURL: message.author.displayAvatarURL()
 		});
-
-		await message.reply(await this.client.util.codeblock(stringifiedOutput, 2000, 'js'))
+		embed.addField(
+			'TypeScript code',
+			await this.client.util.codeblock(
+				format(args.code, {
+					useTabs: true,
+					quoteProps: 'consistent',
+					singleQuote: true,
+					trailingComma: 'none',
+					endOfLine: 'lf',
+					arrowParens: 'avoid',
+					parser: 'typescript'
+				}),
+				1024,
+				'ts'
+			)
+		);
+		embed.addField(
+			'Transpiled code',
+			await this.client.util.haste(transpiledCode)
+		);
+		embed.addField(
+			`${output.success ? 'O' : 'Error o'}utput${
+				output.error instanceof Error ? '' : ' (non-error output)'
+			}`,
+			await this.client.util.codeblock(stringifiedOutput, 1024, 'js')
+		);
+		await message.reply({
+			embeds: [embed]
+		});
 	}
 
 	public stringToEnum<T>(str: string, object: Record<string, unknown>): T {
@@ -123,7 +155,11 @@ export default class EvalCommand extends BotCommand {
 		const statements = (iife.getBody() as Block).getStatements();
 		const lastStatement = statements[statements.length - 1];
 		if (lastStatement.getKind() === ts.SyntaxKind.ExpressionStatement) {
-			iife.insertStatements(0, writer => Writers.returnStatement((lastStatement as ExpressionStatement).print())(writer))
+			iife.insertStatements(statements.length, writer =>
+				Writers.returnStatement((lastStatement as ExpressionStatement).print())(
+					writer
+				)
+			);
 			lastStatement.remove();
 		}
 		return ts.transpile(sourceFile.print(), {

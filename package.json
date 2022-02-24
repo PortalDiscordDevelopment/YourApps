@@ -32,6 +32,7 @@
 		"@lib/ext": "link:./dist/lib/extensions",
 		"@lib/i18n": "link:./dist/languages",
 		"@lib/models": "link:./dist/lib/models",
+		"@sapphire/result": "^1.0.0",
 		"common-tags": "^1.8.2",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
 		"discord.js": "^13.6.0",
