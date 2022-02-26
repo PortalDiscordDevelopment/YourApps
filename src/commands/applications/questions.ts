@@ -16,7 +16,8 @@ export default class QuestionsCommand extends BotCommand {
 			args: [
 				{
 					id: 'application',
-					type: 'application'
+					type: 'application',
+					match: 'rest'
 				}
 			]
 		});
