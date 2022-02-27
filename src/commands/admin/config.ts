@@ -65,7 +65,7 @@ export default class ConfigCommand extends BotCommand {
 			(
 				await Promise.all(
 					rs.map(async r =>
-						(await message.guild.roles.fetch(r))
+						(await message.guild!.roles.fetch(r))
 							? `<@&${r}>`
 							: `\`${r} (deleted)\``
 					)
