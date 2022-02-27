@@ -100,7 +100,7 @@ export default class ConfigAppbuttonCreateCommand extends BotCommand {
 							apps.map(a => ({
 								label: a.name,
 								value: a.id.toString(),
-								description: a.description ?? undefined
+								description: (a.description.length <= 100 ? a.description : a.description.slice(0,97)+"...") ?? undefined
 							}))
 						)
 						.setMaxValues(apps.length >= 5 ? 5 : apps.length)
