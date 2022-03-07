@@ -154,7 +154,8 @@ export default class ConfigLogpingCommand extends BotCommand {
 			}
 			const [app, created] = await App.findOrBuild({
 				where: {
-					name: position.name
+					name: position.name,
+					guild: message.guild!.id
 				},
 				defaults: {
 					name: data.name,
