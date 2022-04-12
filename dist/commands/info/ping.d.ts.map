@@ -1,1 +1,0 @@
-{"version":3,"file":"ping.d.ts","sourceRoot":"","sources":["../../../src/commands/info/ping.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,UAAU,EAAE,MAAM,sBAAsB,CAAC;AAClD,OAAO,KAAK,EAAE,kBAAkB,EAAW,MAAM,YAAY,CAAC;AAG9D,qBASa,WAAY,SAAQ,UAAU;IACxB,YAAY,CAAC,WAAW,EAAE,kBAAkB;CAS9D"}
