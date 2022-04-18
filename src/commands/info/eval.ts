@@ -7,18 +7,22 @@ import type { CommandInteraction } from 'discord.js';
 	name: 'eval',
 	aliases: ['eval'],
 	description: 'Evaluates arbitrary JavaScript code',
-	preconditions: ["DevOnly"],
-	slashOptions: { options: [{
-		name: 'code',
-		description: 'The code to evaluate',
-		type: 'STRING',
-		required: true
-	}] }
+	preconditions: ['DevOnly'],
+	slashOptions: {
+		options: [
+			{
+				name: 'code',
+				description: 'The code to evaluate',
+				type: 'STRING',
+				required: true
+			}
+		]
+	}
 })
 export class PingCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply();
-		console.log(await eval(this.parseArgs<{code: string}>(interaction).code));
-		await interaction.editReply("ok")
+		console.log(await eval(this.parseArgs<{ code: string }>(interaction).code));
+		await interaction.editReply('ok');
 	}
 }

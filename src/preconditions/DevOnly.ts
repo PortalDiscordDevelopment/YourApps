@@ -4,11 +4,11 @@ import * as config from '../options/config';
 
 export class DevOnlyPrecondition extends Precondition {
 	public override async messageRun(message: Message) {
-		return this.run(message.author)
+		return this.run(message.author);
 	}
 
 	public override async chatInputRun(interaction: CommandInteraction) {
-		return this.run(interaction.user)
+		return this.run(interaction.user);
 	}
 
 	private run(user: User) {
@@ -16,13 +16,13 @@ export class DevOnlyPrecondition extends Precondition {
 			? this.ok()
 			: this.error({
 					identifier: 'ownerOnly',
-					message: `Only the developer(s) of this bot can use this command.`,
-			  })
+					message: `Only the developer(s) of this bot can use this command.`
+			  });
 	}
 }
 
 declare module '@sapphire/framework' {
 	interface Preconditions {
-		DevOnly: never
+		DevOnly: never;
 	}
 }

@@ -7,3 +7,10 @@ export const slashHints: Record<string, `${bigint}`> = {
 	ping: '963931177364906044',
 	info: '963931178182799380'
 };
+export const database = {
+	username: 'example username',
+	password: 'example password',
+	host: '127.0.0.1',
+	port: 5432
+};
+export const defaultPrefix = '-';
