@@ -1,6 +1,5 @@
 // * Load sapphire plugins
 import '@sapphire/plugin-logger/register'; // Load logger
-import '@sapphire/plugin-i18next/register'; // Load i18next
 
 import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { Sequelize } from 'sequelize';
@@ -39,6 +38,7 @@ export class BotClient extends SapphireClient {
 		Models.User.initModel(this.database);
 		container.database = this.database;
 		container.i18n = this.i18n;
+		container.t = this.t.bind(this);
 	}
 
 	public async initialize() {
@@ -50,11 +50,14 @@ export class BotClient extends SapphireClient {
 		const languages = await fs.readdir(
 			join(__dirname, '..', '..', 'src', 'languages')
 		);
+		const namespaces = await fs.readdir(
+			join(__dirname, '..', '..', 'src', 'languages', config.defaultLanguage)
+		);
 		await this.i18n.use(I18nBackend).init({
 			supportedLngs: languages,
-			fallbackLng: languages[0],
-			ns: ['bot'],
-			fallbackNS: 'bot',
+			fallbackLng: config.defaultLanguage,
+			ns: namespaces,
+			fallbackNS: namespaces[0],
 			interpolation: {
 				escapeValue: false
 			},
@@ -78,8 +81,10 @@ export class BotClient extends SapphireClient {
 					'{{ns}}.missing.json'
 				)
 			},
-			preload: languages
+			preload: languages,
+			debug: true
 		});
+		this.logger.info('[Init] Finished initializing!');
 	}
 
 	public async start() {
@@ -93,9 +98,10 @@ export class BotClient extends SapphireClient {
 		options: Record<string, unknown>
 	): Promise<string> {
 		const user = await Models.User.findByPk(interaction.user.id);
-		if (user) {
-		}
-		return '';
+		return this.i18n.t(key, {
+			lng: this.i18n.languages.includes(user?.language ?? interaction.locale) ? user?.language ?? interaction.locale : this.i18n.languages[0],
+			...options
+		})
 	}
 }
 

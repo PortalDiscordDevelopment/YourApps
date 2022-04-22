@@ -11,6 +11,7 @@ import type {
 	Snowflake
 } from 'discord.js';
 import * as config from '../options/config';
+import type { BotClient } from './BotClient';
 import { Utils } from './Utils';
 
 export class BotCommand extends Command {
@@ -45,7 +46,9 @@ export class BotCommand extends Command {
 		}
 	}
 
-	parseArgs = Utils.parseInteractionArgs;
+	protected parseArgs = Utils.parseInteractionArgs;
+	protected t = this.container.t.bind(this.container.client);
+	protected client = this.container.client as BotClient;
 }
 
 interface SlashCommandOptions {

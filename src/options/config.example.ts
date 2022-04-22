@@ -14,3 +14,4 @@ export const database = {
 	port: 5432
 };
 export const defaultPrefix = '-';
+export const defaultLanguage = 'en-US';
