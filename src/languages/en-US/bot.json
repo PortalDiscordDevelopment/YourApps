@@ -124,7 +124,7 @@
 	},
 	"ARGS": {
 		"INVALID": "That is not a valid {{type}}!",
-		"PLEASE_GIVE": "Please supply a {{type}}.",
+		"PLEASE_GIVE": "Please supply a(n) {{type}}.",
 		"PLEASE_GIVE_VALID": "That is not a valid {{type}}."
 	},
 	"COMMANDS": {
