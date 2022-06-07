@@ -1,3 +1,3 @@
 {
-    "response": "Shard: 0\nDelay: {{delay|}ms\nGateway: {{gateway}}ms"
+	"response": "Shard: 0\nDelay: {{delay}}ms\nGateway: {{gateway}}ms"
 }

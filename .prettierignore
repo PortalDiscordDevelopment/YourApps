@@ -1,3 +1,4 @@
 dist
 .pnp.*
 .yarn/sdks
+.yarn/plugins

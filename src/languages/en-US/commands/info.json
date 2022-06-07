@@ -1,0 +1,10 @@
+{
+	"ping": {
+		"title": "Ping",
+		"body": "Response delay: {{delay}}ms\nGateway latency: {{gateway}}ms"
+	},
+	"cache": {
+		"title": "Cache",
+		"body": "Servers: {{servers}}\nUsers: {{users}}"
+	}
+}

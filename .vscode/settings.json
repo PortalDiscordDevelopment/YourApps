@@ -6,7 +6,5 @@
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-	"i18n-ally.localesPaths": [
-		"src/languages"
-	]
+	"i18n-ally.localesPaths": ["src/languages"]
 }

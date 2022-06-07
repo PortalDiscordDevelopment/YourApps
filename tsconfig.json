@@ -1,6 +1,6 @@
 {
 	"extends": "@sapphire/ts-config/extra-strict",
-	"include": ["src/**/*", "src/*"],
+	"include": ["src/**/*.ts", "src/**/*.json", "src/*.ts"],
 	"exclude": ["src/options/config.example.ts"],
 	"compilerOptions": {
 		"outDir": "dist",
@@ -8,6 +8,7 @@
 		"declarationMap": false,
 		"sourceMap": false,
 		"inlineSourceMap": true,
-		"removeComments": true
+		"removeComments": true,
+		"skipLibCheck": true
 	}
 }

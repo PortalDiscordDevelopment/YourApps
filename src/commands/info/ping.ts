@@ -14,9 +14,11 @@ export class PingCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply();
 		const reply = (await interaction.fetchReply()) as Message;
-		await interaction.editReply(await this.t(interaction, 'commands/ping:response', {
-			delay: reply.createdTimestamp - interaction.createdTimestamp,
-			gateway: this.client.ws.ping
-		}));
+		await interaction.editReply(
+			await this.t(interaction, {
+				delay: reply.createdTimestamp - interaction.createdTimestamp,
+				gateway: this.client.ws.ping
+			})
+		);
 	}
 }

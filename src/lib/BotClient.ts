@@ -1,25 +1,34 @@
 // * Load sapphire plugins
 import '@sapphire/plugin-logger/register'; // Load logger
+import '@sapphire/plugin-i18next/register'; // Load i18n
 
 import { LogLevel, SapphireClient } from '@sapphire/framework';
 import { Sequelize } from 'sequelize';
 import * as config from '../options/config';
 import * as Models from './models';
 import { container } from '@sapphire/pieces';
-import type { CommandInteraction } from 'discord.js';
-import i18n from 'i18next';
-import I18nBackend from 'i18next-fs-backend';
-import { join } from 'path';
-import { promises as fs } from 'fs';
+import { resolveKey } from '@sapphire/plugin-i18next';
 
 export class BotClient extends SapphireClient {
 	public database: Sequelize;
-	public i18n: typeof i18n;
 
 	public constructor() {
 		super({
 			intents: ['GUILDS', 'GUILD_MESSAGES'],
-			logger: { level: LogLevel.Debug }
+			logger: { level: LogLevel.Debug },
+			i18n: {
+				fetchLanguage: async context => {
+					if (context.user) {
+						// If user available,
+						const modelUser = await Models.User.findByPk(context.user.id); // Fetch user from DB (if any)
+						const preferredLang =
+							modelUser?.language ?? context.interactionLocale; // Get the "preferred" language proritizing user selected language, or their selected discord language if not
+						if (preferredLang && container.i18n.languages.has(preferredLang))
+							return preferredLang; // If either of the above exist, use it
+						else return config.defaultLanguage; // If not, fallback to default
+					} else return config.defaultLanguage; // Use default if no user for some reason
+				}
+			}
 		});
 		this.database = new Sequelize({
 			database: 'yourapps',
@@ -30,15 +39,13 @@ export class BotClient extends SapphireClient {
 			port: config.database.port,
 			logging: sql => this.logger.trace(sql)
 		});
-		this.i18n = i18n;
 		Models.App.initModel(this.database);
 		Models.AppButton.initModel(this.database);
 		Models.Guild.initModel(this.database, config.defaultPrefix);
 		Models.Submission.initModel(this.database);
 		Models.User.initModel(this.database);
 		container.database = this.database;
-		container.i18n = this.i18n;
-		container.t = this.t.bind(this);
+		container.t = resolveKey.bind(this);
 	}
 
 	public async initialize() {
@@ -46,44 +53,6 @@ export class BotClient extends SapphireClient {
 		await this.database.authenticate();
 		this.logger.info('[Init] Logged in, syncing models...');
 		await this.database.sync({ alter: true });
-		this.logger.info('[Init] Synced models, initializing i18n...');
-		const languages = await fs.readdir(
-			join(__dirname, '..', '..', 'src', 'languages')
-		);
-		const namespaces = await fs.readdir(
-			join(__dirname, '..', '..', 'src', 'languages', config.defaultLanguage)
-		);
-		await this.i18n.use(I18nBackend).init({
-			supportedLngs: languages,
-			fallbackLng: config.defaultLanguage,
-			ns: namespaces,
-			fallbackNS: namespaces[0],
-			interpolation: {
-				escapeValue: false
-			},
-			backend: {
-				loadPath: join(
-					__dirname,
-					'..',
-					'..',
-					'src',
-					'languages',
-					'{{lng}}',
-					'{{ns}}.json'
-				),
-				addPath: join(
-					__dirname,
-					'..',
-					'..',
-					'src',
-					'languages',
-					'{{lng}}',
-					'{{ns}}.missing.json'
-				)
-			},
-			preload: languages,
-			debug: true
-		});
 		this.logger.info('[Init] Finished initializing!');
 	}
 
@@ -91,24 +60,11 @@ export class BotClient extends SapphireClient {
 		await this.initialize();
 		return this.login(config.token);
 	}
-
-	public async t(
-		interaction: CommandInteraction,
-		key: string,
-		options: Record<string, unknown>
-	): Promise<string> {
-		const user = await Models.User.findByPk(interaction.user.id);
-		return this.i18n.t(key, {
-			lng: this.i18n.languages.includes(user?.language ?? interaction.locale) ? user?.language ?? interaction.locale : this.i18n.languages[0],
-			...options
-		})
-	}
 }
 
 declare module '@sapphire/pieces' {
 	interface Container {
 		database: Sequelize;
-		i18n: typeof i18n;
-		t: typeof BotClient.prototype.t;
+		t: typeof resolveKey;
 	}
 }
