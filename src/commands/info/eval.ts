@@ -19,7 +19,7 @@ import type { CommandInteraction, Message } from 'discord.js';
 		]
 	}
 })
-export class PingCommand extends BotCommand {
+export class EvalCommand extends BotCommand {
 	override async messageRun(message: Message, args: Args) {
 		console.log(await eval(await args.pick('string')));
 		await message.reply('ok');

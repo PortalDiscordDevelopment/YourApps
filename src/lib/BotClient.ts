@@ -28,7 +28,9 @@ export class BotClient extends SapphireClient {
 						else return config.defaultLanguage; // If not, fallback to default
 					} else return config.defaultLanguage; // Use default if no user for some reason
 				}
-			}
+			},
+			defaultPrefix: config.defaultPrefix,
+			loadMessageCommandListeners: true
 		});
 		this.database = new Sequelize({
 			database: 'yourapps',
