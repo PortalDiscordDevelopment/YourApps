@@ -2,7 +2,9 @@ import { Precondition } from '@sapphire/framework';
 import type { CommandInteraction, Message, User } from 'discord.js';
 import * as config from '../options/config';
 
-const developers = Object.entries(config.users).filter(([, roles]) => roles.includes('developer')).map(([id]) => id)
+const developers = Object.entries(config.users)
+	.filter(([, roles]) => roles.includes('developer'))
+	.map(([id]) => id);
 
 export class DevOnlyPrecondition extends Precondition {
 	public override async messageRun(message: Message) {

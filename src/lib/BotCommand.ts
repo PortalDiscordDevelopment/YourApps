@@ -91,7 +91,7 @@ export class BotCommand extends Command {
 	protected async t(
 		interaction: CommandInteraction,
 		key: string,
-		options?: LocalizationOptions & { embedField: false }
+		options?: LocalizationOptions & { embedField?: false }
 	): Promise<string>;
 
 	/**
@@ -103,7 +103,7 @@ export class BotCommand extends Command {
 	protected async t(
 		interaction: CommandInteraction,
 		key: string,
-		options?: LocalizationOptions & { embedField: true }
+		options?: LocalizationOptions & { embedField?: true }
 	): Promise<EmbedFieldData>;
 
 	// Actual function implementation
