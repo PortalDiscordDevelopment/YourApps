@@ -23,12 +23,12 @@ export type LocalizationOptions = TOptions<{
 	 * If yes, the value for this key should have subkeys title and body.
 	 * @default false
 	 */
-	embedField?: boolean
+	embedField?: boolean;
 	/**
 	 * Whether to return inline for this embed field or not.
 	 * @default true
 	 */
-	inlineField?: boolean
+	inlineField?: boolean;
 
 	/**
 	 * A generic index type allowing for variables to be inputted to strings
@@ -111,32 +111,34 @@ export class BotCommand extends Command {
 		interaction: CommandInteraction,
 		keyOrOptions?: string | LocalizationOptions, // Options/undefined if first overload, key if second overload
 		options?: LocalizationOptions // Options/undefined if second overload
-	): Promise<string|EmbedFieldData> {
-		if (!options?.embedField && typeof keyOrOptions == 'string') { // Second overload, normal string lookup
+	): Promise<string | EmbedFieldData> {
+		if (!options?.embedField && typeof keyOrOptions == 'string') {
+			// Second overload, normal string lookup
 			return this.container.t(
 				interaction,
 				keyOrOptions.includes(':') // Add commands/${this.name} if absent
-				? keyOrOptions
-				: `commands/${this.name}:${keyOrOptions}`,
+					? keyOrOptions
+					: `commands/${this.name}:${keyOrOptions}`,
 				options ?? {}
 			);
-		} else if (!options?.embedField && typeof keyOrOptions != 'string') { // First overload, normal string lookup
+		} else if (!options?.embedField && typeof keyOrOptions != 'string') {
+			// First overload, normal string lookup
 			return this.container.t(
 				interaction,
 				`commands/${this.name}:response`,
 				keyOrOptions ?? {}
 			);
-		} else if (options?.embedField && typeof keyOrOptions == 'string') { // Second overload, embed field lookup
+		} else if (options?.embedField && typeof keyOrOptions == 'string') {
+			// Second overload, embed field lookup
 			const obj: {
 				title: string;
 				body: string;
 			} = await this.container.t(
 				interaction,
 				keyOrOptions.includes(':') // Add commands/${this.name} if absent
-				? keyOrOptions
-				: `commands/${this.name}:${keyOrOptions}`,
+					? keyOrOptions
+					: `commands/${this.name}:${keyOrOptions}`,
 				{
-					
 					...options,
 					returnObjects: true
 				}
@@ -145,9 +147,10 @@ export class BotCommand extends Command {
 				name: obj.title,
 				value: obj.body,
 				inline: options.inlineField ?? true
-			}
-		} else { // First overload, embed field lookup
-			const options = keyOrOptions as LocalizationOptions|undefined ?? {};
+			};
+		} else {
+			// First overload, embed field lookup
+			const options = (keyOrOptions as LocalizationOptions | undefined) ?? {};
 			const obj: {
 				title: string;
 				body: string;
@@ -155,7 +158,6 @@ export class BotCommand extends Command {
 				interaction,
 				`commands/${this.name}:response`,
 				{
-					
 					...options,
 					returnObjects: true
 				}
@@ -164,7 +166,7 @@ export class BotCommand extends Command {
 				name: obj.title,
 				value: obj.body,
 				inline: options.inlineField ?? true
-			}
+			};
 		}
 	}
 	protected client = this.container.client as BotClient;

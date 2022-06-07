@@ -2,6 +2,8 @@ import { Precondition } from '@sapphire/framework';
 import type { CommandInteraction, Message, User } from 'discord.js';
 import * as config from '../options/config';
 
+const developers = Object.entries(config.users).filter(([, roles]) => roles.includes('developer')).map(([id]) => id)
+
 export class DevOnlyPrecondition extends Precondition {
 	public override async messageRun(message: Message) {
 		return this.run(message.author);
@@ -12,7 +14,7 @@ export class DevOnlyPrecondition extends Precondition {
 	}
 
 	private run(user: User) {
-		return config.developers.includes(user.id)
+		return developers.includes(user.id)
 			? this.ok()
 			: this.error({
 					identifier: 'ownerOnly',

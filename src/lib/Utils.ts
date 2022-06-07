@@ -1,8 +1,11 @@
+import { container } from '@sapphire/pieces';
 import type {
 	CommandInteraction,
 	CommandInteractionOption,
-	CacheType
+	CacheType,
+	User
 } from 'discord.js';
+import * as config from '../options/config';
 
 export class Utils {
 	/**
@@ -117,5 +120,29 @@ export class Utils {
 		}
 
 		return options as unknown as T;
+	}
+
+	public static async fetchUsers(): Promise<{
+		developers: User[];
+		owners: User[];
+		contributors: User[];
+	}> {
+		const users = await Promise.all(
+			Object.entries(config.users).map(async ([id, roles]) => [
+				await container.client.users.fetch(id),
+				roles
+			]) as Promise<[User, 'developer' | 'owner' | 'contributor']>[]
+		);
+		return {
+			developers: users
+				.filter(([, roles]) => roles.includes('developer'))
+				.map(([u]) => u),
+			owners: users
+				.filter(([, roles]) => roles.includes('owner'))
+				.map(([u]) => u),
+			contributors: users
+				.filter(([, roles]) => roles.includes('contributor'))
+				.map(([u]) => u)
+		};
 	}
 }
