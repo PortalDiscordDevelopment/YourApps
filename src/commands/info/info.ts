@@ -21,14 +21,11 @@ export class InfoCommand extends BotCommand {
 				{
 					title: 'Bot information',
 					fields: [
-						{
-							name: await this.t(interaction, 'ping.title'),
-							value: await this.t(interaction, 'ping.body', {
-								delay: reply.createdTimestamp - interaction.createdTimestamp,
-								gateway: this.client.ws.ping
-							}),
-							inline: true
-						},
+						await this.t(interaction, 'ping', {
+							delay: reply.createdTimestamp - interaction.createdTimestamp,
+							gateway: this.client.ws.ping,
+							embedField: true
+						}),
 						{
 							name: 'Cache',
 							value: stripIndent`
