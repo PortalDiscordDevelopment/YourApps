@@ -45,7 +45,7 @@ export interface AppQuestion {
 
 export const AppQuestionTypeNice = {
 	[PositionQuestionType.STRING]: 'Long answer text',
-	[PositionQuestionType.NUMBER]: 'Number',
+	[PositionQuestionType.NUMBER]: 'Number'
 };
 
 export class Position extends BaseModel<
@@ -64,7 +64,7 @@ export class Position extends BaseModel<
 	declare closed: boolean;
 	declare cooldown: number | null;
 	declare minjointime: number | null;
-	
+
 	static initModel(sequelize: Sequelize) {
 		Position.init(
 			{

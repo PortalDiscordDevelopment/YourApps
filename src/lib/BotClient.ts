@@ -41,8 +41,8 @@ export class BotClient extends SapphireClient {
 			port: config.database.port,
 			logging: sql => this.logger.trace(sql)
 		});
-		Models.App.initModel(this.database);
-		Models.AppButton.initModel(this.database);
+		Models.Position.initModel(this.database);
+		Models.ApplyButton.initModel(this.database);
 		Models.Guild.initModel(this.database, config.defaultPrefix);
 		Models.Submission.initModel(this.database);
 		Models.User.initModel(this.database);

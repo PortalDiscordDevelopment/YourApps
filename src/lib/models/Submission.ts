@@ -53,7 +53,7 @@ export class Submission extends BaseModel<
 					type: DataTypes.INTEGER,
 					allowNull: false,
 					references: {
-						model: 'Apps'
+						model: 'Positions'
 					}
 				},
 				answers: {

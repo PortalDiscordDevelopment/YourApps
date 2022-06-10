@@ -50,7 +50,7 @@ export class ApplyButton extends BaseModel<
 				app: {
 					type: DataTypes.INTEGER,
 					allowNull: false,
-					references: { model: 'Apps' }
+					references: { model: 'Positions' }
 				}
 			},
 			{ sequelize }

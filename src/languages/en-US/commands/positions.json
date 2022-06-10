@@ -1,0 +1,4 @@
+{
+	"response_title": "Positions in \"{{guild}}\"",
+	"response_no_positions": "There are no positions in this server!"
+}
