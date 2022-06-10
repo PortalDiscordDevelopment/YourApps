@@ -2,7 +2,7 @@ import type { Snowflake } from 'discord.js';
 import { DataTypes, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 
-export interface AppModelAttributes {
+export interface PositionModelAttributes {
 	id: number;
 	name: string;
 	description: string;
@@ -17,7 +17,7 @@ export interface AppModelAttributes {
 	minjointime: number;
 }
 
-export interface AppModelCreationAttributes {
+export interface PositionModelCreationAttributes {
 	id?: number;
 	name: string;
 	description?: string;
@@ -32,23 +32,25 @@ export interface AppModelCreationAttributes {
 	minjointime?: number;
 }
 
-export const enum AppQuestionType { // TODO: Add more types (number, link, custom regex maybe)
-	STRING
+export const enum PositionQuestionType { // TODO: Add more types (number, link, custom regex maybe)
+	STRING = 'STRING',
+	NUMBER = 'NUMBER'
 }
 
 export interface AppQuestion {
 	// TODO: Add placeholder as and option maybe
 	question: string;
-	type: AppQuestionType;
+	type: PositionQuestionType;
 }
 
 export const AppQuestionTypeNice = {
-	[AppQuestionType.STRING]: 'Long answer text'
+	[PositionQuestionType.STRING]: 'Long answer text',
+	[PositionQuestionType.NUMBER]: 'Number',
 };
 
-export class App extends BaseModel<
-	AppModelAttributes,
-	AppModelCreationAttributes
+export class Position extends BaseModel<
+	PositionModelAttributes,
+	PositionModelCreationAttributes
 > {
 	declare id: number;
 	declare name: string;
@@ -62,8 +64,9 @@ export class App extends BaseModel<
 	declare closed: boolean;
 	declare cooldown: number | null;
 	declare minjointime: number | null;
+	
 	static initModel(sequelize: Sequelize) {
-		App.init(
+		Position.init(
 			{
 				id: {
 					type: DataTypes.INTEGER,

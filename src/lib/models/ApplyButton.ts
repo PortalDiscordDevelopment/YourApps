@@ -2,7 +2,7 @@ import type { Snowflake } from 'discord.js';
 import { DataTypes, Optional, Sequelize } from 'sequelize';
 import { BaseModel } from './BaseModel';
 
-export interface AppButtonModelAttributes {
+export interface ApplyButtonModelAttributes {
 	id: number;
 	message: Snowflake;
 	channel: Snowflake;
@@ -10,14 +10,14 @@ export interface AppButtonModelAttributes {
 	app: number;
 }
 
-export type AppButtonModelCreationAttributes = Optional<
-	AppButtonModelAttributes,
+export type ApplyButtonModelCreationAttributes = Optional<
+	ApplyButtonModelAttributes,
 	'id'
 >;
 
-export class AppButton extends BaseModel<
-	AppButtonModelAttributes,
-	AppButtonModelCreationAttributes
+export class ApplyButton extends BaseModel<
+	ApplyButtonModelAttributes,
+	ApplyButtonModelCreationAttributes
 > {
 	declare id: number;
 	declare message: Snowflake;
@@ -26,7 +26,7 @@ export class AppButton extends BaseModel<
 	declare app: number;
 
 	static initModel(sequelize: Sequelize) {
-		AppButton.init(
+		ApplyButton.init(
 			{
 				id: {
 					type: DataTypes.INTEGER,
