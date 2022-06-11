@@ -30,7 +30,9 @@
 		"start": "yarn build && yarn start:raw",
 		"start:raw": "node --enable-source-maps dist/index.js",
 		"build": "tsc",
+		"build:no-emit": "tsc --noEmit",
 		"format": "prettier --write .",
+		"format:check": "prettier --check .",
 		"dev": "yarn build && (yarn watch & yarn start:raw)",
 		"watch": "tsc --watch"
 	},
