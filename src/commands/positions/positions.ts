@@ -34,7 +34,7 @@ export class PositionsCommand extends BotCommand {
 										p =>
 											`- ${
 												p.closed ? Emojis.RED_CROSS : Emojis.GREEN_CHECKMARK
-											} \`${p.name}\``
+											} **${p.name}**`
 									)
 									.join('\n')
 							: await this.t(interaction, { context: 'no_positions' })

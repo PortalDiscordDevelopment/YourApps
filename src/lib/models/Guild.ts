@@ -4,7 +4,6 @@ import { BaseModel } from './BaseModel';
 
 export interface GuildModelAttributes {
 	id: string;
-	prefixes: string[];
 	logchannel: Snowflake;
 	archivechannel: Snowflake;
 	logpings: Snowflake[];
@@ -16,7 +15,6 @@ export interface GuildModelAttributes {
 
 export interface GuildModelCreationAttributes {
 	id: string;
-	prefixes?: string[];
 	logchannel?: Snowflake;
 	archivechannel?: Snowflake;
 	logpings?: Snowflake[];
@@ -31,7 +29,6 @@ export class Guild extends BaseModel<
 	GuildModelCreationAttributes
 > {
 	declare id: string;
-	declare prefixes: string[];
 	declare logchannel: Snowflake | null;
 	declare archivechannel: Snowflake | null;
 	declare logpings: Snowflake[];
@@ -40,18 +37,13 @@ export class Guild extends BaseModel<
 	declare blacklistroles: Snowflake[];
 	declare legacypremium: boolean;
 
-	static initModel(sequelize: Sequelize, defaultPrefix: string) {
+	static initModel(sequelize: Sequelize) {
 		Guild.init(
 			{
 				id: {
 					type: DataTypes.STRING,
 					primaryKey: true,
 					allowNull: false
-				},
-				prefixes: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					allowNull: false,
-					defaultValue: [defaultPrefix]
 				},
 				logchannel: {
 					type: DataTypes.STRING,
@@ -89,5 +81,12 @@ export class Guild extends BaseModel<
 			},
 			{ sequelize }
 		);
+	}
+
+	static async createIfNotExists(id: Snowflake, defaults?: GuildModelCreationAttributes) {
+		await Guild.findOrCreate({
+			where: { id },
+			defaults: { id, ...defaults }
+		})
 	}
 }

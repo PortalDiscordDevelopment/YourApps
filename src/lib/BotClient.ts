@@ -43,7 +43,7 @@ export class BotClient extends SapphireClient {
 		});
 		Models.Position.initModel(this.database);
 		Models.ApplyButton.initModel(this.database);
-		Models.Guild.initModel(this.database, config.defaultPrefix);
+		Models.Guild.initModel(this.database);
 		Models.Submission.initModel(this.database);
 		Models.User.initModel(this.database);
 		container.database = this.database;

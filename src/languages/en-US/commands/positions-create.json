@@ -1,0 +1,3 @@
+{
+	"response": "Successfully created a new position with name `{{name}}` and id `{{id}}`. This new position by default has no questions and is closed."
+}

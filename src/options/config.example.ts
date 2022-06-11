@@ -8,10 +8,12 @@ export const users: Record<string, ('developer' | 'owner' | 'contributor')[]> =
 		'428903502283014145': ['owner']
 	};
 export const slashHints: Record<string, `${bigint}`> = {
-	eval: '983461828136927343',
-	ping: '983461829302947851',
-	info: '983461830712262666',
-	positions: '984690647640449084'
+	eval: '985042010706698250',
+	ping: '985042011558121510',
+	info: '985042012954820648',
+	language: '985042013990817873',
+	positions: '985042097944006686',
+	'positions-create': '985042015039418418'
 };
 export const database = {
 	username: 'example username',
