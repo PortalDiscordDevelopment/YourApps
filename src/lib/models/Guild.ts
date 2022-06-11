@@ -83,10 +83,13 @@ export class Guild extends BaseModel<
 		);
 	}
 
-	static async createIfNotExists(id: Snowflake, defaults?: GuildModelCreationAttributes) {
+	static async createIfNotExists(
+		id: Snowflake,
+		defaults?: GuildModelCreationAttributes
+	) {
 		await Guild.findOrCreate({
 			where: { id },
 			defaults: { id, ...defaults }
-		})
+		});
 	}
 }

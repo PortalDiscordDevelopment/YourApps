@@ -5,7 +5,7 @@ import type { CommandInteraction } from 'discord.js';
 import { Position, Guild } from '../../lib/models';
 
 @ApplyOptions<CommandOptions>({
-	name: 'positions-create',
+	name: 'config-positions-create',
 	description: 'Creates a new position in the current server.',
 	preconditions: ['GuildOnly'],
 	slashOptions: {
@@ -23,7 +23,7 @@ export class PositionsCreateCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply();
 		const { name }: { name: string } = this.parseArgs(interaction);
-        await Guild.createIfNotExists(interaction.guildId!);
+		await Guild.createIfNotExists(interaction.guildId!);
 		const position = await Position.create({
 			name,
 			guild: interaction.guildId!,
