@@ -1,0 +1,5 @@
+{
+	"response": "The reward role <@&{{role}}> was removed from position **{{position}}**.",
+	"response_not_found": "The specified position with name **{{name}}** was not found.",
+	"response_not_in": "The role **{{role}}** is not in this position's {{type}} roles."
+}

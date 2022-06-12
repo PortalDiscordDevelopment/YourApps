@@ -10,28 +10,28 @@ import { Op } from 'sequelize';
 import { Position } from '../../lib/models';
 
 @ApplyOptions<CommandOptions>({
-	name: 'config-positions-roles-add',
+	name: 'config-positions-roles-remove',
 	description:
-		'Adds a role to the list of reward, remove, or required roles for a position',
+		'Removes a role to the list of reward, remove, or required roles for a position',
 	preconditions: [],
 	slashOptions: {
 		options: [
 			{
 				name: 'position',
-				description: 'The position to add the role to',
+				description: 'The position to remove the role from',
 				type: 'STRING',
 				autocomplete: true,
 				required: true
 			},
 			{
 				name: 'role',
-				description: 'The reward role to add',
+				description: 'The reward role to remove',
 				type: 'ROLE',
 				required: true
 			},
 			{
 				name: 'type',
-				description: 'The type of role to add',
+				description: 'The type of role to remove',
 				type: 'STRING',
 				choices: [
 					{
@@ -52,7 +52,7 @@ import { Position } from '../../lib/models';
 		]
 	}
 })
-export class ConfigPositionsRolesAddCommand extends BotCommand {
+export class ConfigPositionsRolesRemoveCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply();
 		const {
@@ -79,18 +79,18 @@ export class ConfigPositionsRolesAddCommand extends BotCommand {
 			);
 			return;
 		}
-		if (position[type].includes(role.id)) {
+		if (!position[type].includes(role.id)) {
 			await interaction.editReply(
 				await this.t(interaction, {
-					context: 'already_added',
+					context: 'not_in',
 					role: role.name,
 					type: type.substring(0, type.length - 5) // Removes "roles" (the last 5 chars) from the string
 				})
 			);
 			return;
 		}
-		position[type].push(role.id);
-		position.changed(type, true); // Mark field changed, as sequelize doesn't notice array changes for some reason
+
+		position[type] = position[type].filter(r => r != role.id);
 		await position.save();
 		await interaction.editReply(
 			await this.t(interaction, {
