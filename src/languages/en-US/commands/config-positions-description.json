@@ -1,0 +1,4 @@
+{
+	"response": "The description of the specified position with name **{{name}}** was successfully modified.",
+	"response_not_found": "The specified position with name **{{name}}** was not found."
+}
