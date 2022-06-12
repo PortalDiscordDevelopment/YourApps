@@ -10,6 +10,7 @@ export const users: Record<string, ('developer' | 'owner' | 'contributor')[]> =
 export const slashHints: Record<string, `${bigint}`> = {
 	'config-positions-create': '985047538073751583',
 	'config-positions-delete': '985052733050585108',
+	'config-positions-roles-add': '985364185133219900',
 	ping: '985047539717922857',
 	info: '985047540879728661',
 	language: '985047541966053436',

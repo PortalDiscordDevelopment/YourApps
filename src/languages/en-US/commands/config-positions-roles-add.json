@@ -1,0 +1,5 @@
+{
+	"response": "The reward role <@&{{role}}> was added to position **{{position}}**.",
+	"response_not_found": "The specified position with name **{{name}}** was not found.",
+	"response_already_added": "The role **{{role}}** is already added to this position's {{type}} roles."
+}

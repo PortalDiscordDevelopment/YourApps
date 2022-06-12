@@ -49,6 +49,7 @@ export class PositionsDeleteCommand extends BotCommand {
 		}
 	}
 
+	// Autocomplete positions based on a substring search
 	override async autocompleteRun(interaction: AutocompleteInteraction) {
 		const positions = await Position.findAll({
 			where: {
