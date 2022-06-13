@@ -1,0 +1,19 @@
+{
+	"embed_title": "Position details",
+	"field_titles": {
+		"name": "Name",
+		"description": "Description",
+		"question_count": "Question count",
+		"reward_roles": "Reward roles",
+		"required_roles": "Required roles",
+		"remove_roles": "Remove roles",
+		"custom_command": "Custom command",
+		"status": "Status",
+		"cooldown": "Cooldown",
+		"min_join_time": "Minimum join time"
+	},
+	"none_set": "None set",
+	"open": "Open",
+	"closed": "Closed",
+	"duration_minutes": "{{duration}} minute(s)"
+}

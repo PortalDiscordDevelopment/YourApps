@@ -7,5 +7,5 @@
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
 	"i18n-ally.localesPaths": ["src/languages"],
-	"cSpell.words": ["yourapps"]
+	"cSpell.words": ["removeroles", "requiredroles", "rewardroles", "yourapps"]
 }
