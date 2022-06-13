@@ -1,0 +1,7 @@
+{
+	"response_created": "The custom command for the specified position with name **{{position}}** was successfully created with the command `/{{command}}`.",
+	"response_changed": "The custom command for the specified position with name **{{position}}** was successfully changed from `/{{oldCommand}}` to `/{{newCommand}}`.",
+	"response_removed": "The custom command for the specified position with name **{{position}}** was successfully removed.",
+	"response_nothing_to_remove": "The specified position **{{position}}** has no existing custom command to remove.",
+	"response_failed": "The custom command `/{{command}}` was unable to be created, likely because the name was invalid for a slash command."
+}

@@ -109,7 +109,7 @@ export class Position extends BaseModel<
 					defaultValue: []
 				},
 				customcommand: {
-					type: DataTypes.STRING(16),
+					type: DataTypes.STRING,
 					allowNull: true
 				},
 				closed: {
