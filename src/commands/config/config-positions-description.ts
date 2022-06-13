@@ -18,12 +18,12 @@ import { Position } from '../../lib/models';
 				autocomplete: true,
 				required: true
 			},
-            {
-                name: 'description',
-                description: 'The new description of the position',
-                type: 'STRING',
-                required: true
-            }
+			{
+				name: 'description',
+				description: 'The new description of the position',
+				type: 'STRING',
+				required: true
+			}
 		]
 	}
 })
@@ -45,8 +45,7 @@ export class ConfigPositionsDescriptionCommand extends BotCommand {
 		});
 		if (!position) {
 			await interaction.editReply(
-				await this.t(interaction, {
-					context: 'position_not_found',
+				await this.t(interaction, 'errors:position_not_found', {
 					name: positionName
 				})
 			);

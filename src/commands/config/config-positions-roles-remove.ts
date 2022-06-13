@@ -72,8 +72,7 @@ export class ConfigPositionsRolesRemoveCommand extends BotCommand {
 		});
 		if (!position) {
 			await interaction.editReply(
-				await this.t(interaction, {
-					context: 'position_not_found',
+				await this.t(interaction, 'errors:position_not_found', {
 					name: positionName
 				})
 			);

@@ -33,8 +33,7 @@ export class PositionsDeleteCommand extends BotCommand {
 		});
 		if (!position)
 			await interaction.editReply(
-				await this.t(interaction, {
-					context: 'not_found',
+				await this.t(interaction, 'errors:position_not_found', {
 					name
 				})
 			);

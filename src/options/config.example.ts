@@ -13,6 +13,7 @@ export const slashHints: Record<string, `${bigint}`> = {
 	'config-positions-roles-add': '985364185133219900',
 	'config-positions-roles-remove': '985368158808465428',
 	'config-positions-description': '985685194218537030',
+	'config-positions-customcommand': '986017399998398535',
 	ping: '985047539717922857',
 	info: '985047540879728661',
 	language: '985047541966053436',

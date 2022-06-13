@@ -7,6 +7,7 @@
 		"@sapphire/pieces": "^3.3.3",
 		"@sapphire/plugin-i18next": "^2.5.2",
 		"@sapphire/plugin-logger": "^2.2.1",
+		"@sapphire/result": "^1.1.1",
 		"discord.js": "^13.8.0",
 		"sequelize": "^6.20.1",
 		"tslib": "^2.4.0"
