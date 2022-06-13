@@ -18,12 +18,12 @@ import { Position } from '../../lib/models';
 				autocomplete: true,
 				required: true
 			},
-            {
-                name: 'description',
-                description: 'The new description of the position',
-                type: 'STRING',
-                required: true
-            }
+			{
+				name: 'description',
+				description: 'The new description of the position',
+				type: 'STRING',
+				required: true
+			}
 		]
 	}
 })
