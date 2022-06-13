@@ -94,7 +94,8 @@ export class ConfigPositionsRolesRemoveCommand extends BotCommand {
 		await interaction.editReply(
 			await this.t(interaction, {
 				role: role.id,
-				position: positionName
+				position: positionName,
+				type: type.substring(0, type.length - 5)
 			})
 		);
 	}

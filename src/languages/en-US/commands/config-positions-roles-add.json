@@ -1,4 +1,4 @@
 {
-	"response": "The reward role <@&{{role}}> was added to position **{{position}}**.",
+	"response": "The {{type}} role <@&{{role}}> was added to position **{{position}}**.",
 	"response_already_added": "The role **{{role}}** is already added to this position's {{type}} roles."
 }

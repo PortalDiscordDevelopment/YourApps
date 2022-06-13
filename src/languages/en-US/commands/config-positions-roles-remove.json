@@ -1,4 +1,4 @@
 {
-	"response": "The reward role <@&{{role}}> was removed from position **{{position}}**.",
+	"response": "The {{type}} role <@&{{role}}> was removed from position **{{position}}**.",
 	"response_not_in": "The role **{{role}}** is not in this position's {{type}} roles."
 }
