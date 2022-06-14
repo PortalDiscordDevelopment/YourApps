@@ -3,6 +3,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { BotCommand } from '../../lib/BotCommand';
 import type { CommandInteraction, Message } from 'discord.js';
 import { Utils } from '../../lib/Utils';
+import * as config from '../../options/config';
 
 @ApplyOptions<CommandOptions>({
 	name: 'info',
@@ -39,6 +40,10 @@ export class InfoCommand extends BotCommand {
 						}),
 						await this.t(interaction, 'source_code', {
 							embedField: true
+						}),
+						await this.t(interaction, 'support_link', {
+							embedField: true,
+							link: config.supportInviteLink
 						})
 					]
 				}

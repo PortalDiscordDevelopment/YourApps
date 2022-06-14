@@ -14,5 +14,9 @@
 	"source_code": {
 		"title": "Source Code",
 		"body": "Language: [TypeScript](https://www.typescriptlang.org/)\nLibrary: [discord.js](https://discord.js.org)\nFramework: [sapphire@next](https://www.sapphirejs.dev/)\nSource code: [link](https://github.com/PortalDiscordDevelopment/YourApps_JS)\nSoftware license: [Non-Profit Open Software License 3.0](https://opensource.org/licenses/NPOSL-3.0)"
+	},
+	"support_link": {
+		"title": "Support server",
+		"body": "Name: Portal Development\nInvite link: {{link}}"
 	}
 }

@@ -33,3 +33,4 @@ export const database = {
 };
 export const defaultPrefix = '-';
 export const defaultLanguage = 'en-US';
+export const supportInviteLink = 'https://discord.gg/9zmswH3Fn2';
