@@ -145,4 +145,20 @@ export class Utils {
 				.map(([u]) => u)
 		};
 	}
+
+	/**
+	 * Truncates a string at a specified character limit, adding an ellipsis at the end if truncated
+	 * @param string The string to truncate
+	 * @param characterLimit The character limit to truncate at
+	 * @returns The truncated string
+	 */
+	public static truncate(string: string, characterLimit: number): string {
+		return string.length > characterLimit
+			? string.substring(0, characterLimit - 3) + '...'
+			: string;
+	}
+}
+
+export enum DiscordFieldLimits {
+	FIELD_NAME = 256
 }

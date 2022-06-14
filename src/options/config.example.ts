@@ -20,7 +20,8 @@ export const slashHints: Record<string, `${bigint}`> = {
 	eval: '985047545338298409',
 	'dump-slash-ids': '985047625608880178',
 	positions: '985047626758119464',
-	position: '986039477749309510'
+	position: '986039477749309510',
+	questions: '986082785431261266'
 };
 export const database = {
 	username: 'example username',
