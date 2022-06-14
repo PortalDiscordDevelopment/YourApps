@@ -8,6 +8,7 @@ import type {
 } from 'discord.js';
 import { Op } from 'sequelize';
 import { Position } from '../../lib/models';
+import { DiscordFieldLimits, Utils } from '../../lib/Utils';
 
 @ApplyOptions<CommandOptions>({
     /*
@@ -115,14 +116,9 @@ export class ConfigPositionsQuestionsRemoveCommand extends BotCommand {
 				// If there is an input and it is not a substring of this current iteration's question, don't add it as a response
 				if (search && !position.questions[index].question.includes(search))
 					continue;
-				// Calculate the user-side name for this question
-				const question = position.questions[index].question;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
-					name:
-						question.length > 100
-							? question.substring(0, 97) + '...'
-							: question,
+					name: Utils.truncate(position.questions[index].question, DiscordFieldLimits.AUTOCOMPLETION_NAME),
 					value: index
 				});
 			}

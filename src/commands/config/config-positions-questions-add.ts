@@ -12,7 +12,7 @@ import {
 	PositionQuestionType
 } from '../../lib/models';
 import { Op } from 'sequelize';
-import { Utils } from '../../lib/Utils';
+import { DiscordFieldLimits, Utils } from '../../lib/Utils';
 
 @ApplyOptions<CommandOptions>({
 	name: 'config-positions-questions-add',
@@ -149,16 +149,11 @@ export class Command extends BotCommand {
 				// If there is an input and it is not a substring of this current iteration's question, don't add it as a response
 				if (search && !position.questions[index].question.includes(search))
 					continue;
-				// Calculate the user-side name for this question
-				const fullName = `${Number(index) + 1} - ${
-					position.questions[index].question
-				}`;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
-					name:
-						fullName.length > 100
-							? fullName.substring(0, 97) + '...'
-							: fullName,
+					name: Utils.truncate(`${Number(index) + 1} - ${
+						position.questions[index].question
+					}`, DiscordFieldLimits.AUTOCOMPLETION_NAME),
 					value: index
 				});
 			}

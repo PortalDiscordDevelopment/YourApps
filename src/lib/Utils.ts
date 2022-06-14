@@ -171,5 +171,6 @@ export class Utils {
 }
 
 export enum DiscordFieldLimits {
-	FIELD_NAME = 256
+	FIELD_NAME = 256,
+	AUTOCOMPLETION_NAME = 100
 }
