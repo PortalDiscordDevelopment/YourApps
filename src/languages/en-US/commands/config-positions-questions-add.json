@@ -1,0 +1,5 @@
+{
+	"response": "Question successfully added to position **{{position}}**. To see the new questions, use the **/questions** command.",
+	"response_invalid_index_type": "The index argument must be a valid number.",
+	"response_invalid_index": "The index argument must refer to a valid question, starting at index 0.\nFor example, 0 means the first question, 1 means the second question. To add a question as the first question, use -1 as the index.\nNote: It is recommended just to use discord autocomplete for the index argument rather than manually inputting a number."
+}

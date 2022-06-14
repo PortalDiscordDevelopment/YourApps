@@ -152,10 +152,21 @@ export class Utils {
 	 * @param characterLimit The character limit to truncate at
 	 * @returns The truncated string
 	 */
-	public static truncate(string: string, characterLimit: number): string {
+	 public static truncate(string: string, characterLimit: number): string {
 		return string.length > characterLimit
 			? string.substring(0, characterLimit - 3) + '...'
 			: string;
+	}
+
+	/**
+	 * Creates a new array from an existing one, inserting an item into the new array at a specific index
+	 * @param array The array to insert into
+	 * @param index The index to insert after
+	 * @param item The item to insert into the array
+	 * @returns The new array, with the item inserted
+	 */
+	public static arrayInsert<T>(array: T[], index: number, item: T): T[] {
+		return [...array.slice(0, index + 1), item, ...array.slice(index + 1)];
 	}
 }
 
