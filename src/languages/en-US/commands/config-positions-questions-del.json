@@ -1,0 +1,5 @@
+{
+	"response": "Question successfully removed from position **{{position}}**. To see the new questions list, use the **/questions** command.",
+	"response_invalid_index_type": "The question argument must be a valid number, referring to the index of the question to remove (starting from 0).",
+	"response_invalid_index": "The question argument must refer to a valid question, starting at index 0.\nFor example, 0 means the first question, 1 means the second question. To add a question as the first question, use -1 as the index.\nNote: It is recommended just to use discord autocomplete for the index argument rather than manually inputting a number."
+}

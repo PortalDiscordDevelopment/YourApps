@@ -6,72 +6,47 @@ import type {
 	AutocompleteInteraction,
 	CommandInteraction
 } from 'discord.js';
-import {
-	AppQuestionTypeNice,
-	Position,
-	PositionQuestionType
-} from '../../lib/models';
 import { Op } from 'sequelize';
-import { Utils } from '../../lib/Utils';
+import { Position } from '../../lib/models';
 
 @ApplyOptions<CommandOptions>({
-	name: 'config-positions-questions-add',
-	description: 'Adds a question to an existing position',
-	preconditions: ['GuildOnly'],
+    /*
+     * This is called `del` and not `remove` because if I do remove, the command is 33 characters, and the discord limit is 32.
+     * Once sapphire releases subcommand support for slash commands, this will be fixed, but for now this is the only solution.
+     * 
+     * Thanks discord.
+     */
+	name: 'config-positions-questions-del',
+	description: 'Removes a question from an existing position',
+	preconditions: [],
 	slashOptions: {
 		options: [
 			{
 				name: 'position',
-				description: 'The position to add a question to',
+				description: 'The position to remove a question from',
 				type: 'STRING',
 				autocomplete: true,
 				required: true
 			},
 			{
 				name: 'question',
-				description: 'The question to add to the position',
-				required: true,
-				type: 'STRING'
-			},
-			{
-				name: 'type',
-				description: 'The type of question to add',
-				required: true,
+				description: 'The question to remove',
 				type: 'STRING',
-				choices: [
-					{
-						name: AppQuestionTypeNice[PositionQuestionType.STRING],
-						value: PositionQuestionType.STRING
-					},
-					{
-						name: AppQuestionTypeNice[PositionQuestionType.NUMBER],
-						value: PositionQuestionType.NUMBER
-					}
-				]
-			},
-			{
-				name: 'index',
-				description: 'The question to add the new question after',
-				required: true,
-				type: 'STRING',
-				autocomplete: true
+                autocomplete: true,
+                required: true
 			}
 		]
 	}
 })
-export class Command extends BotCommand {
+export class ConfigPositionsQuestionsRemoveCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply();
 		const {
 			position: positionName,
-			type,
-			question,
-			index: indexRaw
+			question: indexRaw
 		}: {
 			position: string;
-			type: PositionQuestionType;
 			question: string;
-			index: string;
 		} = await this.parseArgs(interaction);
 		// Convert (string) index to a number
 		const index = Number(indexRaw);
@@ -96,19 +71,15 @@ export class Command extends BotCommand {
 			return interaction.editReply(
 				await this.t(interaction, { context: 'invalid_index' })
 			);
-		// Add question and save model to database
-		position.questions = Utils.arrayInsert(position.questions, index, {
-			question,
-			type
-		});
+		position.questions.splice(index, 1);
+		position.changed('questions', true);
 		await position.save();
-		// Respond with success message
 		return interaction.editReply(
 			await this.t(interaction, { position: positionName })
 		);
 	}
 
-	// Autocomplete positions based on a substring search, and index based on a substring search
+	// Autocomplete positions based on a substring search, and question based on a substring search
 	override async autocompleteRun(interaction: AutocompleteInteraction) {
 		if (interaction.options.get('position', false)?.focused) {
 			// Position option is focused, send autocomplete for positions
@@ -138,27 +109,20 @@ export class Command extends BotCommand {
 			// Enumerate over questions and construct autocomplete responses
 			const responses: ApplicationCommandOptionChoiceData[] = [];
 
-			// Add first question response (-1)
-			responses.push({
-				name: 'Add as first question',
-				value: '-1'
-			});
-			const search = interaction.options.getString('index', false);
+			const search = interaction.options.getString('question', false);
 			// Iterate over questions, adding a response for each one with the format `1 - Question content`, truncating as needed
 			for (const index in position.questions) {
 				// If there is an input and it is not a substring of this current iteration's question, don't add it as a response
 				if (search && !position.questions[index].question.includes(search))
 					continue;
 				// Calculate the user-side name for this question
-				const fullName = `${Number(index) + 1} - ${
-					position.questions[index].question
-				}`;
+				const question = position.questions[index].question;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
 					name:
-						fullName.length > 100
-							? fullName.substring(0, 97) + '...'
-							: fullName,
+						question.length > 100
+							? question.substring(0, 97) + '...'
+							: question,
 					value: index
 				});
 			}
