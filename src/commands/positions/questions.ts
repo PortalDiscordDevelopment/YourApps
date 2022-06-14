@@ -39,28 +39,32 @@ export class QuestionsCommand extends BotCommand {
 					name: positionName
 				})
 			);
-		if (position.questions.length >= 1) return interaction.editReply({
-			embeds: [
-				{
-					title: await this.t(interaction, 'embed_title'),
-					fields: await Promise.all(
-                        position.questions.map(async q => ({
-                            name: Utils.truncate(
-                                `${position.questions.indexOf(q) + 1}. ${q.question}`,
-                                DiscordFieldLimits.FIELD_NAME
-                            ),
-                            value: await this.t(interaction, 'question_type', { type: AppQuestionTypeNice[q.type] }),
-                            inline: true
-                        }))
-                    )
-				}
-			]
-		});
-        else return interaction.editReply(
-            await this.t(interaction, 'no_questions', {
-                position: positionName
-            })
-        );
+		if (position.questions.length >= 1)
+			return interaction.editReply({
+				embeds: [
+					{
+						title: await this.t(interaction, 'embed_title'),
+						fields: await Promise.all(
+							position.questions.map(async q => ({
+								name: Utils.truncate(
+									`${position.questions.indexOf(q) + 1}. ${q.question}`,
+									DiscordFieldLimits.FIELD_NAME
+								),
+								value: await this.t(interaction, 'question_type', {
+									type: AppQuestionTypeNice[q.type]
+								}),
+								inline: true
+							}))
+						)
+					}
+				]
+			});
+		else
+			return interaction.editReply(
+				await this.t(interaction, 'no_questions', {
+					position: positionName
+				})
+			);
 	}
 
 	// Autocomplete positions based on a substring search

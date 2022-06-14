@@ -152,7 +152,7 @@ export class Utils {
 	 * @param characterLimit The character limit to truncate at
 	 * @returns The truncated string
 	 */
-	 public static truncate(string: string, characterLimit: number): string {
+	public static truncate(string: string, characterLimit: number): string {
 		return string.length > characterLimit
 			? string.substring(0, characterLimit - 3) + '...'
 			: string;

@@ -1,5 +1,5 @@
 {
 	"embed_title": "Position questions",
-    "question_type": "Type: {{type}}",
-    "no_questions": "There are no questions for position **{{position}}**."
+	"question_type": "Type: {{type}}",
+	"no_questions": "There are no questions for position **{{position}}**."
 }

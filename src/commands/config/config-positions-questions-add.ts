@@ -150,7 +150,9 @@ export class Command extends BotCommand {
 				if (search && !position.questions[index].question.includes(search))
 					continue;
 				// Calculate the user-side name for this question
-				const fullName = `${Number(index) + 1} - ${position.questions[index].question}`;
+				const fullName = `${Number(index) + 1} - ${
+					position.questions[index].question
+				}`;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
 					name:
