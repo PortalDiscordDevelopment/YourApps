@@ -151,9 +151,10 @@ export class Command extends BotCommand {
 					continue;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
-					name: Utils.truncate(`${Number(index) + 1} - ${
-						position.questions[index].question
-					}`, DiscordFieldLimits.AUTOCOMPLETION_NAME),
+					name: Utils.truncate(
+						`${Number(index) + 1} - ${position.questions[index].question}`,
+						DiscordFieldLimits.AUTOCOMPLETION_NAME
+					),
 					value: index
 				});
 			}

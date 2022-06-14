@@ -11,12 +11,12 @@ import { Position } from '../../lib/models';
 import { DiscordFieldLimits, Utils } from '../../lib/Utils';
 
 @ApplyOptions<CommandOptions>({
-    /*
-     * This is called `del` and not `remove` because if I do remove, the command is 33 characters, and the discord limit is 32.
-     * Once sapphire releases subcommand support for slash commands, this will be fixed, but for now this is the only solution.
-     * 
-     * Thanks discord.
-     */
+	/*
+	 * This is called `del` and not `remove` because if I do remove, the command is 33 characters, and the discord limit is 32.
+	 * Once sapphire releases subcommand support for slash commands, this will be fixed, but for now this is the only solution.
+	 *
+	 * Thanks discord.
+	 */
 	name: 'config-positions-questions-del',
 	description: 'Removes a question from an existing position',
 	preconditions: [],
@@ -33,8 +33,8 @@ import { DiscordFieldLimits, Utils } from '../../lib/Utils';
 				name: 'question',
 				description: 'The question to remove',
 				type: 'STRING',
-                autocomplete: true,
-                required: true
+				autocomplete: true,
+				required: true
 			}
 		]
 	}
@@ -118,7 +118,10 @@ export class ConfigPositionsQuestionsRemoveCommand extends BotCommand {
 					continue;
 				// Add the response, truncating the user-side name if needed
 				responses.push({
-					name: Utils.truncate(position.questions[index].question, DiscordFieldLimits.AUTOCOMPLETION_NAME),
+					name: Utils.truncate(
+						position.questions[index].question,
+						DiscordFieldLimits.AUTOCOMPLETION_NAME
+					),
 					value: index
 				});
 			}

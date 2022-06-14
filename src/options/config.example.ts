@@ -16,6 +16,7 @@ export const slashHints: Record<string, `${bigint}`> = {
 	'config-positions-customcommand': '986017399998398535',
 	'config-positions-questions-add': '986059306338246686',
 	'config-positions-questions-del': '986100277742563349',
+	'config-positions-open': '986386203559481405',
 	ping: '985047539717922857',
 	info: '985047540879728661',
 	language: '985047541966053436',
