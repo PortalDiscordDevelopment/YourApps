@@ -1,4 +1,4 @@
 {
-    "response": "The specified position **{{position}}** has been successfully closed.",
-    "response_already_closed": "The specified position **{{position}}** is already closed."
+	"response": "The specified position **{{position}}** has been successfully closed.",
+	"response_already_closed": "The specified position **{{position}}** is already closed."
 }

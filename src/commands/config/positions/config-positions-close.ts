@@ -1,9 +1,9 @@
 import type { CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { BotCommand } from '../../lib/BotCommand';
+import { BotCommand } from '../../../lib/BotCommand';
 import type { AutocompleteInteraction, CommandInteraction } from 'discord.js';
 import { Op } from 'sequelize';
-import { Position } from '../../lib/models';
+import { Position } from '../../../lib/models';
 
 @ApplyOptions<CommandOptions>({
 	name: 'config-positions-close',
@@ -19,37 +19,41 @@ import { Position } from '../../lib/models';
 				required: true
 			}
 		]
-	}
+	},
+	isSubCommand: true,
+	subcommandName: 'close'
 })
 export class ConfigPositionsCloseCommand extends BotCommand {
 	override async chatInputRun(interaction: CommandInteraction) {
-		await interaction.deferReply();
-		const { position: positionName }: { position: string } =
-			this.parseArgs(interaction);
-		const position = await Position.findOne({
-			where: {
-				guild: interaction.guildId!,
-				name: positionName
-			}
-		});
-		if (!position)
-			return interaction.editReply(
-				await this.t(interaction, 'errors:position_not_found', {
-					name: positionName
-				})
-			);
-        if (position.closed)
-            return interaction.editReply(
-                await this.t(interaction, {
-                    context: 'already_closed',
-                    position: positionName
-                })
-            )
-        position.closed = true;
-        await position.save();
-        return interaction.editReply(
-            await this.t(interaction, { position: positionName })
-        )
+		// await interaction.deferReply();
+		// const { position: positionName }: { position: string } =
+		// 	this.parseArgs(interaction);
+		// const position = await Position.findOne({
+		// 	where: {
+		// 		guild: interaction.guildId!,
+		// 		name: positionName
+		// 	}
+		// });
+		// if (!position)
+		// 	return interaction.editReply(
+		// 		await this.t(interaction, 'errors:position_not_found', {
+		// 			name: positionName
+		// 		})
+		// 	);
+		// if (position.closed)
+		// 	return interaction.editReply(
+		// 		await this.t(interaction, {
+		// 			context: 'already_closed',
+		// 			position: positionName
+		// 		})
+		// 	);
+		// position.closed = true;
+		// await position.save();
+		// return interaction.editReply(
+		// 	await this.t(interaction, { position: positionName })
+		// );
+		this.client.logger.warn('close called')
+        interaction;
 	}
 
 	// Autocomplete positions based on a substring search

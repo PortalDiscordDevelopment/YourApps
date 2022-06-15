@@ -2,13 +2,21 @@ import {
 	ApplicationCommandRegistry,
 	Command,
 	CommandOptions,
+	CommandStore,
 	PieceContext,
 	RegisterBehavior
 } from '@sapphire/framework';
 import type { TOptions } from '@sapphire/plugin-i18next';
 import type {
+	ApplicationCommandAutocompleteOption,
+	ApplicationCommandChannelOptionData,
+	ApplicationCommandChoicesData,
 	ApplicationCommandData,
+	ApplicationCommandNonOptionsData,
+	ApplicationCommandNumericOptionData,
 	ApplicationCommandOptionData,
+	ApplicationCommandSubCommandData,
+	ApplicationCommandSubGroupData,
 	CommandInteraction,
 	EmbedFieldData,
 	Snowflake
@@ -39,17 +47,128 @@ export type LocalizationOptions = TOptions<{
 export class BotCommand extends Command {
 	constructor(context: PieceContext, options: CommandOptions) {
 		super(context, options);
+		this.slashOptions = options.slashOptions;
+		this.isSubCommand = options.isSubCommand ?? false;
+		this.isSubCommandGroup = options.isSubCommandGroup ?? false;
+		this.subcommands = options.subCommands;
+		this.subcommandName = options.subcommandName;
 	}
 
 	override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		if (this.chatInputRun && this.name && this.options.slashOptions) {
+		if (
+			this.chatInputRun &&
+			!this.isSubCommand &&
+			!this.isSubCommandGroup &&
+			this.name &&
+			this.options.slashOptions
+		) {
+			const subcommandOptions: (ApplicationCommandSubCommandData | ApplicationCommandSubGroupData)[] = [];
+
+			for (const subcommand of this.subcommands ?? []) {
+				const piece = (this.store as CommandStore).get(subcommand) as
+					| BotCommand
+					| undefined;
+				if (!piece) {
+					this.container.logger.warn(
+						`Command ${this.name} declares a subcommand with name ${subcommand}, but this command could not be found in the store.`
+					);
+					continue;
+				}
+				if (!piece.slashOptions) {
+					this.container.logger.warn(
+						`Command ${this.name} declares a subcommand with name ${subcommand}, but the subcommand does not have any slashOptions.`
+					);
+					continue;
+				}
+				if (!piece.subcommandName) {
+					this.container.logger.warn(
+						`Command ${this.name} declares a subcommand with name ${subcommand}, but the subcommand does not have a subcommandName property.`
+					);
+					continue;
+				}
+				if (!piece.isSubCommand && !piece.isSubCommandGroup) {
+					this.container.logger.warn(
+						`Command ${this.name} declares a subcommand with name ${subcommand}, but the subcommand does not set isSubCommand or isSubCommandGroup as true.`
+					);
+					continue;
+				}
+				if (piece.isSubCommand) { // If this is a normal subcommand, not a group
+					subcommandOptions.push({
+						type: 'SUB_COMMAND',
+						name: piece.subcommandName,
+						description: piece.description,
+						// Cast options to exclude more 
+						options: piece.slashOptions.options as (
+							| ApplicationCommandNonOptionsData
+							| ApplicationCommandChannelOptionData
+							| ApplicationCommandChoicesData
+							| ApplicationCommandAutocompleteOption
+							| ApplicationCommandNumericOptionData
+						)[]
+					});
+				} else if (piece.isSubCommandGroup) {
+					// Yes this is repeated code, but this code is not meant to look nice, it is meant to work until @sapphire/plugin-subcommands supports slash commands.
+					const nestedSubcommandOptions: ApplicationCommandSubCommandData[] = [];
+
+					for (const nestedSubcommand of piece.subcommands ?? []) {
+						const nestedPiece = (this.store as CommandStore).get(nestedSubcommand) as
+							| BotCommand
+							| undefined;
+						if (!nestedPiece) {
+							this.container.logger.warn(
+								`Subcommand group ${piece.name} declares a subcommand with name ${nestedSubcommand}, but this command could not be found in the store.`
+							);
+							continue;
+						}
+						if (!nestedPiece.slashOptions) {
+							this.container.logger.warn(
+								`Subcommand group ${piece.name} declares a subcommand with name ${nestedSubcommand}, but the subcommand does not have any slashOptions.`
+							);
+							continue;
+						}
+						if (!nestedPiece.subcommandName) {
+							this.container.logger.warn(
+								`Subcommand group ${this.name} declares a subcommand with name ${subcommand}, but the subcommand does not have a subcommandName property.`
+							);
+							continue;
+						}
+						if (!nestedPiece.isSubCommand) {
+							this.container.logger.warn(
+								`Subcommand group ${piece.name} declares a subcommand with name ${nestedSubcommand}, but the subcommand does not set isSubCommand as true.`
+							);
+							continue;
+						}
+						nestedSubcommandOptions.push({
+							type: 'SUB_COMMAND',
+							name: nestedPiece.subcommandName,
+							description: nestedPiece.description,
+							// Cast options to exclude more subcommands
+							options: nestedPiece.slashOptions.options as (
+								| ApplicationCommandNonOptionsData
+								| ApplicationCommandChannelOptionData
+								| ApplicationCommandChoicesData
+								| ApplicationCommandAutocompleteOption
+								| ApplicationCommandNumericOptionData
+							)[]
+						});
+					}
+					subcommandOptions.push({
+						type: 'SUB_COMMAND_GROUP',
+						name: piece.subcommandName,
+						description: piece.description,
+						// Cast options to exclude more 
+						options: [...piece.slashOptions.options ?? [], ...nestedSubcommandOptions] as ApplicationCommandSubCommandData[]
+					});
+				}
+			}
+
 			const command: ApplicationCommandData = {
 				name: this.name,
 				description:
-					this.options.slashOptions.description ||
-					this.description ||
+					this.options.slashOptions.description ??
+					this.description ??
 					'No description provided.',
-				options: this.options.slashOptions.options || []
+				options: [...this.options.slashOptions.options ?? [], ...subcommandOptions]
 			};
 
 			registry.registerChatInputCommand(command, {
@@ -182,8 +301,19 @@ interface SlashCommandOptions {
 declare module '@sapphire/framework' {
 	interface CommandOptions {
 		slashOptions?: SlashCommandOptions;
+		isSubCommand?: boolean;
+		isSubCommandGroup?: boolean;
+		subcommandName?: string;
+		/**
+		 * An array of sapphire command names to use as subcommands
+		 */
+		subCommands?: string[];
 	}
 	interface Command {
 		slashOptions?: SlashCommandOptions;
+		isSubCommand: boolean;
+		isSubCommandGroup: boolean;
+		subcommandName?: string;
+		subcommands?: string[];
 	}
 }
