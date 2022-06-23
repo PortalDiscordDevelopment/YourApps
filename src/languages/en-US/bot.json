@@ -222,7 +222,7 @@
 		"PREFIX_REMOVED": "`{{prefix}}` was removed from the server prefixes.",
 		"ADMIN_ROLE_ADD": "<@&{{roleID}}> was added to the server admin roles.",
 		"ADMIN_ROLE_REMOVED": "<@&{{roleID}}> was removed from the server admin roles.",
-		"REVIEW_ROLE_ADD": "<@&{{roleID}> was added to the server review roles.",
+		"REVIEW_ROLE_ADD": "<@&{{roleID}}> was added to the server review roles.",
 		"REVIEW_ROLE_REMOVED": "<@&{{roleID}}> was removed from the server review roles.",
 		"BLACKLIST_ROLE_ADD": "<@&{{roleID}}> was added to the server blacklist roles.",
 		"BLACKLIST_ROLE_REMOVED": "<@&{{roleID}}> was removed from the server blacklist roles.",
