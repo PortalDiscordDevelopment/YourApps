@@ -156,9 +156,13 @@ export default class EvalCommand extends BotCommand {
 			lastStatement.remove(); // Remove the original statement
 		}
 		// Get all ImportDeclarations from the iife
-		const imports = iife.getStatements().filter(s => s.getKind() === ts.SyntaxKind.ImportDeclaration);
+		const imports = iife
+			.getStatements()
+			.filter(s => s.getKind() === ts.SyntaxKind.ImportDeclaration);
 		for (const importDeclaration of imports) {
-			sourceFile.insertStatements(0, writer => writer.write(importDeclaration.print())); // Add the ImportDeclaration to the outer sourceFile
+			sourceFile.insertStatements(0, writer =>
+				writer.write(importDeclaration.print())
+			); // Add the ImportDeclaration to the outer sourceFile
 			importDeclaration.remove(); // Remove original ImportDeclaration
 		}
 		// Transpile the modified code

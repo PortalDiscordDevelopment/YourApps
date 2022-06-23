@@ -180,8 +180,7 @@ export class Util extends ClientUtil {
 		const channel = await this.client.channels.fetch(guild.logchannel);
 		if (channel instanceof TextChannel) {
 			await channel.send({
-				content:
-					guild.logpings
+				content: guild.logpings
 					? guild.logpings.map(id => `<@&${id}>`).join(', ')
 					: null,
 				allowedMentions: {
