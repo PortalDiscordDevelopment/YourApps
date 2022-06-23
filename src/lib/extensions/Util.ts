@@ -182,7 +182,7 @@ export class Util extends ClientUtil {
 			await channel.send({
 				content: guild.logpings
 					? guild.logpings.map(id => `<@&${id}>`).join(', ')
-					: null,
+					: undefined,
 				allowedMentions: {
 					parse: []
 				},
