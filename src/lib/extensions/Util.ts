@@ -241,7 +241,10 @@ export class Util extends ClientUtil {
 						.setFields(
 							Object.entries(submission.answers).map(e => ({
 								name: e[0],
-								value: this.client.util.truncate(e[1], DiscordFieldLimits.FIELD_VALUE),
+								value: this.client.util.truncate(
+									e[1],
+									DiscordFieldLimits.FIELD_VALUE
+								),
 								inline: true
 							}))
 						)

@@ -270,7 +270,10 @@ export default class ApplyCommand extends BotCommand {
 					f.name === app.questions[curQuestion - 1].question
 						? {
 								name: f.name,
-								value: client.util.truncate(validation.user, DiscordFieldLimits.FIELD_VALUE),
+								value: client.util.truncate(
+									validation.user,
+									DiscordFieldLimits.FIELD_VALUE
+								),
 								inline: true
 						  }
 						: f
