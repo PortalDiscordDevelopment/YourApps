@@ -180,9 +180,10 @@ export class Util extends ClientUtil {
 		const channel = await this.client.channels.fetch(guild.logchannel);
 		if (channel instanceof TextChannel) {
 			await channel.send({
-				content: guild.logpings.length > 0
-					? guild.logpings.map(id => `<@&${id}>`).join(', ')
-					: undefined,
+				content:
+					guild.logpings.length > 0
+						? guild.logpings.map(id => `<@&${id}>`).join(', ')
+						: undefined,
 				allowedMentions: {
 					parse: []
 				},
@@ -240,7 +241,7 @@ export class Util extends ClientUtil {
 						.setFields(
 							Object.entries(submission.answers).map(e => ({
 								name: e[0],
-								value: e[1],
+								value: this.client.util.truncate(e[1], DiscordFieldLimits.FIELD_VALUE),
 								inline: true
 							}))
 						)
@@ -400,4 +401,20 @@ export class Util extends ClientUtil {
 	public dbcase(str: string) {
 		return str.replace(/ /g, '').toLowerCase();
 	}
+
+	/**
+	 * Truncates a string at a specified character limit, adding an ellipsis at the end if truncated
+	 * @param string The string to truncate
+	 * @param characterLimit The character limit to truncate at
+	 * @returns The truncated string
+	 */
+	public truncate(string: string, characterLimit: number): string {
+		return string.length > characterLimit
+			? string.substring(0, characterLimit - 3) + '...'
+			: string;
+	}
+}
+
+export enum DiscordFieldLimits {
+	FIELD_VALUE = 1024
 }

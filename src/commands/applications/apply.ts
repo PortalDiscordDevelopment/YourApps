@@ -1,6 +1,6 @@
 import { BotClient } from '@lib/ext/BotClient';
 import { BotCommand } from '@lib/ext/BotCommand';
-import { LogEvent } from '@lib/ext/Util';
+import { DiscordFieldLimits, LogEvent } from '@lib/ext/Util';
 import { App } from '@lib/models/App';
 import { Submission, Guild } from '@lib/models';
 import {
@@ -270,7 +270,7 @@ export default class ApplyCommand extends BotCommand {
 					f.name === app.questions[curQuestion - 1].question
 						? {
 								name: f.name,
-								value: validation.user,
+								value: client.util.truncate(validation.user, DiscordFieldLimits.FIELD_VALUE),
 								inline: true
 						  }
 						: f
