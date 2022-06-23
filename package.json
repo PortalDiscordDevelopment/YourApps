@@ -36,7 +36,7 @@
 		"common-tags": "^1.8.2",
 		"discord-akairo": "github:discord-akairo/discord-akairo",
 		"discord.js": "^13.6.0",
-		"got": "^11.8.3",
+		"got": "^11.8.5",
 		"i18next": "^21.6.11",
 		"i18next-fs-backend": "^1.1.4",
 		"pg": "^8.7.3",
