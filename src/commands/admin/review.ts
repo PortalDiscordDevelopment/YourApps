@@ -83,12 +83,14 @@ export default class ReviewCommand extends BotCommand {
 				)
 			]
 		});
-		const {value: i} = await fromAsync(() => menu.awaitMessageComponent({
-			componentType: 'SELECT_MENU',
-			filter: i =>
-				i.user.id == message.author.id && i.customId == ids.positionsId
-		}));
-		if (i === undefined) return
+		const { value: i } = await fromAsync(() =>
+			menu.awaitMessageComponent({
+				componentType: 'SELECT_MENU',
+				filter: i =>
+					i.user.id == message.author.id && i.customId == ids.positionsId
+			})
+		);
+		if (i === undefined) return;
 		await i.deferUpdate();
 		const pos = positions.find(
 			p => p.id.toString() == (i as SelectMenuInteraction).values[0]!
@@ -122,12 +124,14 @@ export default class ReviewCommand extends BotCommand {
 				)
 			]
 		});
-		const {value: i2} = await fromAsync(() => menu2.awaitMessageComponent({
-			componentType: 'SELECT_MENU',
-			filter: i =>
-				i.user.id == message.author.id && i.customId == ids.submissionId
-		}));
-		if (i2 === undefined) return
+		const { value: i2 } = await fromAsync(() =>
+			menu2.awaitMessageComponent({
+				componentType: 'SELECT_MENU',
+				filter: i =>
+					i.user.id == message.author.id && i.customId == ids.submissionId
+			})
+		);
+		if (i2 === undefined) return;
 		await i2.deferUpdate();
 		const sub = submissions.find(
 			s => s.id.toString() == (i2 as SelectMenuInteraction).values[0]!
@@ -215,16 +219,18 @@ export default class ReviewCommand extends BotCommand {
 				)
 			]
 		});
-		const {value: response} = await fromAsync(() => reviewMessage.awaitMessageComponent({
-			filter: i =>
-				[
-					approveButtonId,
-					approveWithReasonId,
-					denyButtonId,
-					cancelButtonId
-				].includes(i.customId) && i.user.id == message.author.id,
-			componentType: 'BUTTON'
-		}));
+		const { value: response } = await fromAsync(() =>
+			reviewMessage.awaitMessageComponent({
+				filter: i =>
+					[
+						approveButtonId,
+						approveWithReasonId,
+						denyButtonId,
+						cancelButtonId
+					].includes(i.customId) && i.user.id == message.author.id,
+				componentType: 'BUTTON'
+			})
+		);
 		if (response === undefined) return;
 		await response.deferUpdate();
 		switch (response.customId) {

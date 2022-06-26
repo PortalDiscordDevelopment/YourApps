@@ -77,7 +77,10 @@ export default class ConfigNewCommand extends BotCommand {
 			});
 		if (descriptionCancelled) return;
 		// * Questions
-		const noContentError = await this.client.t('ERRORS.NO_QUESTION_CONTENT', message);
+		const noContentError = await this.client.t(
+			'ERRORS.NO_QUESTION_CONTENT',
+			message
+		);
 		const { collected: questions, endedReason: questionsEndReason } =
 			await this.sendPrompt(message, {
 				title: await this.client.t(
@@ -95,10 +98,11 @@ export default class ConfigNewCommand extends BotCommand {
 				fieldName: await this.client.t('GENERIC.QUESTIONS', message),
 				allowZero: 'questions',
 				process: m => {
-					if (!m.content) return {
-						success: false,
-						error: noContentError
-					}
+					if (!m.content)
+						return {
+							success: false,
+							error: noContentError
+						};
 					return {
 						success: true,
 						processed: {
