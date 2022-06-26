@@ -203,7 +203,7 @@ export class BotClient extends AkairoClient {
 		for (const model of Object.values(Models)) {
 			model.initModel(this.db, this.config.defaultPrefix);
 		}
-		await this.db.sync({ alter: true });
+		// await this.db.sync({ alter: true });
 		BotClient.dbConnected = true;
 		// loads all the stuff
 		const loaders: Record<string, AkairoHandler> = {
