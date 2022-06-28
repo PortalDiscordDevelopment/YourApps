@@ -30,7 +30,8 @@
 		"CONTENT": "Message content",
 		"DELETING": "Deleting...",
 		"APPS": "Applications",
-		"SKIP": "Skip"
+		"SKIP": "Skip",
+		"RESPONSE_TOO_LONG": "The response was too long to show normally, so it has been uploaded to the following link: {{link}}"
 	},
 	"CONFIG": {
 		"NO_CONFIG": "This guild does not appear to have any config options changed.",

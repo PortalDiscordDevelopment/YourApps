@@ -239,14 +239,22 @@ export class Util extends ClientUtil {
 							})
 						)
 						.setFields(
-							Object.entries(submission.answers).map(e => ({
-								name: e[0],
-								value: this.client.util.truncate(
-									e[1],
-									DiscordFieldLimits.FIELD_VALUE
-								),
-								inline: true
-							}))
+							await Promise.all(
+								Object.entries(submission.answers).map(async e => ({
+									name: e[0],
+									value:
+										e[1].toString().length > DiscordFieldLimits.FIELD_VALUE
+											? await this.client.t(
+													'GENERIC.RESPONSE_TOO_LONG',
+													undefined,
+													{
+														link: await this.client.util.haste(e[1].toString())
+													}
+											  )
+											: e[1].toString(),
+									inline: true
+								}))
+							)
 						)
 						.setAuthor({
 							name: `Submitted by ${user.tag}`,
