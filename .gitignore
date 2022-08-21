@@ -1,0 +1,12 @@
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+src/config/*
+!src/config/index.example.ts
+
+out
+node_modules

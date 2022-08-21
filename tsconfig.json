@@ -1,0 +1,13 @@
+{
+	"extends": "@sapphire/ts-config/extra-strict",
+	"compilerOptions": {
+		"declaration": false,
+		"declarationMap": false,
+		"removeComments": true,
+		"sourceMap": false,
+		"inlineSourceMap": true,
+		"outDir": "out",
+		"skipLibCheck": true
+	},
+	"include": ["src/**/*.ts", "src/i18n/**/*.json"]
+}
