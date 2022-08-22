@@ -1,6 +1,15 @@
-import { SapphireClient } from "@sapphire/framework";
+import { container, SapphireClient } from "@sapphire/framework";
 import * as config from "./config";
+import { ModuleStore } from "./structures/store";
 
-const client = new SapphireClient({ intents: ["GUILDS"] });
+(async () => {
+    // Create the SapphireClient
+    const client = new SapphireClient({ intents: ["GUILDS"] });
 
-client.login(config.token);
+    // Register and initialize the module store
+    container.stores.register(new ModuleStore());
+    await container.stores.get("modules").initializeModules();
+
+    // Log into the bot
+    client.login(config.token);
+})()

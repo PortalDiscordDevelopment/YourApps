@@ -39,13 +39,14 @@ export class PingCommand extends Command {
 	public override registerApplicationCommands(
 		registry: ChatInputCommand.Registry
 	) {
-		registry.registerChatInputCommand(builder =>
-			builder
-                .setName("ping")
-                .setDescription("Ping bot to see if it is alive"),
-            {
-                guildIds: (dev ? [devGuild] : undefined)
-            }
+		registry.registerChatInputCommand(
+			builder =>
+				builder
+					.setName("ping")
+					.setDescription("Ping bot to see if it is alive"),
+			{
+				guildIds: dev ? [devGuild] : undefined,
+			}
 		);
 	}
 }

@@ -10,3 +10,4 @@ src/config/*
 
 out
 node_modules
+.env
