@@ -15,6 +15,20 @@ enum Language {
 
 // User schema
 model User {
-  id BigInt @id
+  // The discord ID of the user
+  id       BigInt    @id
+  // The language of the user (if manually set)
   language Language? @default(EN_US)
+}
+
+// Guild scheman
+model Guild {
+  id             BigInt   @id
+  logChannel     BigInt?  @map("log_channel")
+  archiveChannel BigInt?  @map("archive_channel")
+  logPings       BigInt[] @default([]) @map("log_pings")
+  adminRoles     BigInt[] @default([]) @map("adming_roles")
+  reviewRoles    BigInt[] @default([]) @map("review_roles")
+  blacklistRoles BigInt[] @default([]) @map("blacklist_roles")
+  legacyPremium  BigInt[] @default([]) @map("legacy_premium")
 }

@@ -28,7 +28,9 @@
 		"build:check": "tsc --noEmit",
 		"build": "tsc",
 		"dev": "echo Building... && yarn build && echo Starting... && node --enable-source-maps out",
-		"fmt:check": "yarn prettier . --check",
-		"fmt": "yarn prettier . --write"
+		"fmt:check": "prettier . --check",
+		"fmt": "prettier . --write && prisma format",
+		"db:push": "prisma db push",
+		"db:update": "prisma generate"
 	}
 }
