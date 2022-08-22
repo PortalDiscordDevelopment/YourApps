@@ -215,6 +215,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/plugin-subcommands@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@sapphire/plugin-subcommands@npm:3.1.1"
+  dependencies:
+    "@sapphire/utilities": ^3.9.2
+    tslib: ^2.4.0
+  checksum: ab86654e5e7b3f745baae40c529dcc7dce536ee87512a7f1240bd3b44b45f65a738d7d3f57d035b3e2ba434519795cdfa896e277fd0372fdf846971e3d02e63a
+  languageName: node
+  linkType: hard
+
 "@sapphire/ratelimits@npm:^2.4.4":
   version: 2.4.4
   resolution: "@sapphire/ratelimits@npm:2.4.4"
@@ -1495,6 +1505,7 @@ __metadata:
     "@sapphire/framework": ^3.0.0
     "@sapphire/pieces": ^3.5.1
     "@sapphire/plugin-logger": ^3.0.0
+    "@sapphire/plugin-subcommands": ^3.1.1
     "@sapphire/ts-config": ^3.3.4
     "@types/common-tags": ^1.8.1
     "@types/node": ^18.7.9
