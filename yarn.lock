@@ -204,6 +204,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/plugin-logger@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@sapphire/plugin-logger@npm:3.0.0"
+  dependencies:
+    "@sapphire/time-utilities": ^1.7.6
+    colorette: ^2.0.19
+    tslib: ^2.4.0
+  checksum: b4323a7d319e53b9a7b01825d4eb73562fb767832d07cbbb00b02208577c36f0cffdbf0572203c53cf5f2348304765e0956661c31a21ad970c834ba295db1363
+  languageName: node
+  linkType: hard
+
 "@sapphire/ratelimits@npm:^2.4.4":
   version: 2.4.4
   resolution: "@sapphire/ratelimits@npm:2.4.4"
@@ -428,6 +439,13 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: b0445859521eb4021cd0fb0cc1a75cecf67fceecae89b63f62b201cca8d345baf8b952c966862a9d9a2632987d4f6581f0ec8d957dfacece86f0a7919316f610
+  languageName: node
+  linkType: hard
+
+"colorette@npm:^2.0.19":
+  version: 2.0.19
+  resolution: "colorette@npm:2.0.19"
+  checksum: 888cf5493f781e5fcf54ce4d49e9d7d698f96ea2b2ef67906834bb319a392c667f9ec69f4a10e268d2946d13a9503d2d19b3abaaaf174e3451bfe91fb9d82427
   languageName: node
   linkType: hard
 
@@ -1476,6 +1494,7 @@ __metadata:
     "@sapphire/discord.js-utilities": ^5.0.0
     "@sapphire/framework": ^3.0.0
     "@sapphire/pieces": ^3.5.1
+    "@sapphire/plugin-logger": ^3.0.0
     "@sapphire/ts-config": ^3.3.4
     "@types/common-tags": ^1.8.1
     "@types/node": ^18.7.9

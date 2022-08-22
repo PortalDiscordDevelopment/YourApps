@@ -8,6 +8,7 @@
 		"@sapphire/discord.js-utilities": "^5.0.0",
 		"@sapphire/framework": "^3.0.0",
 		"@sapphire/pieces": "^3.5.1",
+		"@sapphire/plugin-logger": "^3.0.0",
 		"common-tags": "^1.8.2",
 		"discord.js": "^13.10.2",
 		"tslib": "^2.4.0",
