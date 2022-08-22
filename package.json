@@ -10,7 +10,8 @@
 		"@sapphire/pieces": "^3.5.1",
 		"common-tags": "^1.8.2",
 		"discord.js": "^13.10.2",
-		"tslib": "^2.4.0"
+		"tslib": "^2.4.0",
+		"undici": "^5.9.1"
 	},
 	"devDependencies": {
 		"@sapphire/ts-config": "^3.3.4",

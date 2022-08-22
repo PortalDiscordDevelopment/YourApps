@@ -3,13 +3,12 @@ import * as config from "./config";
 import { ModuleStore } from "./structures/store";
 
 (async () => {
-    // Create the SapphireClient
-    const client = new SapphireClient({ intents: ["GUILDS"] });
+	// Create the SapphireClient
+	const client = new SapphireClient({ intents: ["GUILDS"] });
 
-    // Register and initialize the module store
-    container.stores.register(new ModuleStore());
-    await container.stores.get("modules").initializeModules();
+	// Register and initialize the module store
+	container.stores.register(new ModuleStore());
 
-    // Log into the bot
-    client.login(config.token);
-})()
+	// Log into the bot
+	client.login(config.token);
+})();

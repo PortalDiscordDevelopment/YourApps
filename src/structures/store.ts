@@ -6,19 +6,23 @@ export class ModuleStore extends Store<ModulePiece> {
 	constructor() {
 		super(ModulePiece, {
 			name: "modules",
-			paths: [path.resolve(__dirname, "..", "modules")],
+			paths: [path.resolve(__dirname, "..", "modules")]
 		});
 	}
 
-	async initializeModules() {
+	override async loadAll() {
+		// Load the files by calling the original load all function
+		await super.loadAll();
+
+		// Initialize all the modules
 		for (const [, module] of this) {
-			await module.init();
+			await module?.init?.();
 		}
 	}
 }
 
 declare module "@sapphire/pieces" {
-    export interface StoreRegistryEntries {
-        modules: ModuleStore
-    }
+	export interface StoreRegistryEntries {
+		modules: ModuleStore;
+	}
 }

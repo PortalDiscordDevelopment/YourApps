@@ -1,6 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { ModulePiece } from "../structures/piece";
+import { ApplyOptions } from "@sapphire/decorators";
+import { ModuleOptions, ModulePiece } from "../structures/piece";
 
+@ApplyOptions<ModuleOptions>({
+	name: "database"
+})
 export default class DatabaseModule extends ModulePiece {
 	/**
 	 * The prisma client, if initialized, that is used by the bot
@@ -10,14 +14,14 @@ export default class DatabaseModule extends ModulePiece {
 	/**
 	 * Initializes the database module, setting up the client
 	 */
-	public async init() {
+	public override async init() {
 		this.connect();
 	}
 
 	/**
 	 * Destroys the database module, disconnecting the client
 	 */
-	public async destroy() {
+	public override async destroy() {
 		await this.disconnect();
 	}
 

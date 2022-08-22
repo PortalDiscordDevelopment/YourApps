@@ -1380,6 +1380,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici@npm:^5.9.1":
+  version: 5.9.1
+  resolution: "undici@npm:5.9.1"
+  checksum: 8acabbac8e18943ff822574f831d03d65e697e66ef486a679763f7778f37b28980caf7097ededf4017b58c099809e8efd8509a6688f60638360fb86ef47a59df
+  languageName: node
+  linkType: hard
+
 "uri-js@npm:^4.2.2":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
@@ -1481,5 +1488,6 @@ __metadata:
     prisma: ^4.2.1
     tslib: ^2.4.0
     typescript: ^4.7.4
+    undici: ^5.9.1
   languageName: unknown
   linkType: soft
