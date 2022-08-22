@@ -37,16 +37,36 @@ export class DevUtilsModule extends ModulePiece {
 	}
 }
 
-export function ModuleInjection(options: {
+/**
+ * The options for module injection
+ */
+interface ModuleInjectionOptions {
+	/**
+	 * The name of the module to lazy load
+	 */
 	moduleName: string;
+	/**
+	 * The name of the property to add
+	 */
 	propertyName: string;
-}) {
+}
+
+/**
+ * A decorator that adds a property to the constructed class which will lazy load a module loaded in the pieces modules store
+ * @param options The options for the module injection
+ */
+export function ModuleInjection(options: ModuleInjectionOptions) {
+	// Return the actual decorator from the factory
 	return createClassDecorator(
 		<T extends { new (...args: any[]): {} }>(target: T) =>
+			// Create a proxy over the existing class constructor
 			createProxy(target, {
 				construct: (ctor, args: unknown[]) => {
+					// Construct the class as usual
 					const newClass = new ctor(...args);
+					// Add a property with the name specified in options.propertyName to the class
 					Object.defineProperty(newClass, options.propertyName, {
+						// Define a getter which will fetch the module and then replace itself with that module, effectively lazy loading it
 						get: () => {
 							// Fetch module
 							const module = container.stores
@@ -66,6 +86,7 @@ export function ModuleInjection(options: {
 							return module;
 						}
 					});
+					// Return the constructed class
 					return newClass;
 				}
 			})
