@@ -6,27 +6,18 @@ import {
 } from "@sapphire/framework";
 import { devGuild } from "../../config";
 import { inspect } from "util";
-import type { DevUtilsModule } from "../../modules/utils/devUtils";
+import { DevUtilsModule, ModuleInjection } from "../../modules/utils/devUtils";
 
 @ApplyOptions<CommandOptions>({
 	name: "eval",
 	description: "A dev command"
 })
-export class PingCommand extends Command {
-	get devUtilsModule() {
-		const module = this.container.stores
-			.get("modules")
-			.get("dev-utils") as DevUtilsModule;
-
-		Object.defineProperty(this, "devUtilsModule", {
-			value: module,
-			writable: false,
-			configurable: false,
-			enumerable: false
-		});
-
-		return module;
-	}
+@ModuleInjection({
+	moduleName: "dev-utils",
+	propertyName: "devUtilsModule"
+})
+export class EvalCommand extends Command {
+	declare devUtilsModule: DevUtilsModule;
 
 	public override async chatInputRun(
 		interaction: Command.ChatInputInteraction
