@@ -53,30 +53,44 @@ interface ModuleInjectionOptions {
 
 /**
  * A decorator that adds a property to the constructed class which will lazy load a module loaded in the pieces modules store
- * @param options The options for the module injection
+ * @param {string} name The name of the module to inject. As this is not given a property name, it defaults to the module name converted to camelCase 
  */
-export function ModuleInjection(options: ModuleInjectionOptions) {
+export function ModuleInjection(name: string): ClassDecorator;
+/**
+ * A decorator that adds a property to the constructed class which will lazy load a module loaded in the pieces modules store
+ * @param {ModuleInjectionOptions} options The options for the module injection, like the module name and property name
+ */
+export function ModuleInjection(options: ModuleInjectionOptions): ClassDecorator;
+export function ModuleInjection(optionsOrModuleName: ModuleInjectionOptions|string) {
+	const {
+		propertyName,
+		moduleName
+	} = typeof optionsOrModuleName == "string" ? {
+		propertyName: optionsOrModuleName.replace(/-(\w)/g, m => m[1].toUpperCase()),
+		moduleName: optionsOrModuleName
+	} : optionsOrModuleName
 	// Return the actual decorator from the factory
 	return createClassDecorator(
-		<T extends { new (...args: any[]): {} }>(target: T) =>
+		<T extends { new (...args: any[]): {} }>(target: T) => {
+			container.logger.debug(`Injecting module ${moduleName} into class ${target.name} with property ${target.name}#${propertyName}`)
 			// Create a proxy over the existing class constructor
 			createProxy(target, {
 				construct: (ctor, args: unknown[]) => {
 					// Construct the class as usual
 					const newClass = new ctor(...args);
 					// Add a property with the name specified in options.propertyName to the class
-					Object.defineProperty(newClass, options.propertyName, {
+					Object.defineProperty(newClass, propertyName, {
 						// Define a getter which will fetch the module and then replace itself with that module, effectively lazy loading it
 						get: () => {
 							// Fetch module
 							const module = container.stores
 								.get("modules")
-								.get(options.moduleName);
+								.get(moduleName);
 							// Throw an error if the module is invalid
 							if (!module)
-								throw new Error(`Module ${options.moduleName} not found!`);
+								throw new Error(`Module ${moduleName} not found!`);
 							// Redefine the property with the module
-							Object.defineProperty(target, options.propertyName, {
+							Object.defineProperty(target, propertyName, {
 								value: module,
 								writable: false,
 								enumerable: false,
@@ -90,5 +104,6 @@ export function ModuleInjection(options: ModuleInjectionOptions) {
 					return newClass;
 				}
 			})
+		}
 	);
 }

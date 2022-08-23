@@ -12,25 +12,22 @@ import { DevUtilsModule, ModuleInjection } from "../../modules/utils/devUtils";
 	name: "eval",
 	description: "A dev command"
 })
-@ModuleInjection({
-	moduleName: "dev-utils",
-	propertyName: "devUtilsModule"
-})
+@ModuleInjection("dev-utils")
 export class EvalCommand extends Command {
-	declare devUtilsModule: DevUtilsModule;
+	declare devUtils: DevUtilsModule;
 
 	public override async chatInputRun(
 		interaction: Command.ChatInputInteraction
 	) {
 		try {
 			await interaction.reply({
-				content: await this.devUtilsModule.haste(
+				content: await this.devUtils.haste(
 					inspect(eval(interaction.options.getString("code", true)), true, 1)
 				)
 			});
 		} catch (e) {
 			await interaction.reply({
-				content: await this.devUtilsModule.haste(
+				content: await this.devUtils.haste(
 					e instanceof Error ? e.stack ?? e.message : `${e}`
 				)
 			});
