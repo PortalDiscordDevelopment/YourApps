@@ -40,10 +40,7 @@ export class PingCommand extends Command {
 		registry: ChatInputCommand.Registry
 	) {
 		registry.registerChatInputCommand(
-			builder =>
-				builder
-					.setName("ping")
-					.setDescription("Ping bot to see if it is alive"),
+			builder => builder.setName(this.name).setDescription(this.description),
 			{
 				guildIds: dev ? [devGuild] : undefined
 			}

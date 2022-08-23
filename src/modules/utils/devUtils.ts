@@ -6,6 +6,8 @@ import {
 import { ModuleOptions, ModulePiece } from "../../structures/piece";
 import { request } from "undici";
 import { container } from "@sapphire/pieces";
+import type { ChatInputCommandContext } from "@sapphire/framework";
+import type { CommandInteraction } from "discord.js";
 
 @ApplyOptions<ModuleOptions>({
 	name: "dev-utils"
@@ -53,26 +55,34 @@ interface ModuleInjectionOptions {
 
 /**
  * A decorator that adds a property to the constructed class which will lazy load a module loaded in the pieces modules store
- * @param {string} name The name of the module to inject. As this is not given a property name, it defaults to the module name converted to camelCase 
+ * @param {string} name The name of the module to inject. As this is not given a property name, it defaults to the module name converted to camelCase
  */
 export function ModuleInjection(name: string): ClassDecorator;
 /**
  * A decorator that adds a property to the constructed class which will lazy load a module loaded in the pieces modules store
  * @param {ModuleInjectionOptions} options The options for the module injection, like the module name and property name
  */
-export function ModuleInjection(options: ModuleInjectionOptions): ClassDecorator;
-export function ModuleInjection(optionsOrModuleName: ModuleInjectionOptions|string) {
-	const {
-		propertyName,
-		moduleName
-	} = typeof optionsOrModuleName == "string" ? {
-		propertyName: optionsOrModuleName.replace(/-(\w)/g, m => m[1].toUpperCase()),
-		moduleName: optionsOrModuleName
-	} : optionsOrModuleName
+export function ModuleInjection(
+	options: ModuleInjectionOptions
+): ClassDecorator;
+export function ModuleInjection(
+	optionsOrModuleName: ModuleInjectionOptions | string
+) {
+	const { propertyName, moduleName } =
+		typeof optionsOrModuleName == "string"
+			? {
+					propertyName: optionsOrModuleName.replace(/-(\w)/g, m =>
+						m[1].toUpperCase()
+					),
+					moduleName: optionsOrModuleName
+			  }
+			: optionsOrModuleName;
 	// Return the actual decorator from the factory
 	return createClassDecorator(
 		<T extends { new (...args: any[]): {} }>(target: T) => {
-			container.logger.debug(`Injecting module ${moduleName} into class ${target.name} with property ${target.name}#${propertyName}`)
+			container.logger.debug(
+				`Injecting module ${moduleName} into class ${target.name} with property ${target.name}#${propertyName}`
+			);
 			// Create a proxy over the existing class constructor
 			createProxy(target, {
 				construct: (ctor, args: unknown[]) => {
@@ -83,12 +93,9 @@ export function ModuleInjection(optionsOrModuleName: ModuleInjectionOptions|stri
 						// Define a getter which will fetch the module and then replace itself with that module, effectively lazy loading it
 						get: () => {
 							// Fetch module
-							const module = container.stores
-								.get("modules")
-								.get(moduleName);
+							const module = container.stores.get("modules").get(moduleName);
 							// Throw an error if the module is invalid
-							if (!module)
-								throw new Error(`Module ${moduleName} not found!`);
+							if (!module) throw new Error(`Module ${moduleName} not found!`);
 							// Redefine the property with the module
 							Object.defineProperty(target, propertyName, {
 								value: module,
@@ -103,7 +110,28 @@ export function ModuleInjection(optionsOrModuleName: ModuleInjectionOptions|stri
 					// Return the constructed class
 					return newClass;
 				}
-			})
+			});
 		}
 	);
+}
+
+/**
+ * Creates a mapping chatInputRun to allow mapping subcommands to other files
+ * @param subcommandName The name of the subcommand to use
+ * @returns A chatInputRun function that maps to the subcommand's chatInputRun function
+ */
+export function createSubcommandFileMapping(subcommandName: string) {
+	const subcommand = container.stores.get("commands").get(subcommandName);
+	if (subcommand === undefined)
+		throw new Error(`Subcommand ${subcommandName} was not found!`);
+	return (...args: [CommandInteraction, ChatInputCommandContext]) => {
+		if (subcommand.chatInputRun === undefined) {
+			container.logger.warn(
+				`The subcommand ${subcommandName} was supposed to be called, but didn't have a chatInputRun method!`
+			);
+			return;
+		}
+
+		return subcommand.chatInputRun(...args);
+	};
 }

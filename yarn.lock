@@ -1506,6 +1506,7 @@ __metadata:
     "@sapphire/pieces": ^3.5.1
     "@sapphire/plugin-logger": ^3.0.0
     "@sapphire/plugin-subcommands": ^3.1.1
+    "@sapphire/result": ^2.4.0
     "@sapphire/ts-config": ^3.3.4
     "@types/common-tags": ^1.8.1
     "@types/node": ^18.7.9
