@@ -6,8 +6,6 @@ import {
 import { ModuleOptions, ModulePiece } from "../../structures/piece";
 import { request } from "undici";
 import { container } from "@sapphire/pieces";
-import type { ChatInputCommandContext } from "@sapphire/framework";
-import type { CommandInteraction } from "discord.js";
 
 @ApplyOptions<ModuleOptions>({
 	name: "dev-utils"
@@ -113,25 +111,4 @@ export function ModuleInjection(
 			});
 		}
 	);
-}
-
-/**
- * Creates a mapping chatInputRun to allow mapping subcommands to other files
- * @param subcommandName The name of the subcommand to use
- * @returns A chatInputRun function that maps to the subcommand's chatInputRun function
- */
-export function createSubcommandFileMapping(subcommandName: string) {
-	const subcommand = container.stores.get("commands").get(subcommandName);
-	if (subcommand === undefined)
-		throw new Error(`Subcommand ${subcommandName} was not found!`);
-	return (...args: [CommandInteraction, ChatInputCommandContext]) => {
-		if (subcommand.chatInputRun === undefined) {
-			container.logger.warn(
-				`The subcommand ${subcommandName} was supposed to be called, but didn't have a chatInputRun method!`
-			);
-			return;
-		}
-
-		return subcommand.chatInputRun(...args);
-	};
 }
