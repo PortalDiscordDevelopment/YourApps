@@ -48,23 +48,19 @@ export class GuildConfigModule extends ModulePiece {
 				"Invalid role passed to GuildConfigModule#addRoleToConfig!"
 			);
 
+		const original = await this.databaseModule.client.guild.findUnique({
+			where: {
+				id: BigInt(guild.id)
+			}
+		});
+
 		await this.databaseModule.client.guild.upsert({
 			create: {
 				id: BigInt(guild.id),
-				reviewRoles:
-					roleType == RoleConfigType.Review ? [BigInt(role.id)] : undefined,
-				adminRoles:
-					roleType == RoleConfigType.Admin ? [BigInt(role.id)] : undefined,
-				blacklistRoles:
-					roleType == RoleConfigType.Blacklist ? [BigInt(role.id)] : undefined
+				[roleType]: [BigInt(role.id)]
 			},
 			update: {
-				reviewRoles:
-					roleType == RoleConfigType.Review ? [BigInt(role.id)] : undefined,
-				adminRoles:
-					roleType == RoleConfigType.Admin ? [BigInt(role.id)] : undefined,
-				blacklistRoles:
-					roleType == RoleConfigType.Blacklist ? [BigInt(role.id)] : undefined
+				[roleType]: [BigInt(role.id), ...original![roleType]]
 			},
 			where: {
 				id: BigInt(guild.id)
@@ -102,19 +98,22 @@ export class GuildConfigModule extends ModulePiece {
 				id: BigInt(guild.id)
 			}
 		});
-		if (!original) throw new Error("Could not find a guild database entry to remove a role config from")
+		if (!original)
+			throw new Error(
+				"Could not find a guild database entry to remove a role config from"
+			);
 
 		const newData = {
 			...original,
-			[roleType]: original[roleType].filter(r => r === BigInt(role.id))
-		}
+			[roleType]: original[roleType].filter(r => r !== BigInt(role.id))
+		};
 
 		await this.databaseModule.client.guild.update({
 			where: {
 				id: original.id
 			},
 			data: newData
-		})
+		});
 	}
 
 	public async checkIfRoleConfigured(

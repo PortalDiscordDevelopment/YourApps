@@ -1,12 +1,8 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import type { ChatInputCommand } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import type { CommandInteraction } from "discord.js";
 import { dev, devGuild } from "../../config";
-import { GuildConfigModule, RoleConfigType } from "../../modules/config/guild";
-import { ModuleInjection } from "../../modules/utils/devUtils";
-
-// TODO Make role preconditions
+import { makeCommandRedirect } from "../../modules/utils/devUtils";
 
 @ApplyOptions<Subcommand.Options>({
 	name: "config",
@@ -18,29 +14,24 @@ import { ModuleInjection } from "../../modules/utils/devUtils";
 			entries: [
 				{
 					name: "review",
-					chatInputRun: 'configRolesReview',
+					chatInputRun: makeCommandRedirect("config-roles-review"),
+					type: "method"
+				},
+				{
+					name: "admin",
+					chatInputRun: makeCommandRedirect("config-roles-admin"),
+					type: "method"
+				},
+				{
+					name: "blacklist",
+					chatInputRun: makeCommandRedirect("config-roles-blacklist"),
 					type: "method"
 				}
 			]
 		}
 	]
 })
-@ModuleInjection("guild-config")
 export class ConfigCommand extends Subcommand {
-	declare guildConfig: GuildConfigModule;
-
-	async configRolesReview(interaction: CommandInteraction) {
-		const role = interaction.options.getRole("role", true);
-		const roleConfigured = await this.guildConfig.checkIfRoleConfigured(interaction.guildId!, role.id, RoleConfigType.Review)
-		if (roleConfigured) {
-			await this.guildConfig.removeRoleFromConfig(interaction.guildId!, role.id, RoleConfigType.Review);
-			await interaction.reply(`Successfully removed role <@&${role.id}> from this server's review roles.`)
-		} else {
-			await this.guildConfig.addRoleToConfig(interaction.guildId!, role.id, RoleConfigType.Review);
-			await interaction.reply(`Successfully added role <@&${role.id}> to this server's review roles.`)
-		}
-	}
-
 	public override registerApplicationCommands(
 		registry: ChatInputCommand.Registry
 	) {
@@ -62,7 +53,35 @@ export class ConfigCommand extends Subcommand {
 									.addRoleOption(roleOptionBuilder =>
 										roleOptionBuilder
 											.setName("role")
-											.setDescription("The review role to add or remove (toggles)")
+											.setDescription(
+												"The review role to add or remove (toggles)"
+											)
+											.setRequired(true)
+									)
+							)
+							.addSubcommand(subcommandBuilder =>
+								subcommandBuilder
+									.setName("admin")
+									.setDescription("Modifies the admin roles of the server")
+									.addRoleOption(roleOptionBuilder =>
+										roleOptionBuilder
+											.setName("role")
+											.setDescription(
+												"The admin role to add or remove (toggles)"
+											)
+											.setRequired(true)
+									)
+							)
+							.addSubcommand(subcommandBuilder =>
+								subcommandBuilder
+									.setName("blacklist")
+									.setDescription("Modifies the blacklist roles of the server")
+									.addRoleOption(roleOptionBuilder =>
+										roleOptionBuilder
+											.setName("role")
+											.setDescription(
+												"The blacklist role to add or remove (toggles)"
+											)
 											.setRequired(true)
 									)
 							)

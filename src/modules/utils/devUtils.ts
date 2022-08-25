@@ -6,6 +6,8 @@ import {
 import { ModuleOptions, ModulePiece } from "../../structures/piece";
 import { request } from "undici";
 import { container } from "@sapphire/pieces";
+import type { CommandInteraction } from "discord.js";
+import { ChatInputCommand, ChatInputCommandContext, Events } from "@sapphire/framework";
 
 @ApplyOptions<ModuleOptions>({
 	name: "dev-utils"
@@ -82,7 +84,7 @@ export function ModuleInjection(
 				`Injecting module ${moduleName} into class ${target.name} with property ${target.name}#${propertyName}`
 			);
 			// Create a proxy over the existing class constructor
-			createProxy(target, {
+			return createProxy(target, {
 				construct: (ctor, args: unknown[]) => {
 					// Construct the class as usual
 					const newClass = new ctor(...args);
@@ -111,4 +113,43 @@ export function ModuleInjection(
 			});
 		}
 	);
+}
+
+/**
+ * Creates a dummy chatInputRun that just redirects to another command's chatInputRun method, for use with subcommands
+ * @param name The name of the command to redirect to
+ * @returns A chatInputRun function that redirects to the real one
+ */
+export function makeCommandRedirect(name: string) {
+	let command: ChatInputCommand;
+
+	return async (
+		interaction: CommandInteraction,
+		context: ChatInputCommandContext
+	) => {
+		if (!command) {
+			// Fetch command if haven't already
+			const foundCommand = container.stores.get("commands").get(name);
+			if (!foundCommand)
+				throw new Error(
+					`External command with name ${name} was supposed to be run, but it could not be found!`
+				);
+			if (!foundCommand.chatInputRun)
+				throw new Error(
+					`External command with name ${name} was supposed to be run, but it did not have a chatInputRun method!`
+				);
+
+			command = foundCommand as ChatInputCommand;
+		}
+
+		// Check command preconditions
+		const preconditionResult = await command.preconditions.chatInputRun(interaction, command, context);
+		if (preconditionResult.isErr()) {
+			container.client.emit(Events.ChatInputCommandDenied, preconditionResult.unwrapErr(), { command, context, interaction });
+			return;
+		}
+
+		// Run the real chatInputRun
+		return command.chatInputRun(interaction, context);
+	};
 }
