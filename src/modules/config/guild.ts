@@ -11,6 +11,11 @@ export enum RoleConfigType {
 	Blacklist = "blacklistRoles"
 }
 
+export enum DefaultRolePermissions {
+	Review = "MANAGE_ROLES",
+	Admin = "MANAGE_GUILD"
+}
+
 @ApplyOptions<ModuleOptions>({
 	name: "guild-config"
 })
@@ -116,43 +121,6 @@ export class GuildConfigModule extends ModulePiece {
 		});
 	}
 
-	public async checkIfRoleConfigured(
-		guildId: Snowflake,
-		roleId: Snowflake,
-		roleType: RoleConfigType
-	): Promise<boolean> {
-		if (this.databaseModule.client === null)
-			throw new Error("Database client not initialized yet!");
-		// Guild validation
-		const guild = await Result.fromAsync(() =>
-			this.container.client.guilds.fetch(guildId)
-		).then(async result => result.unwrapOr(null));
-		if (guild === null)
-			throw new Error(
-				"Invalid guild passed to GuildConfigModule#addRoleToConfig!"
-			);
-
-		// Role validation
-		const role = await Result.fromAsync(() => guild.roles.fetch(roleId)).then(
-			async result => result.unwrapOr(null)
-		);
-		if (role === null)
-			throw new Error(
-				"Invalid role passed to GuildConfigModule#addRoleToConfig!"
-			);
-
-		// Query the guild in the database
-		const query = await this.databaseModule.client.guild.findUnique({
-			where: {
-				id: BigInt(guild.id)
-			}
-		});
-
-		return query === null
-			? false // If guild isn't found in the database, then the role cannot be configured
-			: query[roleType].includes(BigInt(role.id)); // Otherwise, check if the role is included in the corresponding array
-	}
-
 	/**
 	 * Checks if a given user has one of the configured roles for a specific type in a given guild.
 	 * Will also return `null` if no roles are configured in the given guild.
@@ -162,33 +130,15 @@ export class GuildConfigModule extends ModulePiece {
 	 * @param roleType The type of role to check fo in the user
 	 * @returns A boolean stating whether or not the user has the role type or not (or null if the server doesn't have any configured roles for the given type) 
 	 */
-	public async checkUserHasRoleType(guildId: string, userId: string, roleType: RoleConfigType): Promise<boolean | null> {
+	public async getRolesForType(guildId: string, roleType: RoleConfigType): Promise<string[] | null> {
 		// Ensure database is connected
 		if (this.databaseModule.client === null)
 			throw new Error("Database client not initialized yet!");
 
-		// Guild validation
-		const guild = await Result.fromAsync(() =>
-			this.container.client.guilds.fetch(guildId)
-		).then(async result => result.unwrapOr(null));
-		if (guild === null)
-			throw new Error(
-				"Invalid guild passed to GuildConfigModule#addRoleToConfig!"
-			);
-
-		// Member validation
-		const member = await Result.fromAsync(() => guild.members.fetch(userId)).then(
-			async result => result.unwrapOr(null)
-		);
-		if (member === null)
-			throw new Error(
-				"Invalid member passed to GuildConfigModule#addRoleToConfig!"
-			);
-
 		// Fetch guild from database to get the roles
 		const databaseGuild = await this.databaseModule.client.guild.findUnique({
 			where: {
-				id: BigInt(guild.id)
+				id: BigInt(guildId)
 			}
 		})
 
@@ -196,6 +146,6 @@ export class GuildConfigModule extends ModulePiece {
 		if (databaseGuild[roleType].length < 1) return null; // If there are no configured roles, return null because of the same as above
 
 		// Lastly, filter the configured roles for ones that the member has, and if they have at least 1, return true to say that they do have the role
-		return databaseGuild[roleType].filter(id => member.roles.cache.has(String(id))).length >= 1
+		return databaseGuild[roleType].map(id => id.toString());
 	}
 }
