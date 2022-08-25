@@ -41,8 +41,8 @@ export class EvalCommand extends Command {
 		registry.registerChatInputCommand(
 			builder =>
 				builder
-					.setName("eval")
-					.setDescription("A dev command")
+					.setName(this.name)
+					.setDescription(this.description)
 					.addStringOption(optionBuilder =>
 						optionBuilder
 							.setName("code")

@@ -8,7 +8,10 @@
 		"inlineSourceMap": true,
 		"outDir": "out",
 		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": false
+		"allowSyntheticDefaultImports": false,
+		"paths": {
+			"src/*": ["./src/*"]
+		}
 	},
 	"include": ["src/**/*.ts", "src/i18n/**/*.json"]
 }

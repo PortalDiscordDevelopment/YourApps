@@ -1310,6 +1310,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"src@link:./out::locator=yourapps%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "src@link:./out::locator=yourapps%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "strip-ansi@npm:^6.0.1":
   version: 6.0.1
   resolution: "strip-ansi@npm:6.0.1"
@@ -1506,6 +1512,7 @@ __metadata:
     "@sapphire/pieces": ^3.5.1
     "@sapphire/plugin-logger": ^3.0.0
     "@sapphire/plugin-subcommands": ^3.1.1
+    "@sapphire/result": ^2.4.0
     "@sapphire/ts-config": ^3.3.4
     "@types/common-tags": ^1.8.1
     "@types/node": ^18.7.9
@@ -1516,6 +1523,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     prettier: ^2.7.1
     prisma: ^4.2.1
+    src: "link:./out"
     tslib: ^2.4.0
     typescript: ^4.7.4
     undici: ^5.9.1

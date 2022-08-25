@@ -10,8 +10,10 @@
 		"@sapphire/pieces": "^3.5.1",
 		"@sapphire/plugin-logger": "^3.0.0",
 		"@sapphire/plugin-subcommands": "^3.1.1",
+		"@sapphire/result": "^2.4.0",
 		"common-tags": "^1.8.2",
 		"discord.js": "^13.10.2",
+		"src": "link:./out",
 		"tslib": "^2.4.0",
 		"undici": "^5.9.1"
 	},
