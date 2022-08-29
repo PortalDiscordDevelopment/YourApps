@@ -124,13 +124,16 @@ export class GuildConfigModule extends ModulePiece {
 	/**
 	 * Checks if a given user has one of the configured roles for a specific type in a given guild.
 	 * Will also return `null` if no roles are configured in the given guild.
-	 * 
+	 *
 	 * @param guildId The ID of the guild to check in
 	 * @param userId The ID of the user to check the roles for
 	 * @param roleType The type of role to check fo in the user
-	 * @returns A boolean stating whether or not the user has the role type or not (or null if the server doesn't have any configured roles for the given type) 
+	 * @returns A boolean stating whether or not the user has the role type or not (or null if the server doesn't have any configured roles for the given type)
 	 */
-	public async getRolesForType(guildId: string, roleType: RoleConfigType): Promise<string[] | null> {
+	public async getRolesForType(
+		guildId: string,
+		roleType: RoleConfigType
+	): Promise<string[] | null> {
 		// Ensure database is connected
 		if (this.databaseModule.client === null)
 			throw new Error("Database client not initialized yet!");
@@ -140,7 +143,7 @@ export class GuildConfigModule extends ModulePiece {
 			where: {
 				id: BigInt(guildId)
 			}
-		})
+		});
 
 		if (databaseGuild === null) return null; // If there is no guild in the first place, return null to signal they neither have the role or don't have it
 		if (databaseGuild[roleType].length < 1) return null; // If there are no configured roles, return null because of the same as above

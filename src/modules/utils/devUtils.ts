@@ -7,7 +7,11 @@ import { ModuleOptions, ModulePiece } from "../../structures/piece";
 import { request } from "undici";
 import { container } from "@sapphire/pieces";
 import type { CommandInteraction } from "discord.js";
-import { ChatInputCommand, ChatInputCommandContext, Events } from "@sapphire/framework";
+import {
+	ChatInputCommand,
+	ChatInputCommandContext,
+	Events
+} from "@sapphire/framework";
 
 @ApplyOptions<ModuleOptions>({
 	name: "dev-utils"
@@ -143,9 +147,17 @@ export function makeCommandRedirect(name: string) {
 		}
 
 		// Check command preconditions
-		const preconditionResult = await command.preconditions.chatInputRun(interaction, command, context);
+		const preconditionResult = await command.preconditions.chatInputRun(
+			interaction,
+			command,
+			context
+		);
 		if (preconditionResult.isErr()) {
-			container.client.emit(Events.ChatInputCommandDenied, preconditionResult.unwrapErr(), { command, context, interaction });
+			container.client.emit(
+				Events.ChatInputCommandDenied,
+				preconditionResult.unwrapErr(),
+				{ command, context, interaction }
+			);
 			return;
 		}
 
