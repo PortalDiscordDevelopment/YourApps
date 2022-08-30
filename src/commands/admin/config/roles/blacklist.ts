@@ -15,12 +15,11 @@ export class ConfigRoleBlacklistCommand extends Command {
 
 	override async chatInputRun(interaction: CommandInteraction) {
 		const role = interaction.options.getRole("role", true);
-		const roleConfigured = await this.guildConfig.checkIfRoleConfigured(
+		const guildBlacklistRoles = await this.guildConfig.getRolesForType(
 			interaction.guildId!,
-			role.id,
 			RoleConfigType.Blacklist
 		);
-		if (roleConfigured) {
+		if (guildBlacklistRoles !== null && guildBlacklistRoles.includes(role.id)) {
 			await this.guildConfig.removeRoleFromConfig(
 				interaction.guildId!,
 				role.id,

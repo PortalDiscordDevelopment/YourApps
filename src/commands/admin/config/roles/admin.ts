@@ -15,12 +15,11 @@ export class ConfigRolesAdminCommand extends Command {
 
 	override async chatInputRun(interaction: CommandInteraction) {
 		const role = interaction.options.getRole("role", true);
-		const roleConfigured = await this.guildConfig.checkIfRoleConfigured(
+		const guildAdminRoles = await this.guildConfig.getRolesForType(
 			interaction.guildId!,
-			role.id,
 			RoleConfigType.Admin
 		);
-		if (roleConfigured) {
+		if (guildAdminRoles !== null && guildAdminRoles.includes(role.id)) {
 			await this.guildConfig.removeRoleFromConfig(
 				interaction.guildId!,
 				role.id,

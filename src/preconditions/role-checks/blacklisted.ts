@@ -2,11 +2,9 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Identifiers, Precondition } from "@sapphire/framework";
 import type {
 	CommandInteraction,
-	GuildMemberRoleManager,
-	Permissions
+	GuildMemberRoleManager
 } from "discord.js";
 import {
-	DefaultRolePermissions,
 	GuildConfigModule,
 	RoleConfigType
 } from "src/modules/config/guild";
@@ -14,16 +12,16 @@ import { ModuleInjection } from "src/modules/utils/devUtils";
 import { PreconditionIdentifier } from "../../types";
 
 @ApplyOptions<Precondition.Options>({
-	name: "ReviewerOnly"
+	name: "Blacklisted"
 })
 @ModuleInjection("guild-config")
-export class ReviewerCheck extends Precondition {
+export class BlacklistedCheck extends Precondition {
 	declare guildConfig: GuildConfigModule;
 
 	override async chatInputRun(interaction: CommandInteraction) {
 		if (!interaction.guildId || !interaction.member) {
 			this.container.logger.warn(
-				"A DM command was checked in the reviewer role check precondition!"
+				"A DM command was checked in the admin role check precondition!"
 			);
 			// Send the normal GuildOnly error
 			return this.error({
@@ -33,34 +31,23 @@ export class ReviewerCheck extends Precondition {
 		}
 		const rolesConfigured = await this.guildConfig.getRolesForType(
 			interaction.guildId,
-			RoleConfigType.Review
+			RoleConfigType.Blacklist
 		);
-		if (rolesConfigured === null) {
-			return (interaction.member.permissions as Readonly<Permissions>).has(
-				DefaultRolePermissions.Review,
-				true
-			)
-				? this.ok()
-				: this.error({
-						identifier: PreconditionIdentifier.NotReviewer,
-						message:
-							"You do not have the manage roles permission that is required for this command."
-				  });
-		}
+		if (rolesConfigured === null) return this.ok();
 		return (interaction.member.roles as GuildMemberRoleManager).cache.hasAny(
 			...rolesConfigured
 		)
-			? this.ok()
-			: this.error({
-					identifier: PreconditionIdentifier.NotReviewer,
+			? this.error({
+					identifier: PreconditionIdentifier.Blacklisted,
 					message:
-						"You do not have any of the configured review roles that are required for this command."
-			  });
+						"You have a role that blacklists you from running this command."
+			  })
+			: this.ok();
 	}
 }
 
 declare module "@sapphire/framework" {
 	interface Preconditions {
-		ReviewerOnly: never;
+		Blacklisted: never;
 	}
 }

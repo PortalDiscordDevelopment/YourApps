@@ -14,16 +14,16 @@ import { ModuleInjection } from "src/modules/utils/devUtils";
 import { PreconditionIdentifier } from "../../types";
 
 @ApplyOptions<Precondition.Options>({
-	name: "ReviewerOnly"
+	name: "AdminOnly"
 })
 @ModuleInjection("guild-config")
-export class ReviewerCheck extends Precondition {
+export class AdminCheck extends Precondition {
 	declare guildConfig: GuildConfigModule;
 
 	override async chatInputRun(interaction: CommandInteraction) {
 		if (!interaction.guildId || !interaction.member) {
 			this.container.logger.warn(
-				"A DM command was checked in the reviewer role check precondition!"
+				"A DM command was checked in the admin role check precondition!"
 			);
 			// Send the normal GuildOnly error
 			return this.error({
@@ -33,18 +33,18 @@ export class ReviewerCheck extends Precondition {
 		}
 		const rolesConfigured = await this.guildConfig.getRolesForType(
 			interaction.guildId,
-			RoleConfigType.Review
+			RoleConfigType.Admin
 		);
 		if (rolesConfigured === null) {
 			return (interaction.member.permissions as Readonly<Permissions>).has(
-				DefaultRolePermissions.Review,
+				DefaultRolePermissions.Admin,
 				true
 			)
 				? this.ok()
 				: this.error({
-						identifier: PreconditionIdentifier.NotReviewer,
+						identifier: PreconditionIdentifier.NotAdmin,
 						message:
-							"You do not have the manage roles permission that is required for this command."
+							"You do not have the manage server permission that is required for this command."
 				  });
 		}
 		return (interaction.member.roles as GuildMemberRoleManager).cache.hasAny(
@@ -52,15 +52,15 @@ export class ReviewerCheck extends Precondition {
 		)
 			? this.ok()
 			: this.error({
-					identifier: PreconditionIdentifier.NotReviewer,
+					identifier: PreconditionIdentifier.NotAdmin,
 					message:
-						"You do not have any of the configured review roles that are required for this command."
+						"You do not have any of the configured admin roles that are required for this command."
 			  });
 	}
 }
 
 declare module "@sapphire/framework" {
 	interface Preconditions {
-		ReviewerOnly: never;
+		AdminOnly: never;
 	}
 }
