@@ -1,13 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Identifiers, Precondition } from "@sapphire/framework";
-import type {
-	CommandInteraction,
-	GuildMemberRoleManager
-} from "discord.js";
-import {
-	GuildConfigModule,
-	RoleConfigType
-} from "src/modules/config/guild";
+import type { CommandInteraction, GuildMemberRoleManager } from "discord.js";
+import { GuildConfigModule, RoleConfigType } from "src/modules/config/guild";
 import { ModuleInjection } from "src/modules/utils/devUtils";
 import { PreconditionIdentifier } from "../../types";
 
