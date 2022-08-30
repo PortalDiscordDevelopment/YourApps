@@ -7,6 +7,7 @@ import type { CommandInteraction } from "discord.js";
 })
 export class PositionsLimitPrecondition extends Precondition {
 	override async chatInputRun(interaction: CommandInteraction) {
+		
 		return this.ok();
 	}
 }
