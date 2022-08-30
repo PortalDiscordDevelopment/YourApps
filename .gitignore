@@ -4,6 +4,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.pnp.*
 
 src/config/*
 !src/config/index.example.ts
@@ -11,3 +12,5 @@ src/config/*
 out
 node_modules
 .env
+
+.prisma/generated

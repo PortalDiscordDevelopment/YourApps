@@ -3,7 +3,7 @@
 	"packageManager": "yarn@3.2.1",
 	"main": "out/index.js",
 	"dependencies": {
-		"@prisma/client": "^4.2.1",
+		"@prisma/client": "4.2.1",
 		"@sapphire/decorators": "^5.0.0",
 		"@sapphire/discord.js-utilities": "^5.0.0",
 		"@sapphire/framework": "^3.0.0",
@@ -21,11 +21,12 @@
 		"@sapphire/ts-config": "^3.3.4",
 		"@types/common-tags": "^1.8.1",
 		"@types/node": "^18.7.9",
+		"@yarnpkg/pnpify": "^3.1.5",
 		"discord-api-types": "^0.37.3",
 		"eslint": "^8.22.0",
 		"eslint-config-prettier": "^8.5.0",
 		"prettier": "^2.7.1",
-		"prisma": "^4.2.1",
+		"prisma": "4.2.1",
 		"typescript": "^4.7.4"
 	},
 	"scripts": {
@@ -35,6 +36,9 @@
 		"fmt:check": "prettier . --check",
 		"fmt": "prettier . --write && prisma format",
 		"db:push": "prisma db push",
-		"db:update": "prisma generate"
+		"db:update": "pnpify prisma generate"
+	},
+	"resolutions": {
+		"@prisma/client@4.2.1": "patch:@prisma/client@npm:4.2.1#.yarn/patches/@prisma-client-npm-4.2.1-b2d8c596fe.patch"
 	}
 }
