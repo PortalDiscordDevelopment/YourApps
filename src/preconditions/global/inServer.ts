@@ -21,6 +21,6 @@ export class InServerPrecondition extends Precondition {
 				message:
 					"In order for commands to work, this server must be cached. Not being cached is most likely a result of this bot being invited as an application, rather than a bot user."
 			});
-        return this.ok();
+		return this.ok();
 	}
 }
