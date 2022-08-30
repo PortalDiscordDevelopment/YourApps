@@ -23,12 +23,31 @@ model User {
 
 // Guild scheman
 model Guild {
-  id             BigInt   @id
-  logChannel     BigInt?  @map("log_channel")
-  archiveChannel BigInt?  @map("archive_channel")
-  logPings       BigInt[] @default([]) @map("log_pings")
-  adminRoles     BigInt[] @default([]) @map("admin_roles")
-  reviewRoles    BigInt[] @default([]) @map("review_roles")
-  blacklistRoles BigInt[] @default([]) @map("blacklist_roles")
-  legacyPremium  BigInt[] @default([]) @map("legacy_premium")
+  // The ID of the guild
+  id              BigInt     @id
+  // The channel to log configuration changes and new submissions to
+  logChannel      BigInt?    @map("log_channel")
+  // The channel to archive all reviewed applications to
+  archiveChannel  BigInt?    @map("archive_channel")
+  // The roles to ping when an application is submitted
+  submissionPings BigInt[]   @default([]) @map("submission_pings")
+  // The roles that are considered "admin" and are allowed to change the bot configuration
+  adminRoles      BigInt[]   @default([]) @map("admin_roles")
+  // The roles that are considered "reviewers" and are allowed to review submissions
+  reviewRoles     BigInt[]   @default([]) @map("review_roles")
+  // Roles that are blacklisted from applying to positions
+  blacklistRoles  BigInt[]   @default([]) @map("blacklist_roles")
+  // If this guild had legacy premium or not
+  legacyPremium   BigInt[]   @default([]) @map("legacy_premium")
+  // The positions in this guild
+  Position        Position[]
+}
+
+model Position {
+  // An autoincrementing ID for this position
+  id      Int    @id @default(autoincrement())
+  // The ID of the guild that contians this position
+  guildId BigInt
+  // The database guild that contains this position
+  guild   Guild  @relation(fields: [guildId], references: [id])
 }
