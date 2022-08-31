@@ -28,16 +28,15 @@ export class PositionsLimitPrecondition extends Precondition {
 				positions: true
 			}
 		});
-		if (!guildModel) guildModel = await this.databaseModule.client!.guild.create({
-			data: {
-				id: BigInt(interaction.guildId!)
-			},
-			include: {
-				positions: true
-			}
-		});
-
-		console.log(guildModel)
+		if (!guildModel)
+			guildModel = await this.databaseModule.client!.guild.create({
+				data: {
+					id: BigInt(interaction.guildId!)
+				},
+				include: {
+					positions: true
+				}
+			});
 
 		if (
 			guildModel.positions.length >=
