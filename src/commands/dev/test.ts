@@ -6,7 +6,7 @@ import { devGuild } from "src/config";
 @ApplyOptions<Command.Options>({
 	name: "test",
 	description: "A test command",
-	preconditions: ["Blacklisted"]
+	preconditions: ["PositionsLimit"]
 })
 export class TestCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {

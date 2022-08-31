@@ -1,6 +1,6 @@
 import { container, SapphireClient } from "@sapphire/framework";
 import * as config from "./config";
-import { ModuleStore } from "./structures/store";
+import { ModuleStore } from "./structures/modules/store";
 
 // Sapphire plugins
 import "@sapphire/plugin-logger/register";

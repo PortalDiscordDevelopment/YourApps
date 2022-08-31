@@ -1,7 +1,7 @@
 // Define configuration for the database
 generator client {
   provider = "prisma-client-js"
-  output = "./client"
+  output   = "./client"
 }
 
 datasource db {
@@ -12,6 +12,16 @@ datasource db {
 // Enums
 enum Language {
   EN_US
+}
+
+enum PositionState {
+  OPEN
+  CLOSED
+}
+
+enum QuestionType {
+  TEXT
+  NUMBER
 }
 
 // User schema
@@ -39,16 +49,44 @@ model Guild {
   // Roles that are blacklisted from applying to positions
   blacklistRoles  BigInt[]   @default([]) @map("blacklist_roles")
   // If this guild had legacy premium or not
-  legacyPremium   BigInt[]   @default([]) @map("legacy_premium")
+  legacyPremium   Boolean    @default(false) @map("legacy_premium")
   // The positions in this guild
-  Position        Position[]
+  positions       Position[]
 }
 
 model Position {
   // An autoincrementing ID for this position
-  id      Int    @id @default(autoincrement())
+  id              Int                @id @default(autoincrement())
   // The ID of the guild that contians this position
-  guildId BigInt
+  guildId         BigInt
   // The database guild that contains this position
-  guild   Guild  @relation(fields: [guildId], references: [id])
+  guild           Guild              @relation(fields: [guildId], references: [id])
+  // The name of this position
+  name            String
+  // The description of this position
+  description     String?
+  // The reward roles for this position
+  rewardRoles     BigInt[]           @default([]) @map("reward_roles")
+  // The remove roles for this position
+  removeRoles     BigInt[]           @default([]) @map("remove_roles")
+  // The required roles for this position
+  requiredRoles   BigInt[]           @default([]) @map("required_roles")
+  // The ID of the custom command for this position
+  customCommandId BigInt?            @map("custom_command_id")
+  // State (open, closed)
+  state           PositionState      @default(CLOSED)
+  // Cooldown (how long people have to wait before applying again)
+  cooldown        BigInt             @default(0)
+  // Minimum join time (how long people have to be in a server to apply for the position)
+  minimumJoinTime BigInt             @default(0)
+  // The actual questions for this position
+  positions       PositionQuestion[]
+}
+
+model PositionQuestion {
+  id         Int          @id @default(autoincrement())
+  type       QuestionType @default(TEXT)
+  question   String
+  positionId Int
+  position   Position     @relation(fields: [positionId], references: [id])
 }

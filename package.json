@@ -36,7 +36,7 @@
 		"dev": "echo Building... && yarn build && echo Starting... && node --enable-source-maps out",
 		"fmt:check": "prettier . --check",
 		"fmt": "prettier . --write && prisma format",
-		"db:push": "prisma db push",
-		"db:update": "pnpify prisma generate"
+		"db:push": "pnpify prisma db push",
+		"db:generate": "pnpify prisma generate"
 	}
 }

@@ -1,6 +1,6 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Snowflake } from "discord.js";
-import { type ModuleOptions, ModulePiece } from "../../structures/piece";
+import { type ModuleOptions, ModulePiece } from "../../structures/modules/piece";
 import type DatabaseModule from "../database";
 import { ModuleInjection } from "../utils/devUtils";
 import { Result } from "@sapphire/result";

@@ -4,10 +4,10 @@ export enum PreconditionIdentifier {
 	Blacklisted = "blacklisted",
 	NotGuild = "notGuild",
 	NotCached = "notCached",
-	PositionLimit = "positionLimit",
-	RoleLimit = "roleLimit",
+	PositionsLimit = "positionLimit",
+	RolesLimit = "roleLimit",
 	QuestionsLimit = "questionsLimit",
-	customCommandsLimit = "customCommandsLimit"
+	CustomCommandsLimit = "customCommandsLimit"
 }
 
 export enum StandardLimits {

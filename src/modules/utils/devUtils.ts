@@ -3,7 +3,7 @@ import {
 	createClassDecorator,
 	createProxy
 } from "@sapphire/decorators";
-import { ModuleOptions, ModulePiece } from "../../structures/piece";
+import { ModuleOptions, ModulePiece } from "../../structures/modules/piece";
 import { request } from "undici";
 import { container } from "@sapphire/pieces";
 import type { CommandInteraction } from "discord.js";
