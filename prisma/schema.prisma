@@ -1,6 +1,7 @@
 // Define configuration for the database
 generator client {
   provider = "prisma-client-js"
+  output = "./client"
 }
 
 datasource db {

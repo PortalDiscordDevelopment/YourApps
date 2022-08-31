@@ -3,6 +3,7 @@
 	"packageManager": "yarn@3.2.1",
 	"main": "out/index.js",
 	"dependencies": {
+		".prisma": "link:./prisma",
 		"@prisma/client": "4.2.1",
 		"@sapphire/decorators": "^5.0.0",
 		"@sapphire/discord.js-utilities": "^5.0.0",
@@ -37,8 +38,5 @@
 		"fmt": "prettier . --write && prisma format",
 		"db:push": "prisma db push",
 		"db:update": "pnpify prisma generate"
-	},
-	"resolutions": {
-		"@prisma/client@4.2.1": "patch:@prisma/client@npm:4.2.1#.yarn/patches/@prisma-client-npm-4.2.1-b2d8c596fe.patch"
 	}
 }

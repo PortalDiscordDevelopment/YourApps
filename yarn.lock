@@ -5,6 +5,12 @@ __metadata:
   version: 6
   cacheKey: 8
 
+".prisma@link:./prisma::locator=yourapps%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: ".prisma@link:./prisma::locator=yourapps%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "@arcanis/slice-ansi@npm:^1.1.1":
   version: 1.1.1
   resolution: "@arcanis/slice-ansi@npm:1.1.1"
@@ -135,20 +141,6 @@ __metadata:
     prisma:
       optional: true
   checksum: 2eefe7182f2ebc26c35777e9ff22acb9c1d1f6e0988c518b32063d7677d066ab7258d13a0ee851addc77526dc0de9c05a02d5688c55377d65ddee1b6866b9e95
-  languageName: node
-  linkType: hard
-
-"@prisma/client@patch:@prisma/client@npm:4.2.1#.yarn/patches/@prisma-client-npm-4.2.1-b2d8c596fe.patch::locator=yourapps%40workspace%3A.":
-  version: 4.2.1
-  resolution: "@prisma/client@patch:@prisma/client@npm%3A4.2.1#.yarn/patches/@prisma-client-npm-4.2.1-b2d8c596fe.patch::version=4.2.1&hash=60de09&locator=yourapps%40workspace%3A."
-  dependencies:
-    "@prisma/engines-version": 4.2.0-33.2920a97877e12e055c1333079b8d19cee7f33826
-  peerDependencies:
-    prisma: "*"
-  peerDependenciesMeta:
-    prisma:
-      optional: true
-  checksum: 3327902c9e3bcb261633a8c4292b0d3dd38acc8cfaa5e3c91ebd868f3a42ab245d04b7cea581930922f9002c93da2778f9a3069982440f50327910f52fd02a8e
   languageName: node
   linkType: hard
 
@@ -2449,6 +2441,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yourapps@workspace:."
   dependencies:
+    .prisma: "link:./prisma"
     "@prisma/client": 4.2.1
     "@sapphire/decorators": ^5.0.0
     "@sapphire/discord.js-utilities": ^5.0.0
