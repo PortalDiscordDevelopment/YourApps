@@ -10,14 +10,18 @@ import { devGuild } from "src/config";
 })
 export class TestCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
-		interaction.reply(":+1:");
+		interaction.reply(interaction.options.getString("position") + " :+1:");
 	}
 
 	public override registerApplicationCommands(
 		registry: ChatInputCommand.Registry
 	) {
 		registry.registerChatInputCommand(
-			builder => builder.setName(this.name).setDescription(this.description),
+			builder =>
+				builder
+					.setName(this.name)
+					.setDescription(this.description)
+					.addStringOption(stringOptionBuilder => stringOptionBuilder.setRequired(true).setAutocomplete(true).setName("position").setDescription("dn")),
 			{
 				guildIds: [devGuild]
 			}

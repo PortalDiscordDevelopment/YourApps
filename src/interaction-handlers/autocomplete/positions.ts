@@ -24,23 +24,27 @@ export class PositionAutocomplete extends InteractionHandler {
 
 	override async parse(interaction: AutocompleteInteraction) {
 		const focusedOption = interaction.options.getFocused(true);
-		if (focusedOption.name !== "position")
+		if (focusedOption.name !== "position") {
 			this.container.logger.debug(
 				`Skipping positions autocomplete for option ${focusedOption.name}`
 			);
+			return this.none();
+		}
 
 		const positions = await this.database.client!.position.findMany({
 			where: {
 				guildId: BigInt(interaction.guildId!)
 			}
 		});
-		if (positions.length < 1) return this.none();
+		if (positions.length < 1) return this.some([]);
 		else
 			return this.some(
-				positions.map(p => ({
-					name: p.name,
-					value: p.id.toString()
-				}))
+				positions
+					.filter(p => `${p.id} - ${p.name}`.includes(focusedOption.value))
+					.map(p => ({
+						name: `${p.id} - ${p.name}`,
+						value: p.id.toString()
+					}))
 			);
 	}
 }
