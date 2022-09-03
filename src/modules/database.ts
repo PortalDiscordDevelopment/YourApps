@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { ApplyOptions } from "@sapphire/decorators";
-import { ModuleOptions, ModulePiece } from "../structures/modules/piece";
+import { ModuleOptions, ModulePiece } from "../structures/modules/piece.js";
 
 @ApplyOptions<ModuleOptions>({
 	name: "database"

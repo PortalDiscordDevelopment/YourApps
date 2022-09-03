@@ -38,5 +38,6 @@
 		"fmt": "prettier . --write && prisma format",
 		"db:push": "pnpify prisma db push",
 		"db:generate": "pnpify prisma generate"
-	}
+	},
+	"type": "module"
 }

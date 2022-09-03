@@ -11,7 +11,9 @@
 		"allowSyntheticDefaultImports": false,
 		"paths": {
 			"src/*": ["./src/*"]
-		}
+		},
+		"module": "Node16",
+		"moduleResolution": "Node16"
 	},
 	"include": ["src/**/*.ts", "src/i18n/**/*.json"]
 }

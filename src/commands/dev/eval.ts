@@ -4,9 +4,9 @@ import {
 	type CommandOptions,
 	Command
 } from "@sapphire/framework";
-import { devGuild } from "../../config";
+import { devGuild } from "../../config/index.js";
 import { inspect } from "util";
-import { DevUtilsModule, ModuleInjection } from "../../modules/utils/devUtils";
+import { DevUtilsModule, ModuleInjection } from "../../modules/utils/devUtils.js";
 
 @ApplyOptions<CommandOptions>({
 	name: "eval",
@@ -23,10 +23,8 @@ export class EvalCommand extends Command {
 			await interaction.reply({
 				content: await this.devUtils.haste(
 					inspect(
-						await eval(
-							interaction.options.getString("code", true)
-						), 
-						true, 
+						await eval(interaction.options.getString("code", true)),
+						true,
 						1
 					)
 				)

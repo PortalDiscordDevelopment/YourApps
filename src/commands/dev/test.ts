@@ -1,7 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { ChatInputCommand, Command } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
-import { devGuild } from "src/config";
+import { devGuild } from "src/config/index.js";
 
 @ApplyOptions<Command.Options>({
 	name: "test",

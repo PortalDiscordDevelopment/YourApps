@@ -1,13 +1,13 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Precondition } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
-import type DatabaseModule from "src/modules/database";
-import { ModuleInjection } from "src/modules/utils/devUtils";
+import type DatabaseModule from "src/modules/database.js";
+import { ModuleInjection } from "src/modules/utils/devUtils.js";
 import {
 	PreconditionIdentifier,
 	PremiumLimits,
 	StandardLimits
-} from "src/types";
+} from "src/types.js";
 
 @ApplyOptions<Precondition.Options>({
 	name: "PositionsLimit"

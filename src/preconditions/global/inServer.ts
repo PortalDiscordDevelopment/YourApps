@@ -1,7 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Precondition } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
-import { PreconditionIdentifier } from "src/types";
+import { PreconditionIdentifier } from "src/types.js";
 
 // Globally disallows both DM commands and non-cached guild commands
 @ApplyOptions<Precondition.Options>({

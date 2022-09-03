@@ -1,12 +1,10 @@
 import { Store } from "@sapphire/pieces";
-import path = require("path");
-import { ModulePiece } from "./piece";
+import { ModulePiece } from "./piece.js";
 
 export class ModuleStore extends Store<ModulePiece> {
 	constructor() {
 		super(ModulePiece, {
-			name: "modules",
-			paths: [path.resolve(__dirname, "..", "modules")]
+			name: "modules"
 		});
 	}
 

@@ -4,8 +4,8 @@ import {
 	InteractionHandlerTypes
 } from "@sapphire/framework";
 import type { AutocompleteInteraction } from "discord.js";
-import type DatabaseModule from "src/modules/database";
-import { ModuleInjection } from "src/modules/utils/devUtils";
+import type DatabaseModule from "src/modules/database.js";
+import { ModuleInjection } from "src/modules/utils/devUtils.js";
 
 @ApplyOptions<InteractionHandler.Options>({
 	name: "position-autocomplete",
