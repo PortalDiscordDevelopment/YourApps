@@ -21,7 +21,13 @@ export class TestCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption(stringOptionBuilder => stringOptionBuilder.setRequired(true).setAutocomplete(true).setName("position").setDescription("dn")),
+					.addStringOption(stringOptionBuilder =>
+						stringOptionBuilder
+							.setRequired(true)
+							.setAutocomplete(true)
+							.setName("position")
+							.setDescription("dn")
+					),
 			{
 				guildIds: [devGuild]
 			}

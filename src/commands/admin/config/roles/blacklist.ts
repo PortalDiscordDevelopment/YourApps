@@ -7,7 +7,8 @@ import { ModuleInjection } from "src/modules/utils/devUtils";
 // TODO Make role preconditions
 
 @ApplyOptions<Command.Options>({
-	name: "config-roles-blacklist"
+	name: "config-roles-blacklist",
+	preconditions: ["BlacklistRoleLimit"]
 })
 @ModuleInjection("guild-config")
 export class ConfigRoleBlacklistCommand extends Command {

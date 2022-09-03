@@ -8,7 +8,7 @@ import type { CommandInteraction } from "discord.js";
 })
 export class ChatInputCommandDeniedListener extends Listener {
 	override run(interaction: CommandInteraction, command: Command) {
-		this.container.logger.info(
+		this.container.logger.debug(
 			`User ${interaction.user.tag} is running command ${command.name}`
 		);
 	}

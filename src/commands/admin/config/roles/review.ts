@@ -7,7 +7,8 @@ import { ModuleInjection } from "src/modules/utils/devUtils";
 // TODO Make role preconditions
 
 @ApplyOptions<Command.Options>({
-	name: "config-roles-review"
+	name: "config-roles-review",
+	preconditions: ["ReviewRoleLimit"]
 })
 @ModuleInjection("guild-config")
 export class ConfigRolesReviewCommand extends Command {

@@ -22,7 +22,13 @@ export class EvalCommand extends Command {
 		try {
 			await interaction.reply({
 				content: await this.devUtils.haste(
-					inspect(eval(interaction.options.getString("code", true)), true, 1)
+					inspect(
+						await eval(
+							interaction.options.getString("code", true)
+						), 
+						true, 
+						1
+					)
 				)
 			});
 		} catch (e) {

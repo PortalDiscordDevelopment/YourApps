@@ -7,7 +7,8 @@ import { ModuleInjection } from "src/modules/utils/devUtils";
 // TODO Make role preconditions
 
 @ApplyOptions<Command.Options>({
-	name: "config-roles-admin"
+	name: "config-roles-admin",
+	preconditions: ["AdminRoleLimit"]
 })
 @ModuleInjection("guild-config")
 export class ConfigRolesAdminCommand extends Command {
