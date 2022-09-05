@@ -80,7 +80,7 @@ model Position {
   // Minimum join time (how long people have to be in a server to apply for the position)
   minimumJoinTime BigInt             @default(0)
   // The actual questions for this position
-  positions       PositionQuestion[]
+  questions       PositionQuestion[]
 }
 
 model PositionQuestion {

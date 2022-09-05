@@ -1,4 +1,4 @@
-import type { Guild as GuildModel, Position } from "@prisma/client";
+import type { Guild as GuildModel, Position, PositionQuestion } from "@prisma/client";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Precondition } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
@@ -20,6 +20,7 @@ export class PositionValidationPrecondition extends Precondition {
 		let positionModel:
 			| (Position & {
 					guild: GuildModel;
+					questions: PositionQuestion[];
 			  })
 			| null = null;
 
@@ -37,7 +38,8 @@ export class PositionValidationPrecondition extends Precondition {
 				guildId: BigInt(interaction.guildId!)
 			},
 			include: {
-				guild: true
+				guild: true,
+				questions: true
 			}
 		});
 
@@ -59,6 +61,7 @@ declare module "discord.js" {
 		getPosition():
 			| (Position & {
 					guild: GuildModel;
+					questions: PositionQuestion[];
 			  })
 			| null;
 	}
