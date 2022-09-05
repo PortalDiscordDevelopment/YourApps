@@ -1,13 +1,14 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
-import { GuildConfigModule, RoleConfigType } from "src/modules/config/guild";
-import { ModuleInjection } from "src/modules/utils/devUtils";
+import { GuildConfigModule, RoleConfigType } from "src/modules/config/guild.js";
+import { ModuleInjection } from "src/modules/utils/devUtils.js";
 
 // TODO Make role preconditions
 
 @ApplyOptions<Command.Options>({
-	name: "config-roles-admin"
+	name: "config-roles-admin",
+	preconditions: ["AdminRoleLimit"]
 })
 @ModuleInjection("guild-config")
 export class ConfigRolesAdminCommand extends Command {

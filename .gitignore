@@ -13,4 +13,4 @@ out
 node_modules
 .env
 
-.prisma/generated
+prisma/client

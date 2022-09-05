@@ -9,9 +9,9 @@ import {
 	DefaultRolePermissions,
 	GuildConfigModule,
 	RoleConfigType
-} from "src/modules/config/guild";
-import { ModuleInjection } from "src/modules/utils/devUtils";
-import { PreconditionIdentifier } from "../../types";
+} from "src/modules/config/guild.js";
+import { ModuleInjection } from "src/modules/utils/devUtils.js";
+import { PreconditionIdentifier } from "../../types.js";
 
 @ApplyOptions<Precondition.Options>({
 	name: "AdminOnly"

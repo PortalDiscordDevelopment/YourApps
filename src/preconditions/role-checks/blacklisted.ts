@@ -1,9 +1,9 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Identifiers, Precondition } from "@sapphire/framework";
 import type { CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { GuildConfigModule, RoleConfigType } from "src/modules/config/guild";
-import { ModuleInjection } from "src/modules/utils/devUtils";
-import { PreconditionIdentifier } from "../../types";
+import { GuildConfigModule, RoleConfigType } from "src/modules/config/guild.js";
+import { ModuleInjection } from "src/modules/utils/devUtils.js";
+import { PreconditionIdentifier } from "../../types.js";
 
 @ApplyOptions<Precondition.Options>({
 	name: "Blacklisted"

@@ -15,7 +15,7 @@ export class ChatInputCommandDeniedListener extends Listener {
 		error: UserError,
 		{ interaction, command }: ChatInputCommandDeniedPayload
 	) {
-		this.container.logger.info(
+		this.container.logger.debug(
 			`User ${interaction.user.tag} tried to run command ${command.name} but was denied because of precondition ${error.identifier}`
 		);
 		return interaction.reply(error.message);

@@ -1,8 +1,11 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Snowflake } from "discord.js";
-import { type ModuleOptions, ModulePiece } from "../../structures/piece";
-import type DatabaseModule from "../database";
-import { ModuleInjection } from "../utils/devUtils";
+import {
+	type ModuleOptions,
+	ModulePiece
+} from "../../structures/modules/piece.js";
+import type DatabaseModule from "../database.js";
+import { ModuleInjection } from "../utils/devUtils.js";
 import { Result } from "@sapphire/result";
 
 export enum RoleConfigType {
