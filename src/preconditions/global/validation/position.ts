@@ -1,4 +1,8 @@
-import type { Guild as GuildModel, Position, PositionQuestion } from "@prisma/client";
+import type {
+	Guild as GuildModel,
+	Position,
+	PositionQuestion
+} from "@prisma/client";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Precondition } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";

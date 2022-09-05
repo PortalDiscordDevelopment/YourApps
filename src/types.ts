@@ -19,7 +19,7 @@ export enum StandardLimits {
 	Positions = 10,
 	Roles = 10,
 	Questions = 25,
-	CustomCommands = 3
+	CustomCommands = 5
 }
 
 // TODO Allow higher limits with pagination in commands

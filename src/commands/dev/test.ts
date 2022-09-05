@@ -6,7 +6,7 @@ import { devGuild } from "src/config/main.js";
 @ApplyOptions<Command.Options>({
 	name: "test",
 	description: "A test command",
-	preconditions: ["RewardRoleLimit"]
+	preconditions: ["CustomCommandsLimit"]
 })
 export class TestCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
