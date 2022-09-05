@@ -34,8 +34,8 @@
 		"build:check": "tsc --noEmit",
 		"build": "tsc",
 		"dev": "echo Building... && yarn build && echo Starting... && node --enable-source-maps out",
-		"fmt:check": "prettier . --check",
-		"fmt": "prettier . --write && prisma format",
+		"fmt:check": "CACHE_DIR=\".yarn/.cache\" prettier . --check",
+		"fmt": "CACHE_DIR=\".yarn/.cache\" prettier . --write && prisma format",
 		"db:push": "pnpify prisma db push",
 		"db:generate": "pnpify prisma generate"
 	},

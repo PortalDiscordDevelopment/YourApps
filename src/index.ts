@@ -1,5 +1,5 @@
 import { container, SapphireClient } from "@sapphire/framework";
-import * as config from "./config/index.js";
+import * as config from "./config/main.js";
 import { ModuleStore } from "./structures/modules/store.js";
 
 // Sapphire plugins

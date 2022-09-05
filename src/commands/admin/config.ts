@@ -1,7 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import type { ChatInputCommand } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { dev, devGuild } from "../../config/index.js";
+import { dev, devGuild } from "../../config/main.js";
 import { makeCommandRedirect } from "../../modules/utils/devUtils.js";
 
 @ApplyOptions<Subcommand.Options>({

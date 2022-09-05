@@ -25,9 +25,7 @@ export class AdminRoleLimitPrecondition extends Precondition {
 		if (!guildModel) return this.ok();
 		if (
 			guildModel.adminRoles.length >=
-			(guildModel.legacyPremium
-				? PremiumLimits.Positions
-				: StandardLimits.Positions)
+			(guildModel.legacyPremium ? PremiumLimits.Roles : StandardLimits.Roles)
 		)
 			return this.error({
 				identifier: PreconditionIdentifier.RolesLimit,

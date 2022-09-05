@@ -4,9 +4,12 @@ import {
 	type CommandOptions,
 	Command
 } from "@sapphire/framework";
-import { devGuild } from "../../config/index.js";
+import { devGuild } from "../../config/main.js";
 import { inspect } from "util";
-import { DevUtilsModule, ModuleInjection } from "../../modules/utils/devUtils.js";
+import {
+	DevUtilsModule,
+	ModuleInjection
+} from "../../modules/utils/devUtils.js";
 
 @ApplyOptions<CommandOptions>({
 	name: "eval",

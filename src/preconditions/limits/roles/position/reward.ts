@@ -1,5 +1,5 @@
 import { ApplyOptions } from "@sapphire/decorators";
-import { Precondition } from "@sapphire/framework";
+import { Command, Precondition } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
 import type DatabaseModule from "src/modules/database.js";
 import { ModuleInjection } from "src/modules/utils/devUtils.js";
@@ -10,22 +10,29 @@ import {
 } from "src/types.js";
 
 @ApplyOptions<Precondition.Options>({
-	name: "ReviewRoleLimit"
+	name: "RewardRoleLimit"
 })
 @ModuleInjection("database")
-export class ReviewRoleLimitPrecondition extends Precondition {
+export class RewardRoleLimitPrecondition extends Precondition {
 	declare database: DatabaseModule;
 
-	override async chatInputRun(interaction: CommandInteraction) {
-		const guildModel = await this.database.client!.guild.findUnique({
-			where: {
-				id: BigInt(interaction.guildId!)
-			}
-		});
-		if (!guildModel) return this.ok();
+	override async chatInputRun(
+		interaction: CommandInteraction,
+		command: Command
+	) {
+		const positionModel = interaction.options.getPosition();
+		if (positionModel === null) {
+			this.container.logger.warn(
+				`RewardRoleLimit precondition was run on command ${command.name}, however, the position option could not be found.`
+			);
+			return this.ok();
+		}
+
 		if (
-			guildModel.reviewRoles.length >=
-			(guildModel.legacyPremium ? PremiumLimits.Roles : StandardLimits.Roles)
+			positionModel.rewardRoles.length >=
+			(positionModel.guild.legacyPremium
+				? PremiumLimits.Roles
+				: StandardLimits.Roles)
 		)
 			return this.error({
 				identifier: PreconditionIdentifier.RolesLimit,
@@ -38,6 +45,6 @@ export class ReviewRoleLimitPrecondition extends Precondition {
 
 declare module "@sapphire/framework" {
 	interface Preconditions {
-		ReviewRoleLimit: never;
+		RewardRoleLimit: never;
 	}
 }

@@ -1,16 +1,20 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { ChatInputCommand, Command } from "@sapphire/framework";
 import type { CommandInteraction } from "discord.js";
-import { devGuild } from "src/config/index.js";
+import { devGuild } from "src/config/main.js";
 
 @ApplyOptions<Command.Options>({
 	name: "test",
 	description: "A test command",
-	preconditions: ["PositionsLimit"]
+	preconditions: ["RewardRoleLimit"]
 })
 export class TestCommand extends Command {
 	public override chatInputRun(interaction: CommandInteraction) {
-		interaction.reply(interaction.options.getString("position") + " :+1:");
+		interaction.reply(
+			`${interaction.options.getInteger("position")} (${
+				interaction.options.getPosition()?.name ?? "???"
+			}) :+1:`
+		);
 	}
 
 	public override registerApplicationCommands(
@@ -21,8 +25,8 @@ export class TestCommand extends Command {
 				builder
 					.setName(this.name)
 					.setDescription(this.description)
-					.addStringOption(stringOptionBuilder =>
-						stringOptionBuilder
+					.addIntegerOption(integerOptionBuilder =>
+						integerOptionBuilder
 							.setRequired(true)
 							.setAutocomplete(true)
 							.setName("position")

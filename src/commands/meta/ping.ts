@@ -6,7 +6,7 @@ import {
 } from "@sapphire/framework";
 import { Message } from "discord.js";
 import { stripIndent } from "common-tags";
-import { dev, devGuild } from "../../config/index.js";
+import { dev, devGuild } from "../../config/main.js";
 
 @ApplyOptions<CommandOptions>({
 	name: "ping",

@@ -14,7 +14,7 @@ export class ModuleStore extends Store<ModulePiece> {
 
 		// Initialize all the modules
 		for (const [, module] of this) {
-			await module?.init?.();
+			await module.init?.();
 		}
 	}
 }

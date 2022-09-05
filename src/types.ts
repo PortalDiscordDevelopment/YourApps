@@ -1,13 +1,18 @@
 export enum PreconditionIdentifier {
+	// Guild role checks
 	NotReviewer = "notReviewer",
 	NotAdmin = "notAdmin",
 	Blacklisted = "blacklisted",
+	// Context checks
 	NotGuild = "notGuild",
 	NotCached = "notCached",
+	// Limit checks
 	PositionsLimit = "positionLimit",
 	RolesLimit = "roleLimit",
 	QuestionsLimit = "questionsLimit",
-	CustomCommandsLimit = "customCommandsLimit"
+	CustomCommandsLimit = "customCommandsLimit",
+	// Validation checks
+	PositionsValidation = "positionsValidation"
 }
 
 export enum StandardLimits {

@@ -43,7 +43,7 @@ export class PositionAutocomplete extends InteractionHandler {
 					.filter(p => `${p.id} - ${p.name}`.includes(focusedOption.value))
 					.map(p => ({
 						name: `${p.id} - ${p.name}`,
-						value: p.id.toString()
+						value: p.id
 					}))
 			);
 	}
