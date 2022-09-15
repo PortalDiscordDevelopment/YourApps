@@ -35,23 +35,25 @@ model User {
 // Guild scheman
 model Guild {
   // The ID of the guild
-  id              BigInt     @id
+  id                 BigInt     @id
   // The channel to log configuration changes and new submissions to
-  logChannel      BigInt?    @map("log_channel")
+  logChannel         BigInt?    @map("log_channel")
   // The channel to archive all reviewed applications to
-  archiveChannel  BigInt?    @map("archive_channel")
+  archiveChannel     BigInt?    @map("archive_channel")
+  // The channel to log all submissions to
+  submissionsChannel BigInt?    @map("submissions_channel")
   // The roles to ping when an application is submitted
-  submissionPings BigInt[]   @default([]) @map("submission_pings")
+  submissionPings    BigInt[]   @default([]) @map("submission_pings") // TODO Implement this
   // The roles that are considered "admin" and are allowed to change the bot configuration
-  adminRoles      BigInt[]   @default([]) @map("admin_roles")
+  adminRoles         BigInt[]   @default([]) @map("admin_roles")
   // The roles that are considered "reviewers" and are allowed to review submissions
-  reviewRoles     BigInt[]   @default([]) @map("review_roles")
+  reviewRoles        BigInt[]   @default([]) @map("review_roles")
   // Roles that are blacklisted from applying to positions
-  blacklistRoles  BigInt[]   @default([]) @map("blacklist_roles")
+  blacklistRoles     BigInt[]   @default([]) @map("blacklist_roles")
   // If this guild had legacy premium or not
-  legacyPremium   Boolean    @default(false) @map("legacy_premium")
+  legacyPremium      Boolean    @default(false) @map("legacy_premium")
   // The positions in this guild
-  positions       Position[]
+  positions          Position[]
 }
 
 model Position {
