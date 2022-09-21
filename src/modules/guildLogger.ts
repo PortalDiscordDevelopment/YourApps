@@ -10,29 +10,29 @@ import { ModuleInjection } from "./utils/devUtils.js";
 export enum GuildConfigLogType {
 	// * Configured roles
 	// Admin
-	ADMIN_ROLE_ADD,
-	ADMIN_ROLE_REMOVE,
+	ADMIN_ROLE_ADD = "Admin role added:The role <@&{role}> was added to this server's admin roles.:#00FF00",
+	ADMIN_ROLE_REMOVE = "Admin role removed:The role <@&{role}> was removed from this server's admin roles.:#FF0000",
 	// Review
-	REVIEW_ROLE_ADD,
-	REVIEW_ROLE_REMOVE,
+	REVIEW_ROLE_ADD = "Review role added:The role <@&{role}> was added to this server's review roles.:#00FF00",
+	REVIEW_ROLE_REMOVE = "Review role removed:The role <@&{role}> was removed from this review's admin roles.:#FF0000",
 	// Blacklist
-	BLACKLIST_ROLE_ADD,
-	BLACKLIST_ROLE_REMOVE,
+	BLACKLIST_ROLE_ADD = "Blacklist role added:The role <@&{role}> was added to this server's blacklist roles.:#00FF00",
+	BLACKLIST_ROLE_REMOVE = "Blacklist role removed:The role <@&{role}> was removed from this server's Blacklist roles.:#FF0000",
 
 	// * Position state
-	POSITION_CLOSE,
-	POSITION_OPEN,
+	POSITION_CLOSE = "Position closed:The position {position} was closed.:#FF0000",
+	POSITION_OPEN = "Position opened:The position {position} was opened.:#00FF00",
 
 	// * Configured channels
 	// Log channel
-	LOG_CHANNEL_SET,
-	LOG_CHANNEL_REMOVE,
+	LOG_CHANNEL_SET = "Log channel set:The server's log channel was set to <#channel>.:#00FF00",
+	LOG_CHANNEL_REMOVE = "Log channel removed:The server's log channel was removed.:#FF0000",
 	// Archive channel
-	ARCHIVE_CHANNEL_SET,
-	ARCHIVE_CHANNEL_REMOVE,
+	ARCHIVE_CHANNEL_SET = "Archive channel set:The server's archive channel was set to <#channel>.:#00FF00",
+	ARCHIVE_CHANNEL_REMOVE = "Archive channel removed:The server's archive channel was removed.:#FF0000",
 	// Submissions channel
-	SUBMISSIONS_CHANNEL_SET,
-	SUBMISSIONS_CHANNEL_REMOVE
+	SUBMISSIONS_CHANNEL_SET = "Submissions channel set:The server's submissions channel was set to <#channel>.:#00FF00",
+	SUBMISSIONS_CHANNEL_REMOVE = "Submissions channel removed:The server's submissions channel was removed.:#FF0000"
 }
 
 @ApplyOptions<ModuleOptions>({
@@ -77,10 +77,28 @@ export class GuildLoggerModule extends ModulePiece {
         // If the channel does not exist, or isn't a text channel, ignore the event
 		if (!logChannel || !logChannel.isText()) return;
 
-        const [embedTitle, embedDescription, embedColor] = type.split(":");
+        const [embedTitle, embedDescription, embedColor] = type.split(":").map(p => {
+			let result = p;
+			for (const [key, value] of Object.entries(extraData)) {
+				result = result.replaceAll(key, value)
+			}
+			return result;
+		}) as [string, string, `#${string}`];
         await logChannel.send({
             embeds: [{
-                title: 
+                title: embedTitle,
+				description: embedDescription,
+				color: embedColor,
+				...(
+					author === undefined
+					? {}
+					: {
+						author: {
+							name: author.tag,
+							iconURL: author.displayAvatarURL()
+						}
+					}
+				)
             }]
         })
 	}
