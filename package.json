@@ -9,7 +9,8 @@
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
 		"format": "yarn prettier --write .",
 		"format:check": "yarn prettier --check .",
-		"start": "yarn build && node --trace-warnings --enable-source-maps dist/index.js"
+		"start": "yarn build && yarn start:raw",
+		"start:raw": "node --trace-warnings --enable-source-maps dist/index.js"
 	},
 	"author": "Tyman",
 	"license": "NPOSL-3.0",
