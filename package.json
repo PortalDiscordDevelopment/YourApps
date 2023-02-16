@@ -16,7 +16,7 @@
 		"discord.js": "^13.10.3",
 		"src": "link:./out",
 		"tslib": "^2.4.0",
-		"undici": "^5.10.0"
+		"undici": "^5.19.1"
 	},
 	"devDependencies": {
 		"@sapphire/ts-config": "^3.3.4",
